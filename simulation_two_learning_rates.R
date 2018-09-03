@@ -22,15 +22,17 @@ PE <- Q_all  <- array(0, c(10, 4, 100))
 
 id    <- rep(1:10)
 temp  <- rep(10)/10
-lrate <- rep(1:10)/10
+lrate_ex <- rep(1:10)/10
+lrate_in <- rep(1:10)/10 
 
 
-FIT <- cbind(id, lrate , temp)
+FIT <- cbind(id, lrate_ex, lrate_in, temp)
 
 for (id in subj) {
   
-  alpha <- FIT[id, 2]; 
-  beta  <- FIT[id, 3];
+  alpha_ex <- FIT[id, 2]; 
+  alpha_in <- FIT[id, 3]; 
+  beta     <- FIT[id, 4];
   
   for (block in c(1:4)) {
     

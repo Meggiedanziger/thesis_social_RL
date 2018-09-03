@@ -1,6 +1,6 @@
 rm(list=ls()) # delete workspace
 setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL")
-source("reinforcement_function.R")
+source("reinforce_two_learning_rates.R")
 
 #read in data
 library(readr)
@@ -29,40 +29,52 @@ data <- sim_data
 data <- as.data.frame(data)
 
 subj = c(1:10)
-FIT2 <- matrix(0, 10, 5)
+FIT2 <- matrix(0, 10, 6)
 #start a simplex search for finding the best parameter values
 for (id in subj) {  # cycle through ids 1 to n
-  startParm <- c(0.1, 0.1)
-  names(startParm) <- c("alpha", "theta")
-  out <- optim(startParm, reinforce, subj = id, method = "L-BFGS-B", 
-               lower = c(.001, .001), upper = c(1, 1), data = data)
+  startParm <- c(0.1, 0.1, 0.1)
+  names(startParm) <- c("alpha_ex", "alpha_in", "theta")
+  out <- optim(startParm, reinforce2lrates, subj = id, method = "L-BFGS-B", 
+               lower = c(.001, .001, .001), upper = c(1, 1, 1), data = data)
   FIT2[id, 1] <- out$value
-  FIT2[id, 2:3] <- out$par
+  FIT2[id, 2:4] <- out$par
   print(id)
 }
 
 
 # determine Model comparison criterion
 # BIC deviance + parameters*log(N) #N = number of trials
-FIT2[, 4] <- FIT2[, 1] + 2*log(48);
+FIT2[, 5] <- FIT2[, 1] + 2*log(100);
 
 # AIC: deviance + 2 * #parameters
-FIT2[, 5] <- FIT2[, 1] + 2 * 2;
+FIT2[, 6] <- FIT2[, 1] + 2 * 2;
 
 
 # sum of BIC values
-sum(FIT2[, 4])
+sum(FIT2[, 5])
 
-#recovery alpha
-alpha_sim <- c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0)
-alpha_fit <- FIT2[, 2]
+#recovery alpha excluder
+alpha_ex_sim <- c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0)
+alpha_ex_fit <- FIT2[, 2]
 
-df <- as.data.frame(cbind(alpha_fit, alpha_sim))
-cor.test(alpha_sim, alpha_fit)
+df_ex <- as.data.frame(cbind(alpha_ex_fit, alpha_ex_sim))
+cor.test(alpha_ex_sim, alpha_ex_fit)
 
-ggplot(aes(x = alpha_sim, y = alpha_fit), data = df) +
+ggplot(aes(x = alpha_ex_sim, y = alpha_ex_fit), data = df_ex) +
   geom_point() +
   geom_smooth(method = "glm")
+
+#recovery alpha includer
+alpha_in_sim <- c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0)
+alpha_in_fit <- FIT2[, 3]
+
+df_in <- as.data.frame(cbind(alpha_in_fit, alpha_in_sim))
+cor.test(alpha_in_sim, alpha_in_fit)
+
+ggplot(aes(x = alpha_in_sim, y = alpha_in_fit), data = df_in) +
+  geom_point() +
+  geom_smooth(method = "glm")
+
 
 write.table(FIT2, file = "modelfit_beta_1.0.txt", row.names = FALSE, col.names = FALSE)
 
