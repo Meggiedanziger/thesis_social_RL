@@ -4,25 +4,25 @@ getwd()
 
 library(reshape)
 
-num = 100
-subj = c(1:100)
+num = 10
+subj = c(1:10)
 
 #determine prediction of the model with best parameter estimates
-cchoice <-  array(0, c(100, 4, 100))
+cchoice <-  array(0, c(10, 4, 100))
 
 #Q <- matrix(0,1,2) 
-R <- array(0, c(100, 4, 100))
+R <- array(0, c(10, 4, 100))
 
-Prob         <- array(0, c(100, 4, 100))
-Feed         <- array(0, c(100, 4, 100))
-Feed_c       <- array(0, c(100, 4, 100))
-Feed_i       <- array(0, c(100, 4, 100))
-Prob_correct <- array(0, c(100, 4, 100))
-PE <- Q_all  <- array(0, c(100, 4, 100))
+Prob         <- array(0, c(10, 4, 100))
+Feed         <- array(0, c(10, 4, 100))
+Feed_c       <- array(0, c(10, 4, 100))
+Feed_i       <- array(0, c(10, 4, 100))
+Prob_correct <- array(0, c(10, 4, 100))
+PE <- Q_all  <- array(0, c(10, 4, 100))
 
-id    <- c(1:100)
-temp  <- rep(1:10, each = 10)/10
-lrate <- rep(1:10, each = 1)/10
+id    <- rep(1:10)
+temp  <- rep(10)/10
+lrate <- rep(1:10)/10
 
 
 FIT <- cbind(id, lrate , temp)
@@ -37,7 +37,7 @@ for (id in subj) {
     Q    <- matrix(0, 1, 2) # 1 row, 4 col 
     PROB <- matrix(0, 1, 2) 
     
-    for (trial in c(1:100)) {
+    for (trial in c(1:100)){
       
       #c <- c(1,2)
       #p <- c(.5,.5)
@@ -92,6 +92,5 @@ plot(acc)
 
 sim_data <- merged_dat
 
-sim_data <- write.table(merged_dat, file = "simulation_alpha_beta_combinations.txt", 
-                        row.names = FALSE, col.names = FALSE)
+sim_data <- write.table(merged_dat, file = "simulation_beta_1.0.txt", row.names = FALSE, col.names = FALSE)
 

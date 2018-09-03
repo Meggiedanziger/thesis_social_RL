@@ -1,11 +1,12 @@
 rm(list=ls()) # delete workspace
-setwd("~/Dropbox/___MA/social_RL_git")
+setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL")
 source("reinforcement_function.R")
 
 #read in data
 library(readr)
 
-sim_data <- read_delim("~/Dropbox/___MA/RL_model/simulation_beta_0.5.txt", 
+
+sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/simulation_beta_1.0.txt", 
                        " ", col_names = F, 
                        trim_ws = TRUE)
 
@@ -21,6 +22,7 @@ sim_data <-
   sim_data %>% 
   arrange(id)
 
+
 sim_data$chosen_option <- sim_data$chosen_option + 1
 
 data <- sim_data
@@ -29,12 +31,14 @@ data <- as.data.frame(data)
 subj = c(1:10)
 FIT2 <- matrix(0, 10, 5)
 #start a simplex search for finding the best parameter values
-for (index in subj) {  # cycle through ids 1 to n
+for (id in subj) {  # cycle through ids 1 to n
   startParm <- c(0.1, 0.1)
   names(startParm) <- c("alpha", "theta")
-  out <- optim(startParm, reinforce, subj = index, method = "L-BFGS-B", lower = c(.001, .499), upper = c(1, .5), data = data)
+  out <- optim(startParm, reinforce, subj = id, method = "L-BFGS-B", 
+               lower = c(.001, .001), upper = c(1, 1), data = data)
   FIT2[id, 1] <- out$value
   FIT2[id, 2:3] <- out$par
+  print(id)
 }
 
 
@@ -60,7 +64,7 @@ ggplot(aes(x = alpha_sim, y = alpha_fit), data = df) +
   geom_point() +
   geom_smooth(method = "glm")
 
-
+write.table(FIT2, file = "modelfit_beta_1.0.txt", row.names = FALSE, col.names = FALSE)
 
 #check reward probabilities from simulation function
 sum(sim_data$chosen_option == 2) # good option

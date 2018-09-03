@@ -1,9 +1,8 @@
-# reinforcement model
-
 reinforce <- function(param, subj, data) {
   
-  alpha = param[1]
-  theta = param[2]
+  alpha_in = param[1]
+  alpha_ex = param[2]
+  theta = param[3]
   
   LL <- 0 #log likelihood goodness-of-fit measure  
   
@@ -14,7 +13,7 @@ reinforce <- function(param, subj, data) {
     Q <- matrix(0, 1, 2) # 1 row, 2 col
     Prob <- matrix(0, 1, 2)
     
-    for (trial in c(1:100)){
+    for (trial in c(1:12)){
       
       cchoice <-   data[data[ ,1] == id & data[ ,2] == block & data[ ,3] == trial, 4]
       
