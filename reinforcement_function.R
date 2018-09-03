@@ -22,7 +22,7 @@ reinforce <- function(param, subj, data) {
         
         cchoice <-   data[data[ ,1] == id & data[ ,2] == block & data[ ,3] == trial, 4]
         
-        Prob[1, cchoice] <- exp(theta*Q[1, cchoice]) / (theta*exp(Q[1, 1]) + exp(theta*Q[1, 2]))
+        Prob[1, cchoice] <- exp(theta*Q[1, cchoice]) / (exp(theta*Q[1, 1]) + exp(theta*Q[1, 2]))
         
         LL <- LL + log(Prob[1, cchoice]);
         
