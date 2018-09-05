@@ -8,17 +8,17 @@ num = 10
 subj = c(1:10)
 
 #determine prediction of the model with best parameter estimates
-cchoice <-  array(0, c(10, 8, 100))
+cchoice <-  array(0, c(10, 4, 100))
 
 #Q <- matrix(0,1,2) 
-R <- array(0, c(10, 8, 100))
+R <- array(0, c(10, 4, 100))
 
-Prob         <- array(0, c(10, 8, 100))
-Feed         <- array(0, c(10, 8, 100))
-Feed_c       <- array(0, c(10, 8, 100))
-Feed_i       <- array(0, c(10, 8, 100))
-Prob_correct <- array(0, c(10, 8, 100))
-PE <- Q_all  <- array(0, c(10, 8, 100))
+Prob         <- array(0, c(10, 4, 100))
+Feed         <- array(0, c(10, 4, 100))
+Feed_c       <- array(0, c(10, 4, 100))
+Feed_i       <- array(0, c(10, 4, 100))
+Prob_correct <- array(0, c(10, 4, 100))
+PE <- Q_all  <- array(0, c(10, 4, 100))
 
 id    <- rep(1:10)
 temp  <- rep(2, each = 10)/10
@@ -34,12 +34,13 @@ for (id in subj) {
   alpha_in <- FIT[id, 3]; 
   beta     <- FIT[id, 4];
   
-  for (block in c(1:8)) {
+  for (block in c(1:4)) {
     
     Q    <- matrix(0, 1, 2) # 1 row, 4 col 
     PROB <- matrix(0, 1, 2) 
     
-    for (trial in c(1:100)){
+    
+    for (trial in c(1:100)) {
       
       #c <- c(1,2)
       #p <- c(.5,.5)
@@ -51,18 +52,22 @@ for (id in subj) {
         choice     <- c(j, 3-j)
         P          <-   c(PROB[1, j], 1-PROB[1, j])
         cchoice [id, block, trial] <- sample(choice, 1, replace = FALSE, prob = P)
-      }
+      
       
       feedback <- c(-10, 10)
       
       if (cchoice [id, block, trial] == 2) {#good option --> includer
+        
         rew_prob <- c(.25, .75)
+        
         R [id, block, trial] <- sample(feedback, 1, replace = FALSE, prob = rew_prob)
         Q[1,cchoice[id,block,trial] ] <- Q[1,cchoice[id,block,trial] ] + alpha_in * (R[id,block,trial] - Q[1,cchoice[id,block,trial] ]);
       }
       
       else {#bad option --> excluder
+        
         rew_prob <- c(.75, .25)
+        
         R[id, block, trial] <- sample(feedback, 1, replace = FALSE, prob = rew_prob)
         Q[1,cchoice[id,block,trial] ] <- Q[1,cchoice[id,block,trial] ] + alpha_ex * (R[id,block,trial] - Q[1,cchoice[id,block,trial] ]);
       }
@@ -77,7 +82,8 @@ for (id in subj) {
       #  Q[1,2] <- -Q[1,1]; #symmetrisches Update der Q values
       #}
     }
-  }    
+  }
+}
 }
 
 

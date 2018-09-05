@@ -44,7 +44,7 @@ for (id in subj) {  # cycle through ids 1 to n
 
 # determine Model comparison criterion
 # BIC deviance + parameters*log(N) #N = number of trials from all blocks
-FIT2[, 5] <- FIT2[, 1] + 3*log(800);
+FIT2[, 5] <- FIT2[, 1] + 3*log(400);
 
 # AIC: deviance + 2 * #parameters
 FIT2[, 6] <- FIT2[, 1] + 2 * 3;
