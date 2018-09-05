@@ -1,4 +1,4 @@
-rm(list=ls()) # delete workspace
+rm(list = ls()) # delete workspace
 setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL")
 source("reinforce_two_learning_rates.R")
 
@@ -6,7 +6,7 @@ source("reinforce_two_learning_rates.R")
 library(readr)
 
 
-sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/simulation_beta_1.0.txt", 
+sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/simulation_2lrates_beta_0.2.txt", 
                        " ", col_names = F, 
                        trim_ws = TRUE)
 
@@ -35,7 +35,7 @@ for (id in subj) {  # cycle through ids 1 to n
   startParm <- c(0.1, 0.1, 0.1)
   names(startParm) <- c("alpha_ex", "alpha_in", "theta")
   out <- optim(startParm, reinforce2lrates, subj = id, method = "L-BFGS-B", 
-               lower = c(.001, .001, .001), upper = c(1, 1, 1), data = data)
+               lower = c(.001, .001, .001), upper = c(.3, 1, .2), data = data)
   FIT2[id, 1] <- out$value
   FIT2[id, 2:4] <- out$par
   print(id)
@@ -43,11 +43,11 @@ for (id in subj) {  # cycle through ids 1 to n
 
 
 # determine Model comparison criterion
-# BIC deviance + parameters*log(N) #N = number of trials
-FIT2[, 5] <- FIT2[, 1] + 2*log(100);
+# BIC deviance + parameters*log(N) #N = number of trials from all blocks
+FIT2[, 5] <- FIT2[, 1] + 3*log(800);
 
 # AIC: deviance + 2 * #parameters
-FIT2[, 6] <- FIT2[, 1] + 2 * 2;
+FIT2[, 6] <- FIT2[, 1] + 2 * 3;
 
 
 # sum of BIC values
@@ -76,5 +76,5 @@ ggplot(aes(x = alpha_in_sim, y = alpha_in_fit), data = df_in) +
   geom_smooth(method = "glm")
 
 
-write.table(FIT2, file = "modelfit_beta_1.0.txt", row.names = FALSE, col.names = FALSE)
+#write.table(FIT2, file = "modelfit_beta_1.0.txt", row.names = FALSE, col.names = FALSE)
 
