@@ -31,6 +31,7 @@ reinforce2lrates <- function(param, subj, data) {
         Q[1,cchoice] <- Q[1,cchoice] + alpha_ex * (R - Q[1, cchoice]);
         #excluder alpha to modulate prediction error
       }
+      
       else if (cchoice == 2) { #good option --> includer
         cchoice <-   data[data[ ,1] == id & data[ ,2] == block & data[ ,3] == trial, 4]
         

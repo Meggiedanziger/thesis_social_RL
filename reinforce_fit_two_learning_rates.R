@@ -35,7 +35,7 @@ for (id in subj) {  # cycle through ids 1 to n
   startParm <- c(0.1, 0.1, 0.1)
   names(startParm) <- c("alpha_ex", "alpha_in", "theta")
   out <- optim(startParm, reinforce2lrates, subj = id, method = "L-BFGS-B", 
-               lower = c(.001, .001, .001), upper = c(.3, 1, .2), data = data)
+               lower = c(.001, .001, .001), upper = c(1, .3, .4), data = data)
   FIT2[id, 1] <- out$value
   FIT2[id, 2:4] <- out$par
   print(id)
@@ -64,7 +64,8 @@ ggplot(aes(x = alpha_ex_sim, y = alpha_ex_fit), data = df_ex) +
   geom_point() +
   geom_smooth(method = "glm")
 
-#recovery alpha includer
+
+ #recovery alpha includer
 alpha_in_sim <- c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0)
 alpha_in_fit <- FIT2[, 3]
 

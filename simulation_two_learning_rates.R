@@ -21,9 +21,9 @@ Prob_correct <- array(0, c(10, 4, 100))
 PE <- Q_all  <- array(0, c(10, 4, 100))
 
 id    <- rep(1:10)
-temp  <- rep(2, each = 10)/10
-lrate_ex <- rep(3, each = 10)/10
-lrate_in <- rep(1:10)/10 
+temp  <- rep(4, each = 10)/10
+lrate_ex <- rep(1:10)/10
+lrate_in <- rep(3)/10 
 
 
 FIT <- cbind(id, lrate_ex, lrate_in, temp)
@@ -48,7 +48,7 @@ for (id in subj) {
       #t <- sample(c, 1, replace = FALSE, prob = p)
       
       for (j in c(1:2)) { # options 
-        PROB[1, j] <- exp(beta*Q[1, j]) / (exp(beta*Q[1, 1]) + exp(beta*Q[1, 2]) )
+        PROB[1, j] <- exp(beta*Q[1, j]) / (exp(beta*Q[1, 1]) + exp(beta*Q[1, 2]))
         choice     <- c(j, 3-j)
         P          <-   c(PROB[1, j], 1-PROB[1, j])
         cchoice [id, block, trial] <- sample(choice, 1, replace = FALSE, prob = P)
@@ -117,3 +117,4 @@ sum(sim_data$chosen_option == 2 & sim_data$feedback == -10) # good option with n
 sum(sim_data$chosen_option == 1) # bad option
 sum(sim_data$chosen_option == 1 & sim_data$feedback == 10) # bad option with positive feedback
 sum(sim_data$chosen_option == 1 & sim_data$feedback == -10) # bad option with negative feedback
+
