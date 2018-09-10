@@ -1,7 +1,7 @@
 reinforce2lrates <- function(param, subj, data) {
   
-  alpha_in = param[1]
-  alpha_ex = param[2]
+  alpha_ex = param[1]
+  alpha_in = param[2]
   theta    = param[3]
   
   LL <- 0 #log likelihood goodness-of-fit measure  
@@ -14,7 +14,7 @@ reinforce2lrates <- function(param, subj, data) {
     Prob <- matrix(0, 1, 2)
   
     
-    for (trial in c(1:100)){
+    for (trial in c(1:300)){
       
       cchoice <-   data[data[ ,1] == id & data[ ,2] == block & data[ ,3] == trial, 4]
       
