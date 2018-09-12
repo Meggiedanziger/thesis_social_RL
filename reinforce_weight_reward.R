@@ -1,6 +1,6 @@
 # reinforcement model
 
-reinforce <- function(param, subj, data) {
+reinforce_weight <- function(param, subj, data) {
   
   alpha  = param[1]
   theta  = param[2]

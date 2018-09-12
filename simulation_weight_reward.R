@@ -8,38 +8,37 @@ num = 10
 subj = c(1:10)
 
 #determine prediction of the model with best parameter estimates
-cchoice <-  array(0, c(10, 4, 300))
+cchoice <-  array(0, c(10, 4, 100))
 
 #Q <- matrix(0,1,2) 
-R            <- array(0, c(10, 4, 300))
-Prob         <- array(0, c(10, 4, 300))
-Feed         <- array(0, c(10, 4, 300))
-Feed_c       <- array(0, c(10, 4, 300))
-Feed_i       <- array(0, c(10, 4, 300))
-Prob_correct <- array(0, c(10, 4, 300))
-PE <- Q_all  <- array(0, c(10, 4, 300))
+R <- array(0, c(10, 4, 100))
+
+Prob         <- array(0, c(10, 4, 100))
+Feed         <- array(0, c(10, 4, 100))
+Feed_c       <- array(0, c(10, 4, 100))
+Feed_i       <- array(0, c(10, 4, 100))
+Prob_correct <- array(0, c(10, 4, 100))
+PE <- Q_all  <- array(0, c(10, 4, 100))
 
 id    <- rep(1:10)
-temp  <- rep(3, each = 10)/10
-lrate_ex <- rep(5)/10
-lrate_in <- rep(1:10)/10 
+temp  <- rep(7)/10
+lrate <- rep(1:10)/10
+rew_weight <- rep(-5)/10
 
-
-FIT <- cbind(id, lrate_ex, lrate_in, temp)
+FIT <- cbind(id, lrate , temp, rew_weight)
 
 for (id in subj) {
   
-  alpha_ex <- FIT[id, 2]; 
-  alpha_in <- FIT[id, 3]; 
-  beta     <- FIT[id, 4];
-  
+  alpha  <- FIT[id, 2]; 
+  beta   <- FIT[id, 3];
+  weight <- FIT[id, 4];
+    
   for (block in c(1:4)) {
     
     Q    <- matrix(0, 1, 2) # 1 row, 4 col 
     PROB <- matrix(0, 1, 2) 
     
-    
-    for (trial in c(1:300)) {
+    for (trial in c(1:100)){
       
       #c <- c(1,2)
       #p <- c(.5,.5)
@@ -47,32 +46,25 @@ for (id in subj) {
       #t <- sample(c, 1, replace = FALSE, prob = p)
       
       for (j in c(1:2)) { # options 
-        PROB[1, j] <- exp(beta*Q[1, j]) / (exp(beta*Q[1, 1]) + exp(beta*Q[1, 2]))
+        PROB[1, j] <- exp(beta*Q[1, j]) / (exp(beta*Q[1, 1]) + exp(beta*Q[1, 2]) )
         choice     <- c(j, 3-j)
         P          <-   c(PROB[1, j], 1-PROB[1, j])
         cchoice [id, block, trial] <- sample(choice, 1, replace = FALSE, prob = P)
-      
+      }
       
       feedback <- c(-10, 10)
       
-      if (cchoice [id, block, trial] == 2) {#good option --> includer
-        
+      if (cchoice [id, block, trial] == 2) {
         rew_prob <- c(.25, .75)
-        
         R [id, block, trial] <- sample(feedback, 1, replace = FALSE, prob = rew_prob)
-        Q[1,cchoice[id,block,trial] ] <- Q[1,cchoice[id,block,trial] ] + alpha_in * (R[id,block,trial] - Q[1,cchoice[id,block,trial] ]);
       }
       
-      else {#bad option --> excluder
-        
+      else {
         rew_prob <- c(.75, .25)
-        
         R[id, block, trial] <- sample(feedback, 1, replace = FALSE, prob = rew_prob)
-        Q[1,cchoice[id,block,trial] ] <- Q[1,cchoice[id,block,trial] ] + alpha_ex * (R[id,block,trial] - Q[1,cchoice[id,block,trial] ]);
       }
       
-     
-    
+      Q[1,cchoice[id,block,trial]] <- Q[1,cchoice[id,block,trial]] + alpha * ((weight * R[id,block,trial]) - Q[1,cchoice[id,block,trial] ]);
       
       #if (cchoice[id,block,trial]  == 2) { 
       #  Q[1,1] <- -Q[1,2];
@@ -81,8 +73,7 @@ for (id in subj) {
       #  Q[1,2] <- -Q[1,1]; #symmetrisches Update der Q values
       #}
     }
-  }
-}
+  }    
 }
 
 
@@ -102,7 +93,7 @@ plot(acc)
 
 sim_data <- merged_dat
 
-sim_data <- write.table(merged_dat, file = "simulation_2lrates_alpha_ex_0.5.txt", row.names = FALSE, col.names = FALSE)
+sim_data <- write.table(merged_dat, file = "simulation_test_weight.txt", row.names = FALSE, col.names = FALSE)
 
 
 #check rewards / reward probabilities from simulation function
@@ -116,4 +107,3 @@ sum(sim_data$chosen_option == 2 & sim_data$feedback == -10) # good option with n
 sum(sim_data$chosen_option == 1) # bad option
 sum(sim_data$chosen_option == 1 & sim_data$feedback == 10) # bad option with positive feedback
 sum(sim_data$chosen_option == 1 & sim_data$feedback == -10) # bad option with negative feedback
-
