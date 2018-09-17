@@ -35,7 +35,7 @@ for (id in subj) {  # cycle through ids 1 to n
   startParm <- c(0.1, 0.1, 0.1)
   names(startParm) <- c("alpha", "theta", "weight")
   out <- optim(startParm, reinforce_weight, subj = id, method = "L-BFGS-B", 
-               lower = c(.001, .001, -.5), upper = c(1, .7, .001), data = data)
+               lower = c(.001, .001, .001), upper = c(.3, .5, 1), data = data)
   FIT2[id, 1] <- out$value
   FIT2[id, 2:4] <- out$par
   print(id)
@@ -55,13 +55,24 @@ sum(FIT2[, 5])
 
 
 #recovery alpha
-alpha_sim <- c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0)
-alpha_fit <- FIT2[, 2]
+# alpha_sim <- c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0)
+# alpha_fit <- FIT2[, 2]
+# 
+# df <- as.data.frame(cbind(alpha_fit, alpha_sim))
+# cor.test(alpha_sim, alpha_fit)
+# 
+# ggplot(aes(x = alpha_sim, y = alpha_fit), data = df) +
+#   geom_point() +
+#   geom_smooth(method = "glm")
 
-df <- as.data.frame(cbind(alpha_fit, alpha_sim))
-cor.test(alpha_sim, alpha_fit)
+#recovery weight
+weight_sim <- c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0)
+weight_fit <- FIT2[, 4]
 
-ggplot(aes(x = alpha_sim, y = alpha_fit), data = df) +
+df <- as.data.frame(cbind(weight_fit, weight_sim))
+cor.test(weight_sim, weight_fit)
+
+ggplot(aes(x = weight_sim, y = weight_fit), data = df) +
   geom_point() +
   geom_smooth(method = "glm")
 

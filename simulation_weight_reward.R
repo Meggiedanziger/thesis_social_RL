@@ -21,9 +21,9 @@ Prob_correct <- array(0, c(10, 4, 100))
 PE <- Q_all  <- array(0, c(10, 4, 100))
 
 id    <- rep(1:10)
-temp  <- rep(7)/10
-lrate <- rep(1:10)/10
-rew_weight <- rep(-5)/10
+temp  <- rep(5)/10
+lrate <- rep(3)/10
+rew_weight <- rep(1:10)/10
 
 FIT <- cbind(id, lrate , temp, rew_weight)
 
