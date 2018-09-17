@@ -5,7 +5,8 @@ library(tidyverse)
 
 #read in data
 library(readr)
-sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/simulation_beta_0.5.txt", 
+
+sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulation_with_best_fitting_params_beta_0.5.txt", 
                        " ", escape_double = FALSE, col_names = F, 
                        trim_ws = TRUE)
 
@@ -22,12 +23,12 @@ sim_data <-
 
 #add columns for alpha and beta
 obs <- c(1:4000)
-temp  <- rep(5)/10
-lrate <- rep(1:10, each = 400)/10
+# temp  <- rep(5)/10
+# lrate <- rep(1:10, each = 400)/10
 
-df <- cbind(obs, lrate, temp)
+#df <- cbind(obs, lrate, temp)
 sim_data$obs <- obs
-sim_data <- merge(sim_data, df)
+#sim_data <- merge(sim_data, df)
 
 #sim_data$chosen_option <- sim_data$chosen_option -1
 
