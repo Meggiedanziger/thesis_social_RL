@@ -1,6 +1,21 @@
-rm(list = ls()) # delete workspace
-setwd("~/Dropbox/___MA/social_RL_git")
-getwd()
+rm(list=ls()) # delete workspace
+setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL")
+
+
+#read in data
+library(readr)
+
+modelfit <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/modelfit_beta_0.5.txt", 
+                       " ", col_names = F, 
+                       trim_ws = TRUE)
+
+
+names(modelfit)[1] <- "LL"
+names(modelfit)[2] <- "lrate"
+names(modelfit)[3] <- "temp"
+names(modelfit)[4] <- "BIC"
+names(modelfit)[5] <- "AIC"
+
 
 library(reshape)
 
@@ -21,16 +36,16 @@ Prob_correct <- array(0, c(10, 4, 100))
 PE <- Q_all  <- array(0, c(10, 4, 100))
 
 id    <- rep(1:10)
-temp  <- rep(5)/10
-lrate <- rep(1:10)/10
+# temp  <- rep(5)/10
+# lrate <- rep(1:10)/10
 
 
-FIT <- cbind(id, lrate , temp)
+FIT <- cbind(id, modelfit)
 
 for (id in subj) {
   
-  alpha <- FIT[id, 2]; 
-  beta  <- FIT[id, 3];
+  alpha <- FIT[id, 3]; 
+  beta  <- FIT[id, 4];
   
   for (block in c(1:4)) {
     
@@ -92,18 +107,5 @@ plot(acc)
 
 sim_data <- merged_dat
 
-sim_data <- write.table(merged_dat, file = "simulation_beta_0.5.txt", 
+sim_data <- write.table(merged_dat, file = "simulation_with_best_fitting_params_beta_0.5.txt", 
                         row.names = FALSE, col.names = FALSE)
-
-
-#check rewards / reward probabilities from simulation function
-
-sim_data$chosen_option <- sim_data$chosen_option + 1
-
-sum(sim_data$chosen_option == 2) # good option
-sum(sim_data$chosen_option == 2 & sim_data$feedback == 10) # good option with positive feedback
-sum(sim_data$chosen_option == 2 & sim_data$feedback == -10) # good option with negative feedback
-
-sum(sim_data$chosen_option == 1) # bad option
-sum(sim_data$chosen_option == 1 & sim_data$feedback == 10) # bad option with positive feedback
-sum(sim_data$chosen_option == 1 & sim_data$feedback == -10) # bad option with negative feedback
