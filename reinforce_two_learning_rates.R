@@ -14,7 +14,7 @@ reinforce2lrates <- function(param, subj, data) {
     Prob <- matrix(0, 1, 2)
   
     
-    for (trial in c(1:300)){
+    for (trial in c(1:100)) {
       
       cchoice <-   data[data[ ,1] == id & data[ ,2] == block & data[ ,3] == trial, 4]
       

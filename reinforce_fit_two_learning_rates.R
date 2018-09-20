@@ -77,5 +77,5 @@ ggplot(aes(x = alpha_in_sim, y = alpha_in_fit), data = df_in) +
   geom_smooth(method = "glm")
 
 
-write.table(FIT2, file = "modelfit_alpha_ex_0.5.txt", row.names = FALSE, col.names = FALSE)
+#write.table(FIT2, file = "modelfit_alpha_ex_0.5.txt", row.names = FALSE, col.names = FALSE)
 

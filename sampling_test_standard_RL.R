@@ -1,44 +1,71 @@
 rm(list = ls()) # delete workspace
-setwd("~/Dropbox/___MA/social_RL_git")
+setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL")
 getwd()
+
+library(tidyverse)
+library(truncnorm)
+
+#sampling 30 alpha values
+vec1 <- seq(from = 0, by = .01, length.out = 80)
+
+test <- dtruncnorm(vec1, a = 0, b = 1, mean = 0.4, sd = 0.1)
+plot(test)
+
+alpha <- sample(vec1, 50)
+
+alpha_df <- as.data.frame(alpha)
+
+
+#sampling 30 beta values  
+vec2 <- seq(from = 0, by = .01, length.out = 80)
+
+test <- dtruncnorm(vec2, a = 0, b = 1, mean = 0.4, sd = 0.1)
+plot(test)
+
+beta <- sample(vec2, 50)
+
+beta_df <- as.data.frame(beta)
+
+
+sampling_df <- cbind(alpha_df, beta_df)
+
+
 
 library(reshape)
 
-num = 10
-subj = c(1:10)
+num = 50
+subj = c(1:50)
 
 #determine prediction of the model with best parameter estimates
-cchoice <-  array(0, c(10, 4, 100))
+cchoice <-  array(0, c(50, 4, 30))
 
 #Q <- matrix(0,1,2) 
-R <- array(0, c(10, 4, 100))
+R <- array(0, c(50, 4, 30))
 
-Prob         <- array(0, c(10, 4, 100))
-Feed         <- array(0, c(10, 4, 100))
-Feed_c       <- array(0, c(10, 4, 100))
-Feed_i       <- array(0, c(10, 4, 100))
-Prob_correct <- array(0, c(10, 4, 100))
-PE <- Q_all  <- array(0, c(10, 4, 100))
+Prob         <- array(0, c(50, 4, 30))
+Feed         <- array(0, c(50, 4, 30))
+Feed_c       <- array(0, c(50, 4, 30))
+Feed_i       <- array(0, c(50, 4, 30))
+Prob_correct <- array(0, c(50, 4, 30))
+PE <- Q_all  <- array(0, c(50, 4, 30))
 
-id    <- rep(1:10)
-temp  <- rep(1:10)/10
-lrate <- rep(1:10)/10
-rew_weight <- rep(1:10)/10
 
-FIT <- cbind(id, lrate , temp, rew_weight)
+id    <- rep(1:50)
+
+
+FIT <- cbind(id, sampling_df)
 
 for (id in subj) {
   
-  alpha  <- FIT[id, 2]; 
-  beta   <- FIT[id, 3];
-  weight <- FIT[id, 4];
-    
+  alpha <- FIT[id, 2]; 
+  beta  <- FIT[id, 3];
+  
   for (block in c(1:4)) {
     
     Q    <- matrix(0, 1, 2) # 1 row, 4 col 
     PROB <- matrix(0, 1, 2) 
     
-    for (trial in c(1:100)){
+    for (trial in c(1:30)){
       
       #c <- c(1,2)
       #p <- c(.5,.5)
@@ -54,7 +81,7 @@ for (id in subj) {
       
       feedback <- c(-10, 10)
       
-      if (cchoice [id, block, trial] == 2) {
+      if (cchoice [id, block, trial] == 2){
         rew_prob <- c(.25, .75)
         R [id, block, trial] <- sample(feedback, 1, replace = FALSE, prob = rew_prob)
       }
@@ -64,7 +91,7 @@ for (id in subj) {
         R[id, block, trial] <- sample(feedback, 1, replace = FALSE, prob = rew_prob)
       }
       
-      Q[1,cchoice[id,block,trial]] <- Q[1,cchoice[id,block,trial]] + alpha * ((weight * R[id,block,trial]) - Q[1,cchoice[id,block,trial] ]);
+      Q[1,cchoice[id,block,trial] ] <- Q[1,cchoice[id,block,trial] ] + alpha * (R[id,block,trial] - Q[1,cchoice[id,block,trial] ]);
       
       #if (cchoice[id,block,trial]  == 2) { 
       #  Q[1,1] <- -Q[1,2];
@@ -93,17 +120,8 @@ plot(acc)
 
 sim_data <- merged_dat
 
-sim_data <- write.table(merged_dat, file = "simulation_test_weight.txt", row.names = FALSE, col.names = FALSE)
+sim_data <- write.table(merged_dat, file = "simulation_standard_RL.txt", 
+                        row.names = FALSE, col.names = FALSE)
 
-
-#check rewards / reward probabilities from simulation function
-
-sim_data$chosen_option <- sim_data$chosen_option + 1
-
-sum(sim_data$chosen_option == 2) # good option
-sum(sim_data$chosen_option == 2 & sim_data$feedback == 10) # good option with positive feedback
-sum(sim_data$chosen_option == 2 & sim_data$feedback == -10) # good option with negative feedback
-
-sum(sim_data$chosen_option == 1) # bad option
-sum(sim_data$chosen_option == 1 & sim_data$feedback == 10) # bad option with positive feedback
-sum(sim_data$chosen_option == 1 & sim_data$feedback == -10) # bad option with negative feedback
+sampled_values <- write.table(FIT, file = "parameter_values_simulation_standard_RL.txt",
+                              row.names = FALSE, col.names = FALSE)

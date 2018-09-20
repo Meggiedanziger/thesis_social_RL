@@ -1,5 +1,5 @@
 rm(list = ls()) # delete workspace
-setwd("~/Dropbox/___MA/social_RL_git")
+setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL")
 getwd()
 
 library(tidyverse)
@@ -14,10 +14,10 @@ dis <- rtruncnorm(100, a = -5, b = 5, mean = 0, sd = 1)
 plot(dis)
 
 
-vec=seq(from = 1, by = 1, length.out = 100)
+vec = seq(from = 0, by = .001, length.out = 1000)
 
 
-test = dtruncnorm(vec, a = 10, b = 50, mean = 15, sd = 5)
+test = dtruncnorm(vec, a = 0, b = 1, mean = 0.5, sd = 0.2)
 plot(test)
 
 

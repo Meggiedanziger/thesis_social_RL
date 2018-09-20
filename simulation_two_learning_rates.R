@@ -70,10 +70,6 @@ for (id in subj) {
         R[id, block, trial] <- sample(feedback, 1, replace = FALSE, prob = rew_prob)
         Q[1,cchoice[id,block,trial] ] <- Q[1,cchoice[id,block,trial] ] + alpha_ex * (R[id,block,trial] - Q[1,cchoice[id,block,trial] ]);
       }
-      
-     
-    
-      
       #if (cchoice[id,block,trial]  == 2) { 
       #  Q[1,1] <- -Q[1,2];
       #}
