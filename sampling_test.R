@@ -43,7 +43,7 @@ ggplot(aes(x = index, y = beta), data = beta_df) +
 #sampling 30 weight values  
 vec3 <- seq(from = -1, by = .01, length.out = 200)
 
-test <- dtruncnorm(vec3, a = -1, b = 1, mean = 0, sd = .1)
+test <- dtruncnorm(vec3, a = -1, b = 1, mean = 0, sd = .3)
 plot(test)
 
 weight <- sample(vec3, 50)
@@ -59,6 +59,10 @@ ggplot(aes(x = index, y = weight), data = weight_df) +
 
 sampling_df <- cbind(alpha_df, beta_df, weight_df)
 
+sampling_df[2] <- NULL
+sampling_df[3] <- NULL
+sampling_df[4] <- NULL
+
 #simulate data for social condition with weight parameter
 library(reshape)
 
@@ -66,17 +70,16 @@ num = 50
 subj = c(1:50)
 
 #determine prediction of the model with best parameter estimates
-cchoice <-  array(0, c(50, 8, 30))
+cchoice <-  array(0, c(50, 8, 100))
 
 #Q <- matrix(0,1,2) 
-R <- array(0, c(50, 8, 30))
-
-Prob         <- array(0, c(50, 8, 30))
-Feed         <- array(0, c(50, 8, 30))
-Feed_c       <- array(0, c(50, 8, 30))
-Feed_i       <- array(0, c(50, 8, 30))
-Prob_correct <- array(0, c(50, 8, 30))
-PE <- Q_all  <- array(0, c(50, 8, 30))
+R            <- array(0, c(50, 8, 100))
+Prob         <- array(0, c(50, 8, 100))
+Feed         <- array(0, c(50, 8, 100))
+Feed_c       <- array(0, c(50, 8, 100))
+Feed_i       <- array(0, c(50, 8, 100))
+Prob_correct <- array(0, c(50, 8, 100))
+PE <- Q_all  <- array(0, c(50, 8, 100))
 
 id    <- rep(1:50) 
 # temp  <- rep(5)/10
@@ -96,7 +99,7 @@ for (id in subj) {
     Q    <- matrix(0, 1, 2) # 1 row, 4 col 
     PROB <- matrix(0, 1, 2) 
     
-    for (trial in c(1:30)){
+    for (trial in c(1:100)) {
       
       #c <- c(1,2)
       #p <- c(.5,.5)
@@ -155,3 +158,4 @@ sim_data <- write.table(merged_dat, file = "simulation_50_agents_weight_model.tx
 
 sampled_values <- write.table(FIT, file = "parameter_values_simulation_weight_model.txt",
                               row.names = FALSE, col.names = FALSE)
+s
