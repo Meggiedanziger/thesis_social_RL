@@ -43,15 +43,15 @@ for (id in subj) {  #cycle through ids 1 to n
 }
 
 
-# determine model comparison criterion
-# BIC deviance + #parameters*log(N) #N = number of trials from all blocks
+#determine model comparison criterion
+#BIC deviance + #parameters*log(N) #N = number of trials from all blocks
 FIT2[, 4] <- FIT2[, 1] + 2*log(360);
 
-# AIC: deviance + 2 * #parameters
+#AIC: deviance + 2 * #parameters
 FIT2[, 5] <- FIT2[, 1] + 2 * 2;
 
 
-# sum of BIC values
+#sum of BIC values
 sum(FIT2[, 4])
 
 
@@ -84,9 +84,34 @@ ggplot(aes(x = alpha_fit, y = alpha_sim), data = recovery_df) +
   geom_smooth(method = "glm")
 
 
-cor.test(recovery_df$beta_sim, recovery_df$beta_fit)
+ggplot(aes(x = id, y = alpha_fit), data = recovery_df) +
+  geom_point()
 
+ggplot(aes(x = id, y = alpha_sim), data = recovery_df) +
+  geom_point()
+
+ggplot(aes(y = alpha_fit), data = recovery_df) +
+  geom_boxplot()
+
+ggplot(aes(y = alpha_sim), data = recovery_df) +
+  geom_boxplot()
+
+
+cor.test(recovery_df$beta_sim, recovery_df$beta_fit)
 
 ggplot(aes(x = beta_sim, y = beta_fit), data = recovery_df) +
   geom_point() +
   geom_smooth(method = "glm")
+
+
+ggplot(aes(x = id, y = beta_fit), data = recovery_df) +
+  geom_point()
+
+ggplot(aes(x = id, y = beta_sim), data = recovery_df) +
+  geom_point()
+
+ggplot(aes(y = beta_fit), data = recovery_df) +
+  geom_boxplot()
+
+ggplot(aes(y = beta_sim), data = recovery_df) +
+  geom_boxplot()

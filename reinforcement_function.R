@@ -20,7 +20,7 @@ reinforce <- function(param, subj, data) {
        
       cchoice <-   data[data[ ,1] == id & data[ ,2] == block & data[ ,3] == trial, 4]
       
-      if (cchoice != 0){
+      if (cchoice != 0) {
         
         cchoice <-   data[data[ ,1] == id & data[ ,2] == block & data[ ,3] == trial, 4]
         
