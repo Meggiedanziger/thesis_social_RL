@@ -1,4 +1,6 @@
-# reinforcement model
+####### REINFORCEMENT FUNCTION #########
+
+#is intergrated into optim function of the main loop for parameter estimation
 
 reinforce <- function(param, subj, data) {
   
@@ -7,9 +9,13 @@ reinforce <- function(param, subj, data) {
   
   LL <- 0 #log likelihood goodness-of-fit measure  
   
-  # main loop
+  #main loop
   
+<<<<<<< HEAD
   for (block in c(1:8)) {
+=======
+  for (block in c(1:12)) {
+>>>>>>> 1e94b1f7fc8212302ea79313e08c9b75b14227be
     
     Q <- matrix(0, 1, 2) # 1 row, 2 col
     Prob <- matrix(0, 1, 2)
@@ -18,7 +24,7 @@ reinforce <- function(param, subj, data) {
        
       cchoice <-   data[data[ ,1] == id & data[ ,2] == block & data[ ,3] == trial, 4]
       
-      if (cchoice != 0){
+      if (cchoice != 0) {
         
         cchoice <-   data[data[ ,1] == id & data[ ,2] == block & data[ ,3] == trial, 4]
         

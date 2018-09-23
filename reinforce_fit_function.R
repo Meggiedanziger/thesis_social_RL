@@ -2,11 +2,13 @@ rm(list=ls()) # delete workspace
 setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL")
 source("reinforcement_function.R")
 
+library("colorspace") 
+
 #read in data
 library(readr)
 
 
-sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/simulation_beta_0.5.txt", 
+sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulation_standard_RL.txt", 
                        " ", col_names = F, 
                        trim_ws = TRUE)
 
@@ -28,14 +30,14 @@ sim_data$chosen_option <- sim_data$chosen_option + 1
 data <- sim_data
 data <- as.data.frame(data)
 
-subj = c(1:10)
-FIT2 <- matrix(0, 10, 5)
+subj = c(1:100)
+FIT2 <- matrix(0, 100, 5)
 #start a simplex search for finding the best parameter values
 for (id in subj) {  # cycle through ids 1 to n
   startParm <- c(0.1, 0.1)
   names(startParm) <- c("alpha", "theta")
   out <- optim(startParm, reinforce, subj = id, method = "L-BFGS-B", 
-               lower = c(.001, .001), upper = c(1, .5), data = data)
+               lower = c(.001, .001), upper = c(1, 1), data = data)
   FIT2[id, 1] <- out$value
   FIT2[id, 2:3] <- out$par
   print(id)
@@ -44,7 +46,7 @@ for (id in subj) {  # cycle through ids 1 to n
 
 # determine Model comparison criterion
 # BIC deviance + parameters*log(N) #N = number of trials
-FIT2[, 4] <- FIT2[, 1] + 2*log(48);
+FIT2[, 4] <- FIT2[, 1] + 2*log(120);
 
 # AIC: deviance + 2 * #parameters
 FIT2[, 5] <- FIT2[, 1] + 2 * 2;
@@ -53,20 +55,51 @@ FIT2[, 5] <- FIT2[, 1] + 2 * 2;
 # sum of BIC values
 sum(FIT2[, 4])
 
-#recovery alpha
-alpha_sim <- c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0)
-alpha_fit <- FIT2[, 2]
+#create data frame for parameter recovery
+modelfit_standard <- as.data.frame(FIT2)
+names(modelfit_standard)[1] <- "LL"
+names(modelfit_standard)[2] <- "alpha_fit"
+names(modelfit_standard)[3] <- "beta_fit"  
+names(modelfit_standard)[4] <- "BIC"
+names(modelfit_standard)[5] <- "AIC"
 
-df <- as.data.frame(cbind(alpha_fit, alpha_sim))
-cor.test(alpha_sim, alpha_fit)
+#read in parameter data from  ex ante simulation
+parameter_sim <- 
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulation_parameters_standard_RL.txt", 
+             " ", col_names = F, 
+             trim_ws = TRUE)
 
-ggplot(aes(x = alpha_sim, y = alpha_fit), data = df) +
-  geom_point() +
-  geom_smooth(method = "glm")
+names(parameter_sim)[1] <- "id"
+names(parameter_sim)[2] <- "alpha_sim"
+names(parameter_sim)[3] <- "beta_sim"
 
-write.table(FIT2, file = "modelfit_beta_0.5.txt", row.names = FALSE, col.names = FALSE)
 
-modelfit <- as.data.frame(FIT2)
+recovery_df <- cbind(modelfit_standard, parameter_sim)
 
-fit <- write.table(modelfit, file = "fit_beta_0.5.txt", 
-                        row.names = FALSE, col.names = FALSE)
+corr_alpha <- cor.test(recovery_df$alpha_sim, recovery_df$alpha_fit)
+
+recovery_alpha <-
+  ggplot(aes(x = alpha_sim, y = alpha_fit, color = alpha_sim), data = recovery_df) +
+  geom_point(size = 2, alpha = 0.6) +
+  geom_smooth(method = "glm", color = "darkgrey", se = F, fill = "red", alpha = 0.2) +
+  scale_color_gradient(low = "blue", high = "red") +
+  scale_y_continuous(breaks = seq(0, 1.0, 0.2)) +
+  scale_x_continuous(breaks = seq(0, 1.0, 0.2)) +
+  xlab("Simulated alpha values") +
+  ylab("Estimated alpha values") +
+  theme_classic()
+
+
+corr_beta <- cor.test(recovery_df$beta_sim, recovery_df$beta_fit)
+
+recovery_beta <-
+  ggplot(aes(x = beta_sim, y = beta_fit, color = beta_sim), data = recovery_df) +
+  geom_point(size = 2, alpha = 0.6) +
+  geom_smooth(method = "glm", color = "darkgrey", se = F, fill = "red", alpha = 0.2) +
+  scale_color_gradient(low = "blue", high = "red") +
+  scale_y_continuous(breaks = seq(0, 1.0, 0.2)) +
+  scale_x_continuous(breaks = seq(0, 1.0, 0.2)) +
+  xlab("Simulated beta values") +
+  ylab("Estimated beta values") +
+  theme_classic()
+
