@@ -45,7 +45,7 @@ for (id in subj) {  # cycle through ids 1 to n
 
 # determine Model comparison criterion
 # BIC deviance + parameters*log(N) #N = number of trials from all blocks
-FIT2[, 4] <- FIT2[, 1] + 3*log(400);
+FIT2[, 4] <- FIT2[, 1] + 3*log(120);
 
 # AIC: deviance + 2 * #parameters
 FIT2[, 5] <- FIT2[, 1] + 2 * 3;
@@ -56,12 +56,12 @@ sum(FIT2[, 4])
 
 
 #create data frame for parameter recovery
-modelfit_weight <- as.data.frame(FIT2)
-names(modelfit_weight)[1] <- "LL"
-names(modelfit_weight)[2] <- "alpha_fit"
-names(modelfit_weight)[3] <- "beta_fit"  
-names(modelfit_weight)[4] <- "BIC"
-names(modelfit_weight)[5] <- "AIC"
+modelfit_standard <- as.data.frame(FIT2)
+names(modelfit_standard)[1] <- "LL"
+names(modelfit_standard)[2] <- "alpha_fit"
+names(modelfit_standard)[3] <- "beta_fit"  
+names(modelfit_standard)[4] <- "BIC"
+names(modelfit_standard)[5] <- "AIC"
 
 #read in parameter data from simulation
 parameter_sim <- 
@@ -72,9 +72,8 @@ parameter_sim <-
 names(parameter_sim)[1] <- "id"
 names(parameter_sim)[2] <- "alpha_sim"
 names(parameter_sim)[3] <- "beta_sim"
-names(parameter_sim)[4] <- "weight_sim"
 
-recovery_df <- cbind(modelfit_weight, parameter_sim)
+recovery_df <- cbind(modelfit_standard, parameter_sim)
 
 
 cor.test(recovery_df$alpha_sim, recovery_df$alpha_fit)
