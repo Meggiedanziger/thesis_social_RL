@@ -28,15 +28,15 @@ sim_data$chosen_option <- sim_data$chosen_option + 1
 data <- sim_data
 data <- as.data.frame(data)
 
-subj = c(1:2000)
-FIT2 <- matrix(0, 2000, 6)
+subj = c(1:250)
+FIT2 <- matrix(0, 250, 6)
 
 #start a simplex search for finding the best parameter values
 for (id in subj) {  # cycle through ids 1 to n
-  startParm <- c(0.1, 0.1, -1)
+  startParm <- c(0.1, 0.1, -0.9)
   names(startParm) <- c("alpha", "theta", "weight")
   out <- optim(startParm, reinforce_weight, subj = id, method = "L-BFGS-B", 
-               lower = c(.001, .001, -1), upper = c(1, 1, 1), data = data)
+               lower = c(.001, .001, -0.9), upper = c(.9, .9, .9), data = data)
   FIT2[id, 1] <- out$value
   FIT2[id, 2:4] <- out$par
   print(id)
@@ -73,7 +73,7 @@ parameter_sim <-
 names(parameter_sim)[1] <- "id"
 names(parameter_sim)[2] <- "alpha_sim"
 names(parameter_sim)[3] <- "beta_sim"
-names(parameter_sim)[3] <- "weight_sim"
+names(parameter_sim)[4] <- "weight_sim"
 
 
 recovery_df <- cbind(modelfit_standard, parameter_sim)
@@ -85,8 +85,8 @@ recovery_alpha <-
   geom_point(size = 2, alpha = 0.6) +
   geom_smooth(method = "glm", color = "darkgrey", se = F, fill = "red", alpha = 0.2) +
   scale_color_gradient(low = "blue", high = "red") +
-  scale_y_continuous(breaks = seq(0, 1.0, 0.2)) +
-  scale_x_continuous(breaks = seq(0, 1.0, 0.2)) +
+  scale_y_continuous(breaks = seq(0.1, 0.9, 0.2)) +
+  scale_x_continuous(breaks = seq(0.1, 0.9, 0.2)) +
   xlab("Simulated alpha values") +
   ylab("Estimated alpha values") +
   theme_classic()
@@ -99,8 +99,8 @@ recovery_beta <-
   geom_point(size = 2, alpha = 0.6) +
   geom_smooth(method = "glm", color = "darkgrey", se = F, fill = "red", alpha = 0.2) +
   scale_color_gradient(low = "blue", high = "red") +
-  scale_y_continuous(breaks = seq(0, 1.0, 0.2)) +
-  scale_x_continuous(breaks = seq(0, 1.0, 0.2)) +
+  scale_y_continuous(breaks = seq(0.1, 0.9, 0.2)) +
+  scale_x_continuous(breaks = seq(0.1, 0.9, 0.2)) +
   xlab("Simulated beta values") +
   ylab("Estimated beta values") +
   theme_classic()
@@ -113,8 +113,8 @@ recovery_weight <-
   geom_point(size = 2, alpha = 0.6) +
   geom_smooth(method = "glm", color = "darkgrey", se = F, fill = "red", alpha = 0.2) +
   scale_color_gradient(low = "blue", high = "red") +
-  scale_y_continuous(breaks = seq(-1.0, 1.0, 0.2)) +
-  scale_x_continuous(breaks = seq(-1.0, 1.0, 0.2)) +
+  scale_y_continuous(breaks = seq(-0.9, 0.9, 0.2)) +
+  scale_x_continuous(breaks = seq(-0.9, 0.9, 0.2)) +
   xlab("Simulated weight values") +
   ylab("Estimated weight values") +
   theme_classic()

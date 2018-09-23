@@ -5,34 +5,27 @@ getwd()
 library(tidyverse)
 library(reshape)
 
-num = 2000
-subj = c(1:2000)
+num = 250
+subj = c(1:250)
 
 #determine prediction of the model with best parameter estimates
-cchoice      <- array(0, c(2000, 4, 30))
-R            <- array(0, c(2000, 4, 30))
-Prob         <- array(0, c(2000, 4, 30))
-Feed         <- array(0, c(2000, 4, 30))
-Feed_c       <- array(0, c(2000, 4, 30))
-Feed_i       <- array(0, c(2000, 4, 30))
-Prob_correct <- array(0, c(2000, 4, 30))
-PE <- Q_all  <- array(0, c(2000, 4, 30))
-
-# id    <- c(1:2000)
-# temp  <- rep(1:10, each = 10)/10
-# lrate <- rep(1:10, each = 1)/10
-# rew <- as.data.frame(rew_weight <- rep(-10:10, each = 100)/10)
+cchoice      <- array(0, c(250, 4, 30))
+R            <- array(0, c(250, 4, 30))
+Prob         <- array(0, c(250, 4, 30))
+Feed         <- array(0, c(250, 4, 30))
+Feed_c       <- array(0, c(250, 4, 30))
+Feed_i       <- array(0, c(250, 4, 30))
+Prob_correct <- array(0, c(250, 4, 30))
+PE <- Q_all  <- array(0, c(250, 4, 30))
 
 
-w <- rep(seq(from = -9, to = 9, 2), each = 100)/10
-df <- as.data.frame(w)
+id     <- c(1:250)
+temp   <- rep(seq(1, 9, 2), each = 5)/10
+lrate  <- rep(seq(1, 9, 2), each = 1)/10
+weight <- rep(seq(from = -9, to = 9, 2), each = 25)/10
 
 
-rew_weight <-
-  rew %>% 
-  filter(rew != 0)
-
-FIT <- cbind(id, lrate , temp, rew_weight)
+FIT <- cbind(id, lrate , temp, weight)
 
 for (id in subj) {
   
