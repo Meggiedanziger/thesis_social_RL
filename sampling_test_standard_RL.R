@@ -5,31 +5,45 @@ getwd()
 library(tidyverse)
 library(truncnorm)
 
-#sampling 30 alpha values
-vec1 <- seq(from = 0, by = .01, length.out = 80)
+#sampling 30 alpha values  
+vec1 <- seq(from = 0, by = .01, length.out = 100)
 
-test <- dtruncnorm(vec1, a = 0, b = 1, mean = 0.4, sd = 0.1)
+test <- dtruncnorm(vec1, a = 0, b = 1, mean = 0.5, sd = 0.1)
 plot(test)
 
 alpha <- sample(vec1, 50)
+plot(alpha)
 
 alpha_df <- as.data.frame(alpha)
+alpha_df$index <- c(1:50)
+
+ggplot(aes(x = index, y = alpha), data = alpha_df) +
+  geom_point() + 
+  geom_smooth(method = "glm")
+
 
 
 #sampling 30 beta values  
-vec2 <- seq(from = 0, by = .01, length.out = 80)
+vec2 <- seq(from = 0, by = .01, length.out = 100)
 
-test <- dtruncnorm(vec2, a = 0, b = 1, mean = 0.4, sd = 0.1)
+test <- dtruncnorm(vec2, a = 0, b = 1, mean = 0.5, sd = 0.1)
 plot(test)
 
 beta <- sample(vec2, 50)
+plot(beta)
 
 beta_df <- as.data.frame(beta)
+beta_df$index <- c(1:50)
+
+ggplot(aes(x = index, y = beta), data = beta_df) +
+  geom_point() + 
+  geom_smooth(method = "glm")
 
 
 sampling_df <- cbind(alpha_df, beta_df)
 
-
+sampling_df[2] <- NULL
+sampling_df[3] <- NULL
 
 library(reshape)
 
@@ -37,17 +51,17 @@ num = 50
 subj = c(1:50)
 
 #determine prediction of the model with best parameter estimates
-cchoice <-  array(0, c(50, 4, 30))
+cchoice <-  array(0, c(50, 8, 30))
 
 #Q <- matrix(0,1,2) 
-R <- array(0, c(50, 4, 30))
+R <- array(0, c(50, 8, 30))
 
-Prob         <- array(0, c(50, 4, 30))
-Feed         <- array(0, c(50, 4, 30))
-Feed_c       <- array(0, c(50, 4, 30))
-Feed_i       <- array(0, c(50, 4, 30))
-Prob_correct <- array(0, c(50, 4, 30))
-PE <- Q_all  <- array(0, c(50, 4, 30))
+Prob         <- array(0, c(50, 8, 30))
+Feed         <- array(0, c(50, 8, 30))
+Feed_c       <- array(0, c(50, 8, 30))
+Feed_i       <- array(0, c(50, 8, 30))
+Prob_correct <- array(0, c(50, 8, 30))
+PE <- Q_all  <- array(0, c(50, 8, 30))
 
 
 id    <- rep(1:50)
@@ -60,7 +74,7 @@ for (id in subj) {
   alpha <- FIT[id, 2]; 
   beta  <- FIT[id, 3];
   
-  for (block in c(1:4)) {
+  for (block in c(1:8)) {
     
     Q    <- matrix(0, 1, 2) # 1 row, 4 col 
     PROB <- matrix(0, 1, 2) 

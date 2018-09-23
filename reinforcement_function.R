@@ -11,7 +11,11 @@ reinforce <- function(param, subj, data) {
   
   #main loop
   
+<<<<<<< HEAD
+  for (block in c(1:8)) {
+=======
   for (block in c(1:12)) {
+>>>>>>> 1e94b1f7fc8212302ea79313e08c9b75b14227be
     
     Q <- matrix(0, 1, 2) # 1 row, 2 col
     Prob <- matrix(0, 1, 2)

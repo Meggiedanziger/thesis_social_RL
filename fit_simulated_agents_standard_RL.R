@@ -43,9 +43,15 @@ for (id in subj) {  #cycle through ids 1 to n
 }
 
 
+<<<<<<< HEAD
+# determine Model comparison criterion
+# BIC deviance + parameters*log(N) #N = number of trials from all blocks
+FIT2[, 4] <- FIT2[, 1] + 3*log(120);
+=======
 #determine model comparison criterion
 #BIC deviance + #parameters*log(N) #N = number of trials from all blocks
 FIT2[, 4] <- FIT2[, 1] + 2*log(360);
+>>>>>>> 1e94b1f7fc8212302ea79313e08c9b75b14227be
 
 #AIC: deviance + 2 * #parameters
 FIT2[, 5] <- FIT2[, 1] + 2 * 2;
@@ -73,7 +79,10 @@ names(parameter_sim)[1] <- "id"
 names(parameter_sim)[2] <- "alpha_sim"
 names(parameter_sim)[3] <- "beta_sim"
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> 1e94b1f7fc8212302ea79313e08c9b75b14227be
 recovery_df <- cbind(modelfit_standard, parameter_sim)
 
 
