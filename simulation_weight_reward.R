@@ -18,10 +18,15 @@ Feed_i       <- array(0, c(2000, 4, 30))
 Prob_correct <- array(0, c(2000, 4, 30))
 PE <- Q_all  <- array(0, c(2000, 4, 30))
 
-id    <- c(1:2000)
-temp  <- rep(1:10, each = 10)/10
-lrate <- rep(1:10, each = 1)/10
-rew <- as.data.frame(rew_weight <- rep(-10:10, each = 100)/10)
+# id    <- c(1:2000)
+# temp  <- rep(1:10, each = 10)/10
+# lrate <- rep(1:10, each = 1)/10
+# rew <- as.data.frame(rew_weight <- rep(-10:10, each = 100)/10)
+
+
+w <- rep(seq(from = -9, to = 9, 2), each = 100)/10
+df <- as.data.frame(w)
+
 
 rew_weight <-
   rew %>% 
