@@ -6,7 +6,7 @@ source("reinforce_weight_reward.R")
 library(readr)
 
 
-sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/simulation_test_weight.txt", 
+sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/ex_ante_simulation_weight_model.txt", 
                        " ", col_names = F, 
                        trim_ws = TRUE)
 
@@ -28,65 +28,96 @@ sim_data$chosen_option <- sim_data$chosen_option + 1
 data <- sim_data
 data <- as.data.frame(data)
 
-subj = c(1:10)
-FIT2 <- matrix(0, 10, 6)
+subj = c(1:250)
+FIT2 <- matrix(0, 250, 6)
+
 #start a simplex search for finding the best parameter values
 for (id in subj) {  # cycle through ids 1 to n
-  startParm <- c(0.1, 0.1, 0.1)
+  startParm <- c(0.1, 0.1, -0.9)
   names(startParm) <- c("alpha", "theta", "weight")
   out <- optim(startParm, reinforce_weight, subj = id, method = "L-BFGS-B", 
-               lower = c(.001, .001, .001), upper = c(1, 1, 1), data = data)
+               lower = c(.001, .001, -0.9), upper = c(.9, .9, .9), data = data)
   FIT2[id, 1] <- out$value
   FIT2[id, 2:4] <- out$par
   print(id)
 }
 
 
-# determine Model comparison criterion
-# BIC deviance + parameters*log(N) #N = number of trials from all blocks
-FIT2[, 5] <- FIT2[, 1] + 3*log(400);
+#determine model comparison criterion
+#BIC deviance + parameters*log(N) #N = number of trials from all blocks
+FIT2[, 5] <- FIT2[, 1] + 3*log(120);
 
-# AIC: deviance + 2 * #parameters
+#AIC: deviance + 2 * #parameters
 FIT2[, 6] <- FIT2[, 1] + 2 * 3;
 
 
-# sum of BIC values
+#sum of BIC values
 sum(FIT2[, 5])
 
 
-#recovery alpha
-alpha_sim <- c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0)
-alpha_fit <- FIT2[, 2]
+#create data frame for parameter recovery
+modelfit_standard <- as.data.frame(FIT2)
+names(modelfit_standard)[1] <- "LL"
+names(modelfit_standard)[2] <- "alpha_fit"
+names(modelfit_standard)[3] <- "beta_fit" 
+names(modelfit_standard)[4] <- "weight_fit" 
+names(modelfit_standard)[5] <- "BIC"
+names(modelfit_standard)[6] <- "AIC"
 
-df_alpha <- as.data.frame(cbind(alpha_fit, alpha_sim))
-cor.test(alpha_sim, alpha_fit)
+#read in parameter data from  ex ante simulation
+parameter_sim <- 
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulation_parameters_weight_model.txt", 
+             " ", col_names = F, 
+             trim_ws = TRUE)
 
-ggplot(aes(x = alpha_sim, y = alpha_fit), data = df_alpha) +
-  geom_point() +
-  geom_smooth(method = "glm")
-
-#recovery beta
-beta_sim <- c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0)
-beta_fit <- FIT2[, 3]
-
-df_beta <- as.data.frame(cbind(beta_fit, beta_sim))
-cor.test(beta_sim, beta_fit)
-
-ggplot(aes(x = beta_sim, y = beta_fit), data = df_beta) +
-  geom_point() +
-  geom_smooth(method = "glm")
-
-#recovery weight
-weight_sim <- c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0)
-weight_fit <- FIT2[, 4]
-
-df_weight <- as.data.frame(cbind(weight_fit, weight_sim))
-cor.test(weight_sim, weight_fit)
-
-ggplot(aes(x = weight_sim, y = weight_fit), data = df_weight) +
-  geom_point() +
-  geom_smooth(method = "glm")
+names(parameter_sim)[1] <- "id"
+names(parameter_sim)[2] <- "alpha_sim"
+names(parameter_sim)[3] <- "beta_sim"
+names(parameter_sim)[4] <- "weight_sim"
 
 
-#write.table(FIT2, file = "modelfit_alpha_ex_0.4.txt", row.names = FALSE, col.names = FALSE)
+recovery_df <- cbind(modelfit_standard, parameter_sim)
+
+corr_alpha <- cor.test(recovery_df$alpha_sim, recovery_df$alpha_fit)
+
+recovery_alpha <-
+  ggplot(aes(x = alpha_sim, y = alpha_fit, color = alpha_sim), data = recovery_df) +
+  geom_point(size = 2, alpha = 0.6) +
+  geom_smooth(method = "glm", color = "darkgrey", se = F, fill = "red", alpha = 0.2) +
+  scale_color_gradient(low = "blue", high = "red") +
+  scale_y_continuous(breaks = seq(0.1, 0.9, 0.2)) +
+  scale_x_continuous(breaks = seq(0.1, 0.9, 0.2)) +
+  xlab("Simulated alpha values") +
+  ylab("Estimated alpha values") +
+  theme_classic()
+
+
+corr_beta <- cor.test(recovery_df$beta_sim, recovery_df$beta_fit)
+
+recovery_beta <-
+  ggplot(aes(x = beta_sim, y = beta_fit, color = beta_sim), data = recovery_df) +
+  geom_point(size = 2, alpha = 0.6) +
+  geom_smooth(method = "glm", color = "darkgrey", se = F, fill = "red", alpha = 0.2) +
+  scale_color_gradient(low = "blue", high = "red") +
+  scale_y_continuous(breaks = seq(0.1, 0.9, 0.2)) +
+  scale_x_continuous(breaks = seq(0.1, 0.9, 0.2)) +
+  xlab("Simulated beta values") +
+  ylab("Estimated beta values") +
+  theme_classic()
+
+
+corr_weight <- cor.test(recovery_df$weight_sim, recovery_df$weight_fit)
+
+recovery_weight <-
+  ggplot(aes(x = weight_sim, y = weight_fit, color = weight_sim), data = recovery_df) +
+  geom_point(size = 2, alpha = 0.6) +
+  geom_smooth(method = "glm", color = "darkgrey", se = F, fill = "red", alpha = 0.2) +
+  scale_color_gradient(low = "blue", high = "red") +
+  scale_y_continuous(breaks = seq(-0.9, 0.9, 0.2)) +
+  scale_x_continuous(breaks = seq(-0.9, 0.9, 0.2)) +
+  xlab("Simulated weight values") +
+  ylab("Estimated weight values") +
+  theme_classic()
+
+
 

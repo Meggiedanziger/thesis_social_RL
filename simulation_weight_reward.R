@@ -2,30 +2,30 @@ rm(list = ls()) # delete workspace
 setwd("~/Dropbox/___MA/social_RL_git")
 getwd()
 
+library(tidyverse)
 library(reshape)
 
-num = 10
-subj = c(1:10)
+num = 250
+subj = c(1:250)
 
 #determine prediction of the model with best parameter estimates
-cchoice <-  array(0, c(10, 4, 100))
+cchoice      <- array(0, c(250, 4, 30))
+R            <- array(0, c(250, 4, 30))
+Prob         <- array(0, c(250, 4, 30))
+Feed         <- array(0, c(250, 4, 30))
+Feed_c       <- array(0, c(250, 4, 30))
+Feed_i       <- array(0, c(250, 4, 30))
+Prob_correct <- array(0, c(250, 4, 30))
+PE <- Q_all  <- array(0, c(250, 4, 30))
 
-#Q <- matrix(0,1,2) 
-R <- array(0, c(10, 4, 100))
 
-Prob         <- array(0, c(10, 4, 100))
-Feed         <- array(0, c(10, 4, 100))
-Feed_c       <- array(0, c(10, 4, 100))
-Feed_i       <- array(0, c(10, 4, 100))
-Prob_correct <- array(0, c(10, 4, 100))
-PE <- Q_all  <- array(0, c(10, 4, 100))
+id     <- c(1:250)
+temp   <- rep(seq(1, 9, 2), each = 5)/10
+lrate  <- rep(seq(1, 9, 2), each = 1)/10
+weight <- rep(seq(from = -9, to = 9, 2), each = 25)/10
 
-id    <- rep(1:10)
-temp  <- rep(1:10)/10
-lrate <- rep(1:10)/10
-rew_weight <- rep(1:10)/10
 
-FIT <- cbind(id, lrate , temp, rew_weight)
+FIT <- cbind(id, lrate , temp, weight)
 
 for (id in subj) {
   
@@ -35,18 +35,13 @@ for (id in subj) {
     
   for (block in c(1:4)) {
     
-    Q    <- matrix(0, 1, 2) # 1 row, 4 col 
+    Q    <- matrix(0, 1, 2) # 1 row, 2 columns
     PROB <- matrix(0, 1, 2) 
     
-    for (trial in c(1:100)){
-      
-      #c <- c(1,2)
-      #p <- c(.5,.5)
-      
-      #t <- sample(c, 1, replace = FALSE, prob = p)
+    for (trial in c(1:30)) {
       
       for (j in c(1:2)) { # options 
-        PROB[1, j] <- exp(beta*Q[1, j]) / (exp(beta*Q[1, 1]) + exp(beta*Q[1, 2]) )
+        PROB[1, j] <- exp(beta*Q[1, j]) / (exp(beta*Q[1, 1]) + exp(beta*Q[1, 2]))
         choice     <- c(j, 3-j)
         P          <-   c(PROB[1, j], 1-PROB[1, j])
         cchoice [id, block, trial] <- sample(choice, 1, replace = FALSE, prob = P)
@@ -64,7 +59,7 @@ for (id in subj) {
         R[id, block, trial] <- sample(feedback, 1, replace = FALSE, prob = rew_prob)
       }
       
-      Q[1,cchoice[id,block,trial]] <- Q[1,cchoice[id,block,trial]] + alpha * ((weight * R[id,block,trial]) - Q[1,cchoice[id,block,trial] ]);
+      Q[1,cchoice[id,block,trial]] <- Q[1,cchoice[id,block,trial]] + alpha * ((weight * R[id,block,trial]) - Q[1,cchoice[id,block,trial]]);
       
       #if (cchoice[id,block,trial]  == 2) { 
       #  Q[1,1] <- -Q[1,2];
@@ -93,8 +88,10 @@ plot(acc)
 
 sim_data <- merged_dat
 
-sim_data <- write.table(merged_dat, file = "simulation_test_weight.txt", row.names = FALSE, col.names = FALSE)
+sim_data <- write.table(merged_dat, file = "ex_ante_simulation_weight_model.txt", row.names = FALSE, col.names = FALSE)
 
+params_exante <- write.table(FIT, file = "ex_ante_simulation_parameters_weight_model.txt", 
+                             row.names = FALSE, col.names = FALSE)
 
 #check rewards / reward probabilities from simulation function
 
