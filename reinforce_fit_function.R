@@ -8,7 +8,7 @@ library("colorspace")
 library(readr)
 
 
-sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulation_standard_RL.txt", 
+sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulation_standard_RL_4blocks_30trials.txt", 
                        " ", col_names = F, 
                        trim_ws = TRUE)
 
@@ -65,9 +65,8 @@ names(modelfit_standard)[5] <- "AIC"
 
 #read in parameter data from  ex ante simulation
 parameter_sim <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulation_parameters_standard_RL.txt", 
-             " ", col_names = F, 
-             trim_ws = TRUE)
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulation_parameters_standard_RL_4blocks_30trials.txt", 
+             " ", col_names = F, trim_ws = TRUE)
 
 names(parameter_sim)[1] <- "id"
 names(parameter_sim)[2] <- "alpha_sim"
@@ -102,4 +101,12 @@ recovery_beta <-
   xlab("Simulated beta values") +
   ylab("Estimated beta values") +
   theme_classic()
+
+
+recovery_standard <- write.table(recovery_df, file = "ex_ante_recovery_standard_RL_4blocks_30trials.txt", 
+                                row.names = FALSE, col.names = FALSE)
+
+modelfit_standard <- write.table(recovery_df, file = "ex_ante_modelfit_standard_RL_4blocks_30trials.txt", 
+                                row.names = FALSE, col.names = FALSE)
+
 

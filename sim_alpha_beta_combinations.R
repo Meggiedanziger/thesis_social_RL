@@ -86,8 +86,8 @@ plot(acc)
 
 sim_data <- merged_dat
 
-sim_data <- write.table(merged_dat, file = "ex_ante_simulation_standard_RL.txt", 
+sim_data <- write.table(merged_dat, file = "ex_ante_simulation_standard_RL_4blocks_30trials.txt", 
                         row.names = FALSE, col.names = FALSE)
 
-params_exante <- write.table(FIT, file = "ex_ante_simulation_parameters_standard_RL.txt", 
+params_exante <- write.table(FIT, file = "ex_ante_simulation_parameters_standard_RL_4blocks_30trials.txt", 
                              row.names = FALSE, col.names = FALSE)
