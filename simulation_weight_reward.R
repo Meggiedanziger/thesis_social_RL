@@ -1,5 +1,5 @@
 rm(list = ls()) # delete workspace
-setwd("~/Dropbox/___MA/social_RL_git")
+setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL")
 getwd()
 
 library(tidyverse)
@@ -88,7 +88,8 @@ plot(acc)
 
 sim_data <- merged_dat
 
-sim_data <- write.table(merged_dat, file = "ex_ante_simulation_weight_model.txt", row.names = FALSE, col.names = FALSE)
+sim_data <- write.table(merged_dat, file = "ex_ante_simulation_weight_model.txt", 
+                        row.names = FALSE, col.names = FALSE)
 
 params_exante <- write.table(FIT, file = "ex_ante_simulation_parameters_weight_model.txt", 
                              row.names = FALSE, col.names = FALSE)

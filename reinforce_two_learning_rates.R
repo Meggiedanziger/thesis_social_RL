@@ -39,7 +39,7 @@ reinforce2lrates <- function(param, subj, data) {
         
         LL <- LL + log(Prob[1, cchoice]);
         
-        R  <-    data[data[ ,1] == id & data[ ,2] == block & data[ ,3] == trial, 5]
+        R  <-    data[data[ ,1] == id & data[ ,2] == block & data[ , 3] == trial, 5]
         
         Q[1,cchoice] <- Q[1,cchoice] + alpha_in * (R - Q[1, cchoice]);
         #includer alpha to modulate prediction error

@@ -56,13 +56,13 @@ sum(FIT2[, 5])
 
 
 #create data frame for parameter recovery
-modelfit_standard <- as.data.frame(FIT2)
-names(modelfit_standard)[1] <- "LL"
-names(modelfit_standard)[2] <- "alpha_fit"
-names(modelfit_standard)[3] <- "beta_fit" 
-names(modelfit_standard)[4] <- "weight_fit" 
-names(modelfit_standard)[5] <- "BIC"
-names(modelfit_standard)[6] <- "AIC"
+modelfit_weight <- as.data.frame(FIT2)
+names(modelfit_weight)[1] <- "LL"
+names(modelfit_weight)[2] <- "alpha_fit"
+names(modelfit_weight)[3] <- "beta_fit" 
+names(modelfit_weight)[4] <- "weight_fit" 
+names(modelfit_weight)[5] <- "BIC"
+names(modelfit_weight)[6] <- "AIC"
 
 #read in parameter data from  ex ante simulation
 parameter_sim <- 
@@ -76,7 +76,7 @@ names(parameter_sim)[3] <- "beta_sim"
 names(parameter_sim)[4] <- "weight_sim"
 
 
-recovery_df <- cbind(modelfit_standard, parameter_sim)
+recovery_df <- cbind(modelfit_weight, parameter_sim)
 
 corr_alpha <- cor.test(recovery_df$alpha_sim, recovery_df$alpha_fit)
 

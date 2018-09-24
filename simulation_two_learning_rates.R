@@ -1,37 +1,38 @@
 rm(list = ls()) # delete workspace
-setwd("~/Dropbox/___MA/social_RL_git")
+setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL")
 getwd()
 
+library(tidyverse)
 library(reshape)
 
-num = 10
-subj = c(1:10)
+num = 125
+subj = c(1:125)
 
 #determine prediction of the model with best parameter estimates
-cchoice <-  array(0, c(10, 4, 300))
-
-#Q <- matrix(0,1,2) 
-R            <- array(0, c(10, 4, 300))
-Prob         <- array(0, c(10, 4, 300))
-Feed         <- array(0, c(10, 4, 300))
-Feed_c       <- array(0, c(10, 4, 300))
-Feed_i       <- array(0, c(10, 4, 300))
-Prob_correct <- array(0, c(10, 4, 300))
-PE <- Q_all  <- array(0, c(10, 4, 300))
-
-id    <- rep(1:10)
-temp  <- rep(3, each = 10)/10
-lrate_ex <- rep(5)/10
-lrate_in <- rep(1:10)/10 
+cchoice      <- array(0, c(125, 4, 100))
+R            <- array(0, c(125, 4, 100))
+Prob         <- array(0, c(125, 4, 100))
+Feed         <- array(0, c(125, 4, 100))
+Feed_c       <- array(0, c(125, 4, 100))
+Feed_i       <- array(0, c(125, 4, 100))
+Prob_correct <- array(0, c(125, 4, 100))
+PE <- Q_all  <- array(0, c(125, 4, 100))
 
 
-FIT <- cbind(id, lrate_ex, lrate_in, temp)
+id       <- c(1:125)
+alpha_ex <- rep(seq(1, 9, 2), each = 1)/10
+alpha_in <- rep(seq(1, 9, 2), each = 5)/10
+beta     <- rep(seq(1, 9, 2), each = 25)/10
+
+
+FIT <- cbind(id, alpha_ex , alpha_in, beta)
 
 for (id in subj) {
   
   alpha_ex <- FIT[id, 2]; 
-  alpha_in <- FIT[id, 3]; 
+  alpha_in <- FIT[id, 3];
   beta     <- FIT[id, 4];
+  
   
   for (block in c(1:4)) {
     
@@ -39,12 +40,7 @@ for (id in subj) {
     PROB <- matrix(0, 1, 2) 
     
     
-    for (trial in c(1:300)) {
-      
-      #c <- c(1,2)
-      #p <- c(.5,.5)
-      
-      #t <- sample(c, 1, replace = FALSE, prob = p)
+    for (trial in c(1:100)) {
       
       for (j in c(1:2)) { # options 
         PROB[1, j] <- exp(beta*Q[1, j]) / (exp(beta*Q[1, 1]) + exp(beta*Q[1, 2]))
@@ -98,7 +94,11 @@ plot(acc)
 
 sim_data <- merged_dat
 
-sim_data <- write.table(merged_dat, file = "simulation_2lrates_alpha_ex_0.5.txt", row.names = FALSE, col.names = FALSE)
+sim_data <- write.table(merged_dat, file = "ex_ante_simulation_2lrates.txt", 
+                        row.names = FALSE, col.names = FALSE)
+
+params_exante <- write.table(FIT, file = "ex_ante_simulation_parameters_2lrates.txt", 
+                             row.names = FALSE, col.names = FALSE)
 
 
 #check rewards / reward probabilities from simulation function
