@@ -5,38 +5,40 @@ getwd()
 library(tidyverse)
 library(reshape)
 
-num = 250
-subj = c(1:250)
+num = 125
+subj = c(1:125)
 
 #determine prediction of the model with best parameter estimates
-cchoice      <- array(0, c(250, 4, 30))
-R            <- array(0, c(250, 4, 30))
-Prob         <- array(0, c(250, 4, 30))
-Feed         <- array(0, c(250, 4, 30))
-Feed_c       <- array(0, c(250, 4, 30))
-Feed_i       <- array(0, c(250, 4, 30))
-Prob_correct <- array(0, c(250, 4, 30))
-PE <- Q_all  <- array(0, c(250, 4, 30))
+cchoice      <- array(0, c(125, 4, 30))
+R            <- array(0, c(125, 4, 30))
+Prob         <- array(0, c(125, 4, 30))
+Feed         <- array(0, c(125, 4, 30))
+Feed_c       <- array(0, c(125, 4, 30))
+Feed_i       <- array(0, c(125, 4, 30))
+Prob_correct <- array(0, c(125, 4, 30))
+PE <- Q_all  <- array(0, c(125, 4, 30))
 
 
-id     <- c(1:250)
-temp   <- rep(seq(1, 9, 2), each = 5)/10
-lrate  <- rep(seq(1, 9, 2), each = 1)/10
-weight <- rep(seq(from = -9, to = 9, 2), each = 25)/10
+id       <- c(1:125)
+alpha_ex <- rep(seq(1, 9, 2), each = 1)/10
+alpha_in <- rep(seq(1, 9, 2), each = 5)/10
+beta     <- rep(seq(1, 9, 2), each = 25)/10
 
 
-FIT <- cbind(id, lrate , temp, weight)
+FIT <- cbind(id, alpha_ex , alpha_in, beta)
 
 for (id in subj) {
   
-  alpha  <- FIT[id, 2]; 
-  beta   <- FIT[id, 3];
-  weight <- FIT[id, 4];
-    
+  alpha_ex <- FIT[id, 2]; 
+  alpha_in <- FIT[id, 3];
+  beta     <- FIT[id, 4];
+  
+  
   for (block in c(1:4)) {
     
-    Q    <- matrix(0, 1, 2) # 1 row, 2 columns
+    Q    <- matrix(0, 1, 2) # 1 row, 4 col 
     PROB <- matrix(0, 1, 2) 
+    
     
     for (trial in c(1:30)) {
       
@@ -45,22 +47,25 @@ for (id in subj) {
         choice     <- c(j, 3-j)
         P          <-   c(PROB[1, j], 1-PROB[1, j])
         cchoice [id, block, trial] <- sample(choice, 1, replace = FALSE, prob = P)
-      }
+      
       
       feedback <- c(-10, 10)
       
-      if (cchoice [id, block, trial] == 2) {
+      if (cchoice [id, block, trial] == 2) {#good option --> includer
+        
         rew_prob <- c(.25, .75)
+        
         R [id, block, trial] <- sample(feedback, 1, replace = FALSE, prob = rew_prob)
+        Q[1,cchoice[id,block,trial] ] <- Q[1,cchoice[id,block,trial] ] + alpha_in * (R[id,block,trial] - Q[1,cchoice[id,block,trial] ]);
       }
       
-      else {
+      else {#bad option --> excluder
+        
         rew_prob <- c(.75, .25)
+        
         R[id, block, trial] <- sample(feedback, 1, replace = FALSE, prob = rew_prob)
+        Q[1,cchoice[id,block,trial] ] <- Q[1,cchoice[id,block,trial] ] + alpha_ex * (R[id,block,trial] - Q[1,cchoice[id,block,trial] ]);
       }
-      
-      Q[1,cchoice[id,block,trial]] <- Q[1,cchoice[id,block,trial]] + alpha * ((weight * R[id,block,trial]) - Q[1,cchoice[id,block,trial]]);
-      
       #if (cchoice[id,block,trial]  == 2) { 
       #  Q[1,1] <- -Q[1,2];
       #}
@@ -68,7 +73,8 @@ for (id in subj) {
       #  Q[1,2] <- -Q[1,1]; #symmetrisches Update der Q values
       #}
     }
-  }    
+  }
+}
 }
 
 
@@ -88,11 +94,12 @@ plot(acc)
 
 sim_data <- merged_dat
 
-sim_data <- write.table(merged_dat, file = "ex_ante_simulation_weight_model_4blocks_30trials.txt", 
+sim_data <- write.table(merged_dat, file = "ex_ante_simulation_2lrates_4blocks_30trials.txt", 
                         row.names = FALSE, col.names = FALSE)
 
-params_exante <- write.table(FIT, file = "ex_ante_simulation_parameters_weight_model_4blocks_30trials.txt", 
+params_exante <- write.table(FIT, file = "ex_ante_simulation_parameters_2lrates_4blocks_30trials.txt", 
                              row.names = FALSE, col.names = FALSE)
+
 
 #check rewards / reward probabilities from simulation function
 
@@ -105,3 +112,4 @@ sum(sim_data$chosen_option == 2 & sim_data$feedback == -10) # good option with n
 sum(sim_data$chosen_option == 1) # bad option
 sum(sim_data$chosen_option == 1 & sim_data$feedback == 10) # bad option with positive feedback
 sum(sim_data$chosen_option == 1 & sim_data$feedback == -10) # bad option with negative feedback
+

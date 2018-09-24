@@ -6,7 +6,7 @@ source("reinforce_weight_reward.R")
 library(readr)
 
 
-sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/ex_ante_simulation_weight_model.txt", 
+sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulation_weight_model_4blocks_30trials.txt", 
                        " ", col_names = F, 
                        trim_ws = TRUE)
 
@@ -66,7 +66,7 @@ names(modelfit_weight)[6] <- "AIC"
 
 #read in parameter data from  ex ante simulation
 parameter_sim <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulation_parameters_weight_model.txt", 
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulation_parameters_weight_model_4blocks_30trials.txt", 
              " ", col_names = F, 
              trim_ws = TRUE)
 
@@ -119,5 +119,7 @@ recovery_weight <-
   ylab("Estimated weight values") +
   theme_classic()
 
+modelfit_weight <- write.table(recovery_df, file = "ex_ante_modelfit_weight_model_4blocks_30trials.txt", 
+                                 row.names = FALSE, col.names = FALSE)
 
 
