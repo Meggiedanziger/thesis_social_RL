@@ -21,6 +21,46 @@ sim_data <-
   sim_data %>% 
   arrange(id)
 
+sim_data_sum <- 
+  sim_data %>% 
+  group_by(id) %>% 
+  summarize(accuracy = mean(chosen_option)) %>% 
+  mutate(weight = ifelse(id <= 125, -1, 1))
+
+sim_data_sum$weight <- as.factor(sim_data_sum$weight)
+
+colorweight <- (ifelse(sim_data_sum$weight == 1, "blue1", "purple"))
+
+colfunc <- colorRampPalette(c("red","magenta","purple","royalblue"))
+colfunc2 <-colorRampPalette(c("red","yellow","springgreen","royalblue"))
+colfunc3 <-colorRampPalette(c("blue", "royalblue", "cyan","turquoise", "seagreen"))
+
+plot(rep(1, 250), col = (colfunc(250)), pch = 19, cex = 3)
+
+ggplot(aes(x = id, y = accuracy, color = accuracy), data = sim_data_sum) +
+  geom_jitter(size = 1.5, width = 0.8, height = 0.11, alpha = 0.9, col = colfunc(250)) +
+  geom_smooth(color = "red", se = T, fill = "red", alpha = 0.4) +
+  ylab("Accuracy") + 
+  xlab("Virtual subject") +
+  scale_y_continuous(breaks = seq(0, 1.0, 0.2)) +
+  theme_classic() +
+  geom_vline(xintercept = 125, linetype = "dashed", size = .5)
+
+
+plot_data <-  
+  sim_data %>% 
+  group_by(id) %>% 
+  mutate(weight = ifelse(id <= 125, -1, 1))
+
+ggplot(aes(x = trial, y = chosen_option), data = plot_data) +
+  geom_jitter(size = 1, width = 0.8, height = 0.11, alpha = 0.2) +
+  geom_smooth(color = "red", se = T, fill = "red", alpha = 0.2) +
+  ylab("Selected option") + 
+  xlab("Trials") +
+  scale_y_continuous(breaks = seq(0, 1)) +
+  theme_classic() + 
+  facet_grid(block ~ weight)
+
 
 #read in ex ante fitted data
 modelfit <- 

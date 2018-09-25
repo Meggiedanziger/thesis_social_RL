@@ -6,7 +6,7 @@ getwd()
 library(tidyverse)
 library(reshape)
 
-#create beta distribution from which to smaple alpha values
+#create beta distribution from which to sample alpha values
 x <- seq(0, 1, length = 10000)
 x
 test <- rbeta(x, 2, 4)
@@ -18,7 +18,7 @@ plot(test)
 alpha <- sample(x, 50)
 alpha_df <- as.data.frame(alpha)
 
-#create beta distribution from which to smaple beta values
+#create beta distribution from which to sample beta values
 y <- seq(0, 1, length = 10000)
 y
 test2 <- rbeta(y, 3, 5)
@@ -35,7 +35,7 @@ sampling_df <- cbind(alpha_df, beta_df)
 
 
 
-#run simulation to create 50 data sets with 4 blocks and 20 trials
+#run simulation to create 50 data sets with 4 blocks and 12 trials
 num  = 50
 subj = c(1:50)
 

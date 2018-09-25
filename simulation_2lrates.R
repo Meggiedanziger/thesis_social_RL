@@ -9,14 +9,14 @@ num = 125
 subj = c(1:125)
 
 #determine prediction of the model with best parameter estimates
-cchoice      <- array(0, c(125, 4, 30))
-R            <- array(0, c(125, 4, 30))
-Prob         <- array(0, c(125, 4, 30))
-Feed         <- array(0, c(125, 4, 30))
-Feed_c       <- array(0, c(125, 4, 30))
-Feed_i       <- array(0, c(125, 4, 30))
-Prob_correct <- array(0, c(125, 4, 30))
-PE <- Q_all  <- array(0, c(125, 4, 30))
+cchoice      <- array(0, c(125, 8, 30))
+R            <- array(0, c(125, 8, 30))
+Prob         <- array(0, c(125, 8, 30))
+Feed         <- array(0, c(125, 8, 30))
+Feed_c       <- array(0, c(125, 8, 30))
+Feed_i       <- array(0, c(125, 8, 30))
+Prob_correct <- array(0, c(125, 8, 30))
+PE <- Q_all  <- array(0, c(125, 8, 30))
 
 
 id       <- c(1:125)
@@ -34,7 +34,7 @@ for (id in subj) {
   beta     <- FIT[id, 4];
   
   
-  for (block in c(1:4)) {
+  for (block in c(1:8)) {
     
     Q    <- matrix(0, 1, 2) # 1 row, 4 col 
     PROB <- matrix(0, 1, 2) 
@@ -94,10 +94,10 @@ plot(acc)
 
 sim_data <- merged_dat
 
-sim_data <- write.table(merged_dat, file = "ex_ante_simulation_2lrates_4blocks_30trials.txt", 
+sim_data <- write.table(merged_dat, file = "ex_ante_simulation_2lrates_8blocks_30trials.txt", 
                         row.names = FALSE, col.names = FALSE)
 
-params_exante <- write.table(FIT, file = "ex_ante_simulation_parameters_2lrates_4blocks_30trials.txt", 
+params_exante <- write.table(FIT, file = "ex_ante_simulation_parameters_2lrates_8blocks_30trials.txt", 
                              row.names = FALSE, col.names = FALSE)
 
 
