@@ -33,7 +33,8 @@ beta_df <- as.data.frame(beta)
 #create beta distribution from which to sample weight values
 z <- seq(0, 1, length = 10000)
 z
-test3 <- rbeta(z, 4, 4)
+test3 <- rbeta(z, 4, 4) ################## THINK THIS OVER!! 
+                        #### DISTRIBUTION SHOULB BE MORE SKEWED TO 1 AS THIS IS STANDARD RL
 test3
 hist(test3)
 plot(test3)
@@ -45,7 +46,7 @@ weight <- sample(z, 50)
 #determine whether weight is positive or negative
 d <- seq(0, 1, length = 10000)
 d
-test4 <- rbeta(d, 2, 2)
+test4 <- rbeta(d, 4, 2)
 test4
 hist(test4)
 plot(test4)
