@@ -7,28 +7,67 @@ library(tidyverse)
 library(reshape)
 
 #create beta distribution from which to sample alpha values
-x <- seq(0, 1, length = 10000)
-x
-test <- rbeta(x, 2, 4)
-test
-hist(test)
-plot(test)
+n = 1000000
+binwidth = 0.05
+x <- seq(0, 1, length = n)
+test <- rbeta(x, 2.5, 5)
+testdf <- as.data.frame(test)
+
+#plot distribution and density function
+ggplot(testdf, aes(x = test, binwidth = binwidth, n = n)) +
+  geom_histogram(binwidth = binwidth,
+                 colour = "white", fill = "lightblue", size = 0.1) +
+  stat_function(fun = function(x) dbeta(x, 2.5, 5) * n * binwidth,
+                color = "red", size = 1) +
+  theme_bw()
 
 #sample alpha values
-alpha <- sample(x, 50)
+n = 50
+binwidth = 0.04
+alpha <- sample(test, n)
 alpha_df <- as.data.frame(alpha)
+min(alpha)
+max(alpha)
+
+#plot histrogram of alpha values to inspect distribution of sampled avlues
+ggplot(alpha_df, aes(x = alpha, binwidth = binwidth, n = n)) +
+  theme_bw() +
+  geom_histogram(binwidth = binwidth,
+                 colour = "white", fill = "lightblue", size = 0.1) +
+  stat_function(fun = function(x) dbeta(x, 2.5, 5) * n * binwidth,
+                color = "red", size = 1)
+
 
 #create beta distribution from which to sample beta values
-y <- seq(0, 1, length = 10000)
-y
+n = 1000000
+binwidth = 0.05
+y <- seq(0, 1, length = n)
 test2 <- rbeta(y, 3, 5)
-test2
-hist(test2)
-plot(test2)
+test2df <- as.data.frame(test2)
+
+#plot distribution and density function
+ggplot(test2df, aes(x = test2, binwidth = binwidth, n = n)) +
+  geom_histogram(binwidth = binwidth,
+                 colour = "white", fill = "lightblue", size = 0.1) +
+  stat_function(fun = function(x) dbeta(x, 3, 5) * n * binwidth,
+                color = "red", size = 1) +
+  theme_bw()
 
 #sample beta values
-beta <- sample(y, 50)
+n = 50
+binwidth = 0.04
+beta <- sample(test2, n)
 beta_df <- as.data.frame(beta)
+min(beta)
+max(beta)
+
+#plot histrogram of beta values to inspect distribution of sampled avlues
+ggplot(beta_df, aes(x = beta, binwidth = binwidth, n = n)) +
+  theme_bw() +
+  geom_histogram(binwidth = binwidth,
+                 colour = "white", fill = "lightblue", size = 0.1) +
+  stat_function(fun = function(x) dbeta(x, 3, 5) * n * binwidth,
+                color = "red", size = 1)
 
 #create data frame with alpha and beta parameter values
 sampling_df <- cbind(alpha_df, beta_df)
