@@ -108,3 +108,51 @@ recovery_beta <-
   xlab("Simulated beta values") +
   ylab("Estimated beta values") +
   theme_classic()
+
+
+########################### PARAMETER RECOVERY STANDARD RL MODEL 12 BLOCKS 30 TRIALS
+####################################################################################
+
+#read in ex ante fitted data
+modelfit <- 
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_modelfit_standard_RL_12blocks_30trials.txt", 
+             " ", col_names = F, trim_ws = TRUE)
+
+names(modelfit)[1] <- "LL"
+names(modelfit)[2] <- "alpha_fit"
+names(modelfit)[3] <- "beta_fit"  
+names(modelfit)[4] <- "BIC"
+names(modelfit)[5] <- "AIC"
+names(modelfit)[6] <- "id"
+names(modelfit)[7] <- "alpha_sim"
+names(modelfit)[8] <- "beta_sim"
+
+
+corr_alpha <- cor.test(modelfit$alpha_sim, modelfit$alpha_fit)
+
+recovery_alpha <-
+  ggplot(aes(x = alpha_sim, y = alpha_fit, color = alpha_sim), data = modelfit) +
+  geom_point(size = 2, alpha = 0.6) +
+  geom_smooth(method = "glm", color = "darkgrey", se = F, fill = "red", alpha = 0.2) +
+  scale_color_gradient(low = "blue", high = "red") +
+  scale_y_continuous(breaks = seq(0, 1.0, 0.2)) +
+  scale_x_continuous(breaks = seq(0, 1.0, 0.2)) +
+  xlab("Simulated alpha values") +
+  ylab("Estimated alpha values") +
+  theme_classic()
+
+
+corr_beta <- cor.test(modelfit$beta_sim, modelfit$beta_fit)
+
+recovery_beta <-
+  ggplot(aes(x = beta_sim, y = beta_fit, color = beta_sim), data = modelfit) +
+  geom_point(size = 2, alpha = 0.6) +
+  geom_smooth(method = "glm", color = "darkgrey", se = F, fill = "red", alpha = 0.2) +
+  scale_color_gradient(low = "blue", high = "red") +
+  scale_y_continuous(breaks = seq(0, 1.0, 0.2)) +
+  scale_x_continuous(breaks = seq(0, 1.0, 0.2)) +
+  xlab("Simulated beta values") +
+  ylab("Estimated beta values") +
+  theme_classic()
+
+

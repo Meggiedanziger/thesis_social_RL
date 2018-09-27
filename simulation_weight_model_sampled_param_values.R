@@ -1,34 +1,89 @@
 rm(list = ls()) #delete workspace
-setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL") #set working directory
+setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents") #set working directory
 getwd()
 
 #load required packages
 library(tidyverse)
+library(statmod)
 library(reshape)
 
-#create beta distribution from which to smaple alpha values
-x <- seq(0, 1, length = 10000)
-x
-test <- rbeta(x, 2, 4)
-test
-hist(test)
-plot(test)
+
+#create beta distribution from which to sample alpha values
+set.seed(234)
+n = 100000
+binwidth = 0.05
+pop_alpha <- rbeta(n, 1.5, 5.5)
+pop_alphadf <- as.data.frame(pop_alpha)
+
+#plot distribution and density function
+ggplot(pop_alphadf, aes(x = pop_alpha, binwidth = binwidth, n = n)) +
+  geom_histogram(binwidth = binwidth, colour = "white", fill = "steelblue3", size = 0.1) +
+  stat_function(fun = function(x) dbeta(x, 1.5, 5.5) * n * binwidth, color = "firebrick1", size = 1) +
+  xlab("x") +
+  ylab("Frequency") +
+  theme_classic() 
 
 #sample alpha values
-alpha <- sample(x, 50)
+set.seed(234)
+n = 50
+binwidth = 0.04
+alpha <- sample(pop_alpha, n)
 alpha_df <- as.data.frame(alpha)
+min(alpha)
+max(alpha)
+mean(alpha)
+median(alpha)
+boxplot(alpha) # noch schöner plotten
 
-#create beta distribution from which to smaple beta values
-y <- seq(0, 1, length = 10000)
-y
-test2 <- rbeta(y, 3, 5)
-test2
-hist(test2)
-plot(test2)
+#plot histrogram of alpha values to inspect distribution of sampled avlues
+ggplot(alpha_df, aes(x = alpha, binwidth = binwidth, n = n)) +
+  geom_histogram(binwidth = binwidth, colour = "white", fill = "steelblue3", size = 0.1) +
+  stat_function(fun = function(x) dbeta(x, 1.5, 5.5) * n * binwidth, color = "firebrick1", size = 1) +
+  xlab("Sampled alpha values") +
+  ylab("Frequency") +
+  theme_classic()
+
+
+#create beta distribution from which to sample beta values
+set.seed(234)
+n = 100000
+binwidth = 0.5
+pop_beta   <- rinvgauss(n, 1.5, 1)
+pop_betadf <- as.data.frame(pop_beta)
+
+
+#plot distribution and density function
+ggplot(pop_betadf, aes(x = pop_beta, binwidth = binwidth, n = n)) +
+  geom_histogram(binwidth = binwidth, colour = "white", fill = "steelblue3", size = 0.1) +
+  stat_function(fun = function(x) dinvgauss(x, 1.5, 1) * n * binwidth, color = "firebrick1", size = 0.5) +
+  xlab("x") +
+  ylab("Frequency") +
+  theme_classic()
+
 
 #sample beta values
-beta <- sample(y, 50)
+set.seed(234)
+n = 50
+binwidth = 0.2
+beta <- sample(pop_beta, n)
 beta_df <- as.data.frame(beta)
+min(beta)
+max(beta)
+mean(beta)
+median(beta)
+boxplot(beta) # noch schöner plotten
+
+#plot histrogram of beta values to inspect distribution of sampled avlues
+ggplot(beta_df, aes(x = beta, binwidth = binwidth, n = n)) +
+  geom_histogram(binwidth = binwidth, colour = "white", fill = "steelblue3", size = 0.1) +
+  stat_function(fun = function(x) dinvgauss(x, 1, 1) * n * binwidth, color = "firebrick1", size = 0.7)+
+  xlab("Sampled beta values") +
+  ylab("Frequency") +
+  theme_classic()
+
+
+
+
 
 #create beta distribution from which to sample weight values
 z <- seq(0, 1, length = 10000)

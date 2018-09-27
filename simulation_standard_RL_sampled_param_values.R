@@ -1,80 +1,94 @@
 rm(list = ls()) #delete workspace
-setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL") #set working directory
+setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents") #set working directory
 getwd()
 
 #load required packages
 library(tidyverse)
+library(statmod)
 library(reshape)
 
+
 #create beta distribution from which to sample alpha values
-n = 1000000
+set.seed(123)
+n = 100000
 binwidth = 0.05
-x <- seq(0, 1, length = n)
-test <- rbeta(x, 2.5, 5)
-testdf <- as.data.frame(test)
+pop_alpha <- rbeta(n, 1.5, 5.5)
+pop_alphadf <- as.data.frame(pop_alpha)
 
 #plot distribution and density function
-ggplot(testdf, aes(x = test, binwidth = binwidth, n = n)) +
-  geom_histogram(binwidth = binwidth,
-                 colour = "white", fill = "lightblue", size = 0.1) +
-  stat_function(fun = function(x) dbeta(x, 2.5, 5) * n * binwidth,
-                color = "red", size = 1) +
-  theme_bw()
+ggplot(pop_alphadf, aes(x = pop_alpha, binwidth = binwidth, n = n)) +
+  geom_histogram(binwidth = binwidth, colour = "white", fill = "steelblue3", size = 0.1) +
+  stat_function(fun = function(x) dbeta(x, 1.5, 5.5) * n * binwidth, color = "firebrick1", size = 1) +
+  xlab("x") +
+  ylab("Frequency") +
+  ggtitle("Beta(alpha = 1.5, beta = 5.5)") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 
 #sample alpha values
+set.seed(123)
 n = 50
 binwidth = 0.04
-alpha <- sample(test, n)
+alpha <- sample(pop_alpha, n)
 alpha_df <- as.data.frame(alpha)
 min(alpha)
 max(alpha)
+mean(alpha)
+median(alpha)
+boxplot(alpha) # noch schöner plotten
 
 #plot histrogram of alpha values to inspect distribution of sampled avlues
 ggplot(alpha_df, aes(x = alpha, binwidth = binwidth, n = n)) +
-  theme_bw() +
-  geom_histogram(binwidth = binwidth,
-                 colour = "white", fill = "lightblue", size = 0.1) +
-  stat_function(fun = function(x) dbeta(x, 2.5, 5) * n * binwidth,
-                color = "red", size = 1)
+  geom_histogram(binwidth = binwidth, colour = "white", fill = "steelblue3", size = 0.1) +
+  stat_function(fun = function(x) dbeta(x, 1.5, 5.5) * n * binwidth, color = "firebrick1", size = 1) +
+  xlab("Sampled alpha values") +
+  ylab("Frequency") +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 
 
 #create beta distribution from which to sample beta values
-n = 1000000
-binwidth = 0.05
-y <- seq(0, 1, length = n)
-test2 <- rbeta(y, 3, 5)
-test2df <- as.data.frame(test2)
+set.seed(123)
+n = 100000
+binwidth = 0.5
+pop_beta <- rinvgauss(n, 1.5, 1)
+pop_betadf <- as.data.frame(pop_beta)
 
 #plot distribution and density function
-ggplot(test2df, aes(x = test2, binwidth = binwidth, n = n)) +
-  geom_histogram(binwidth = binwidth,
-                 colour = "white", fill = "lightblue", size = 0.1) +
-  stat_function(fun = function(x) dbeta(x, 3, 5) * n * binwidth,
-                color = "red", size = 1) +
-  theme_bw()
+ggplot(pop_betadf, aes(x = pop_beta, binwidth = binwidth, n = n)) +
+  geom_histogram(binwidth = binwidth, colour = "white", fill = "steelblue3", size = 0.1) +
+  stat_function(fun = function(x) dinvgauss(x, 1.5, 1) * n * binwidth, color = "firebrick1", size = 0.5) +
+  xlab("x") +
+  ylab("Frequency") +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+
 
 #sample beta values
+set.seed(123)
 n = 50
-binwidth = 0.04
-beta <- sample(test2, n)
+binwidth = 0.2
+beta <- sample(pop_beta, n)
 beta_df <- as.data.frame(beta)
 min(beta)
 max(beta)
+mean(beta)
+median(beta)
+boxplot(beta) # noch schöner plotten
 
 #plot histrogram of beta values to inspect distribution of sampled avlues
 ggplot(beta_df, aes(x = beta, binwidth = binwidth, n = n)) +
-  theme_bw() +
-  geom_histogram(binwidth = binwidth,
-                 colour = "white", fill = "lightblue", size = 0.1) +
-  stat_function(fun = function(x) dbeta(x, 3, 5) * n * binwidth,
-                color = "red", size = 1)
+  geom_histogram(binwidth = binwidth, colour = "white", fill = "steelblue3", size = 0.1) +
+  stat_function(fun = function(x) dinvgauss(x, 1.5, 1) * n * binwidth, color = "firebrick1", size = 0.7)+
+  xlab("Sampled beta values") +
+  ylab("Frequency") +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+
+
 
 #create data frame with alpha and beta parameter values
 sampling_df <- cbind(alpha_df, beta_df)
 
-
-
-#run simulation to create 50 data sets with 4 blocks and 12 trials
+#--------------------------------------------------------------------------------
+#run simulation to create 50 data sets with 12 blocks and 30 trials
 num  = 50
 subj = c(1:50)
 
@@ -155,8 +169,8 @@ plot(acc)
 
 sim_data <- merged_dat
 
-sim_data <- write.table(merged_dat, file = "simulation_standard_RL.txt", 
+sim_data <- write.table(merged_dat, file = "agents_standard_RL_12blocks_30trials.txt", 
                         row.names = FALSE, col.names = FALSE)
 
-sampled_values <- write.table(FIT, file = "parameter_values_simulation_standard_RL.txt",
+sampled_values <- write.table(FIT, file = "agents_standard_RL_12blocks_30trials_parameters.txt",
                               row.names = FALSE, col.names = FALSE)
