@@ -1,5 +1,5 @@
 rm(list=ls()) # delete workspace
-setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL")
+setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations")
 source("reinforce_standard.R")
 
 library("colorspace") 
@@ -8,7 +8,7 @@ library("colorspace")
 library(readr)
 
 
-sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulation_standard_RL_12blocks_30trials_unbounded_beta.txt", 
+sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/ex_ante_simulation_standard_RL_12blocks_30trials_unbounded_beta.txt", 
                        " ", col_names = F, 
                        trim_ws = TRUE)
 
@@ -46,7 +46,7 @@ for (id in subj) {  # cycle through ids 1 to n
 
 #determine model comparison criterion
 #BIC deviance + parameters*log(N) #N = number of trials
-FIT2[, 4] <- FIT2[, 1] + 2*log(120);
+FIT2[, 4] <- FIT2[, 1] + 2*log(360);
 
 #AIC: deviance + 2 * #parameters
 FIT2[, 5] <- FIT2[, 1] + 2 * 2;
@@ -65,7 +65,7 @@ names(modelfit_standard)[5] <- "AIC"
 
 #read in parameter data from  ex ante simulation
 parameter_sim <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulation_parameters_standard_RL_12blocks_30trials_unbounded_beta.txt", 
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/ex_ante_simulation_parameters_standard_RL_12blocks_30trials_unbounded_beta.txt", 
              " ", col_names = F, trim_ws = TRUE)
 
 names(parameter_sim)[1] <- "id"
@@ -96,8 +96,8 @@ recovery_beta <-
   geom_point(size = 2, alpha = 0.6) +
   geom_smooth(method = "glm", color = "darkgrey", se = F, fill = "red", alpha = 0.2) +
   scale_color_gradient(low = "blue", high = "red") +
-  scale_y_continuous(breaks = seq(0, 15, 3)) +
-  scale_x_continuous(breaks = seq(0, 15, 3)) +
+  scale_y_continuous(breaks = seq(0, 10, 2)) +
+  scale_x_continuous(breaks = seq(0, 10, 2)) +
   xlab("Simulated beta values") +
   ylab("Estimated beta values") +
   theme_classic()

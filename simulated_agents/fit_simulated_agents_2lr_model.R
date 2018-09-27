@@ -1,12 +1,12 @@
 rm(list = ls()) # delete workspace
-setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL")
+setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents")
 source("reinforce_two_learning_rates.R")
 
 #read in data
 library(readr)
 
 
-sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulation_10_agents_2lr_model.txt", 
+sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/.txt", 
                        " ", col_names = F, 
                        trim_ws = TRUE)
 
@@ -64,7 +64,7 @@ names(modelfit_weight)[5] <- "BIC"
 names(modelfit_weight)[6] <- "AIC"
 
 #read in parameter data from simulation
-parameter_sim <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/parameter_values_simulation_2lr_model.txt", 
+parameter_sim <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/.txt", 
                             " ", col_names = F, 
                             trim_ws = TRUE)
 

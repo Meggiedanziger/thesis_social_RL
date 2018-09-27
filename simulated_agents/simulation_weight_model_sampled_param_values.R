@@ -207,8 +207,8 @@ plot(acc)
 
 sim_data <- merged_dat
 
-sim_data <- write.table(merged_dat, file = "simulation_weight_model.txt", 
+sim_data <- write.table(merged_dat, file = ".txt", 
                         row.names = FALSE, col.names = FALSE)
 
-sampled_values <- write.table(FIT, file = "parameter_values_simulation_weight_model.txt",
+sampled_values <- write.table(FIT, file = ".txt",
                               row.names = FALSE, col.names = FALSE)

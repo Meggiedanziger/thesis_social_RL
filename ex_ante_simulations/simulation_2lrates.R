@@ -1,5 +1,5 @@
 rm(list = ls()) # delete workspace
-setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL")
+setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations")
 getwd()
 
 library(tidyverse)

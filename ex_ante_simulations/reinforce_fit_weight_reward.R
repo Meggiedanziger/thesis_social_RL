@@ -1,12 +1,12 @@
 rm(list = ls()) # delete workspace
-setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL")
+setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations")
 source("reinforce_weight_reward.R")
 
 #read in data
 library(readr)
 
 
-sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulation_weight_model_12blocks_30trials.txt", 
+sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/ex_ante_simulation_weight_model_12blocks_30trials.txt", 
                        " ", col_names = F, 
                        trim_ws = TRUE)
 
@@ -66,7 +66,7 @@ names(modelfit_weight)[6] <- "AIC"
 
 #read in parameter data from  ex ante simulation
 parameter_sim <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulation_parameters_weight_model_12blocks_30trials.txt", 
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/ex_ante_simulation_parameters_weight_model_12blocks_30trials.txt", 
              " ", col_names = F, 
              trim_ws = TRUE)
 
