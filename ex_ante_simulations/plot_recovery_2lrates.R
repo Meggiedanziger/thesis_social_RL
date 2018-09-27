@@ -1,7 +1,7 @@
 rm(list = ls()) #delete workspace
-setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL")
+setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/")
 
-########################### PARAMETER RECOVERY 2 LEARNING RATES RL MODEL 4 BLOCKS 30 TRIALS
+########################### PARAMETER RECOVERY 2 LEARNING RATES RL MODEL 12 BLOCKS 30 TRIALS
 ###########################################################################################
 library(tidyverse) 
 library(readr)
@@ -9,7 +9,7 @@ library(readr)
 #read in ex ante simulated data
 
 sim_data <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulation_2lrates_4blocks_30trials.txt", 
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/ex_ante_simulation_2lrates_12blocks_30trials.txt", 
              " ", col_names = F, trim_ws = TRUE)
 
 names(sim_data)[1] <- "id"
@@ -74,7 +74,7 @@ ggplot(aes(x = trial, y = accuracy), data = sim_data_acc) +
 
 #read in ex ante fitted data
 modelfit <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_modelfit_2lrates_4blocks_30trials.txt", 
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/ex_ante_modelfit_2lrates_12blocks_30trials.txt", 
              " ", col_names = F, trim_ws = TRUE)
 
 names(modelfit)[1]  <- "LL"

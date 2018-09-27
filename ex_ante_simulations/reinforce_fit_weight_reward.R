@@ -1,12 +1,12 @@
 rm(list = ls()) # delete workspace
-setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations")
+setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL")
 source("reinforce_weight_reward.R")
 
 #read in data
 library(readr)
 
 
-sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/ex_ante_simulation_weight_model_12blocks_30trials.txt", 
+sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/simulation_weight_model_24blocks_60trials.txt", 
                        " ", col_names = F, 
                        trim_ws = TRUE)
 
@@ -36,7 +36,7 @@ for (id in subj) {  # cycle through ids 1 to n
   startParm <- c(0.1, 0.1, -0.9)
   names(startParm) <- c("alpha", "theta", "weight")
   out <- optim(startParm, reinforce_weight, subj = id, method = "L-BFGS-B", 
-               lower = c(.001, .001, -0.9), upper = c(.9, .9, .9), data = data)
+               lower = c(.001, .001, -0.9), upper = c(.9, 10, .9), data = data)
   FIT2[id, 1] <- out$value
   FIT2[id, 2:4] <- out$par
   print(id)
@@ -45,7 +45,7 @@ for (id in subj) {  # cycle through ids 1 to n
 
 #determine model comparison criterion
 #BIC deviance + parameters*log(N) #N = number of trials from all blocks
-FIT2[, 5] <- FIT2[, 1] + 3*log(360);
+FIT2[, 5] <- FIT2[, 1] + 3*log(1080);
 
 #AIC: deviance + 2 * #parameters
 FIT2[, 6] <- FIT2[, 1] + 2 * 3;
@@ -66,7 +66,7 @@ names(modelfit_weight)[6] <- "AIC"
 
 #read in parameter data from  ex ante simulation
 parameter_sim <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/ex_ante_simulation_parameters_weight_model_12blocks_30trials.txt", 
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/parameters_weight_model_24blocks_60trials.txt", 
              " ", col_names = F, 
              trim_ws = TRUE)
 
@@ -99,8 +99,8 @@ recovery_beta <-
   geom_point(size = 2, alpha = 0.6) +
   geom_smooth(method = "glm", color = "darkgrey", se = F, fill = "red", alpha = 0.2) +
   scale_color_gradient(low = "blue", high = "red") +
-  scale_y_continuous(breaks = seq(0.1, 0.9, 0.2)) +
-  scale_x_continuous(breaks = seq(0.1, 0.9, 0.2)) +
+  scale_y_continuous(breaks = seq(0, 10, 2)) +
+  scale_x_continuous(breaks = seq(0, 10, 2)) +
   xlab("Simulated beta values") +
   ylab("Estimated beta values") +
   theme_classic()
@@ -119,7 +119,7 @@ recovery_weight <-
   ylab("Estimated weight values") +
   theme_classic()
 
-modelfit_weight <- write.table(recovery_df, file = "ex_ante_modelfit_weight_model_12blocks_30trials.txt", 
+modelfit_weight <- write.table(recovery_df, file = "modelfit_weight_model_24blocks_60trials.txt", 
                                  row.names = FALSE, col.names = FALSE)
 
 

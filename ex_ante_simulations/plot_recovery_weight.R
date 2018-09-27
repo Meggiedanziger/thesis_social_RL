@@ -1,5 +1,5 @@
 rm(list = ls()) #delete workspace
-setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL")
+setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations")
 
 ########################### PARAMETER RECOVERY WEIGHT RL MODEL 4 BLOCKS 30 TRIALS
 #################################################################################
@@ -8,7 +8,7 @@ library(readr)
 
 #read in ex ante simulated data
 sim_data <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulation_weight_model_4blocks_30trials.txt", 
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/ex_ante_simulation_weight_model_12blocks_30trials.txt", 
              " ", col_names = F, trim_ws = TRUE)
 
 names(sim_data)[1] <- "id"
@@ -64,7 +64,7 @@ ggplot(aes(x = trial, y = chosen_option), data = plot_data) +
 
 #read in ex ante fitted data
 modelfit <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_modelfit_weight_model_8blocks_30trials.txt", 
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/ex_ante_modelfit_weight_model_12blocks_30trials.txt", 
              " ", col_names = F, trim_ws = TRUE)
 
 names(modelfit)[1]  <- "LL"

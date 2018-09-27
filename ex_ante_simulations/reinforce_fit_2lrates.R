@@ -6,7 +6,7 @@ source("reinforce_2lrates.R")
 library(readr)
 
 
-sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/ex_ante_simulation_2lrates_12blocks_30trials.txt", 
+sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/ex_ante_simulation_2lrates_12blocks_100trials.txt", 
                        " ", col_names = F, 
                        trim_ws = TRUE)
 
@@ -44,7 +44,7 @@ for (id in subj) {  # cycle through ids 1 to n
 
 #determine model comparison criterion
 #BIC: deviance + parameters*log(N) #N = number of trials from all blocks
-FIT2[, 5] <- FIT2[, 1] + 3*log(360);
+FIT2[, 5] <- FIT2[, 1] + 3*log(1200);
 
 #AIC: deviance + 2 * #parameters
 FIT2[, 6] <- FIT2[, 1] + 2 * 3;

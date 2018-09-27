@@ -9,14 +9,14 @@ num = 125
 subj = c(1:125)
 
 #determine prediction of the model with best parameter estimates
-cchoice      <- array(0, c(125, 12, 30))
-R            <- array(0, c(125, 12, 30))
-Prob         <- array(0, c(125, 12, 30))
-Feed         <- array(0, c(125, 12, 30))
-Feed_c       <- array(0, c(125, 12, 30))
-Feed_i       <- array(0, c(125, 12, 30))
-Prob_correct <- array(0, c(125, 12, 30))
-PE <- Q_all  <- array(0, c(125, 12, 30))
+cchoice      <- array(0, c(125, 12, 100))
+R            <- array(0, c(125, 12, 100))
+Prob         <- array(0, c(125, 12, 100))
+Feed         <- array(0, c(125, 12, 100))
+Feed_c       <- array(0, c(125, 12, 100))
+Feed_i       <- array(0, c(125, 12, 100))
+Prob_correct <- array(0, c(125, 12, 100))
+PE <- Q_all  <- array(0, c(125, 12, 100))
 
 
 id       <- c(1:125)
@@ -40,7 +40,7 @@ for (id in subj) {
     PROB <- matrix(0, 1, 2) 
     
     
-    for (trial in c(1:30)) {
+    for (trial in c(1:100)) {
       
       for (j in c(1:2)) { # options 
         PROB[1, j] <- exp(beta*Q[1, j]) / (exp(beta*Q[1, 1]) + exp(beta*Q[1, 2]))
@@ -94,10 +94,10 @@ plot(acc)
 
 sim_data <- merged_dat
 
-sim_data <- write.table(merged_dat, file = "ex_ante_simulation_2lrates_12blocks_30trials.txt", 
+sim_data <- write.table(merged_dat, file = "ex_ante_simulation_2lrates_12blocks_100trials.txt", 
                         row.names = FALSE, col.names = FALSE)
 
-params_exante <- write.table(FIT, file = "ex_ante_simulation_parameters_2lrates_12blocks_30trials.txt", 
+params_exante <- write.table(FIT, file = "ex_ante_simulation_parameters_2lrates_12blocks_100trials.txt", 
                              row.names = FALSE, col.names = FALSE)
 
 
