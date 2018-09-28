@@ -9,14 +9,14 @@ num = 250
 subj = c(1:250)
 
 #determine prediction of the model with best parameter estimates
-cchoice      <- array(0, c(250, 24, 60))
-R            <- array(0, c(250, 24, 60))
-Prob         <- array(0, c(250, 24, 60))
-Feed         <- array(0, c(250, 24, 60))
-Feed_c       <- array(0, c(250, 24, 60))
-Feed_i       <- array(0, c(250, 24, 60))
-Prob_correct <- array(0, c(250, 24, 60))
-PE <- Q_all  <- array(0, c(250, 24, 60))
+cchoice      <- array(0, c(250, 6, 60))
+R            <- array(0, c(250, 6, 60))
+Prob         <- array(0, c(250, 6, 60))
+Feed         <- array(0, c(250, 6, 60))
+Feed_c       <- array(0, c(250, 6, 60))
+Feed_i       <- array(0, c(250, 6, 60))
+Prob_correct <- array(0, c(250, 6, 60))
+PE <- Q_all  <- array(0, c(250, 6, 60))
 
 
 id     <- c(1:250)
@@ -33,7 +33,7 @@ for (id in subj) {
   beta   <- FIT[id, 3];
   weight <- FIT[id, 4];
     
-  for (block in c(1:24)) {
+  for (block in c(1:6)) {
     
     Q    <- matrix(0, 1, 2) # 1 row, 2 columns
     PROB <- matrix(0, 1, 2) 
@@ -88,10 +88,10 @@ plot(acc)
 
 sim_data <- merged_dat
 
-sim_data <- write.table(merged_dat, file = "simulation_weight_model_24blocks_60trials.txt", 
+sim_data <- write.table(merged_dat, file = "simulation_weight_model_6blocks_60trials.txt", 
                         row.names = FALSE, col.names = FALSE)
 
-params_exante <- write.table(FIT, file = "parameters_weight_model_24blocks_60trials.txt", 
+params_exante <- write.table(FIT, file = "parameters_weight_model_6blocks_60trials.txt", 
                              row.names = FALSE, col.names = FALSE)
 
 #check rewards / reward probabilities from simulation function

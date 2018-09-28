@@ -6,7 +6,7 @@ source("reinforce_weight_reward.R")
 library(readr)
 
 
-sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/simulation_weight_model_24blocks_60trials.txt", 
+sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/simulation_weight_model_6blocks_60trials.txt", 
                        " ", col_names = F, 
                        trim_ws = TRUE)
 
@@ -45,7 +45,7 @@ for (id in subj) {  # cycle through ids 1 to n
 
 #determine model comparison criterion
 #BIC deviance + parameters*log(N) #N = number of trials from all blocks
-FIT2[, 5] <- FIT2[, 1] + 3*log(1080);
+FIT2[, 5] <- FIT2[, 1] + 3*log(360);
 
 #AIC: deviance + 2 * #parameters
 FIT2[, 6] <- FIT2[, 1] + 2 * 3;
@@ -66,7 +66,7 @@ names(modelfit_weight)[6] <- "AIC"
 
 #read in parameter data from  ex ante simulation
 parameter_sim <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/parameters_weight_model_24blocks_60trials_minus0.9.txt", 
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/parameters_weight_model_6blocks_60trials_minus0.9.txt", 
              " ", col_names = F, 
              trim_ws = TRUE)
 
@@ -119,7 +119,7 @@ recovery_weight <-
   ylab("Estimated weight values") +
   theme_classic()
 
-modelfit_weight <- write.table(recovery_df, file = "modelfit_weight_model_24blocks_60trials.txt", 
+modelfit_weight <- write.table(recovery_df, file = "modelfit_weight_model_6blocks_60trials.txt", 
                                  row.names = FALSE, col.names = FALSE)
 
 
