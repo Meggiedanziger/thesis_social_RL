@@ -33,10 +33,10 @@ FIT2 <- matrix(0, 250, 6)
 
 #start a simplex search for finding the best parameter values
 for (id in subj) {  # cycle through ids 1 to n
-  startParm <- c(0.1, 0.1, -0.9)
+  startParm <- c(0.1, 0.1, -1)
   names(startParm) <- c("alpha", "theta", "weight")
   out <- optim(startParm, reinforce_weight, subj = id, method = "L-BFGS-B", 
-               lower = c(.001, .001, -0.9), upper = c(.9, 10, .9), data = data)
+               lower = c(.001, .001, -0.9), upper = c(.9, 10, 0.9), data = data)
   FIT2[id, 1] <- out$value
   FIT2[id, 2:4] <- out$par
   print(id)
@@ -66,7 +66,7 @@ names(modelfit_weight)[6] <- "AIC"
 
 #read in parameter data from  ex ante simulation
 parameter_sim <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/parameters_weight_model_24blocks_60trials.txt", 
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/parameters_weight_model_24blocks_60trials_minus0.9.txt", 
              " ", col_names = F, 
              trim_ws = TRUE)
 

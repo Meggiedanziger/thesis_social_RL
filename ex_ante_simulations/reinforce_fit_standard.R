@@ -34,10 +34,10 @@ subj = c(1:80)
 FIT2 <- matrix(0, 80, 5)
 #start a simplex search for finding the best parameter values
 for (id in subj) {  # cycle through ids 1 to n
-  startParm <- c(0.1, 0.1)
+  startParm <- c(0.1, -1)
   names(startParm) <- c("alpha", "theta")
   out <- optim(startParm, reinforce, subj = id, method = "L-BFGS-B", 
-               lower = c(.001, .001), upper = c(1, 10), data = data)
+               lower = c(.001, .001), upper = c(1, 1), data = data)
   FIT2[id, 1] <- out$value
   FIT2[id, 2:3] <- out$par
   print(id)
