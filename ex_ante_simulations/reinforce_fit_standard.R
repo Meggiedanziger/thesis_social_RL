@@ -34,10 +34,10 @@ subj = c(1:80)
 FIT2 <- matrix(0, 80, 5)
 #start a simplex search for finding the best parameter values
 for (id in subj) {  # cycle through ids 1 to n
-  startParm <- c(0.1, -1)
+  startParm <- c(0.1, 0.1)
   names(startParm) <- c("alpha", "theta")
   out <- optim(startParm, reinforce, subj = id, method = "L-BFGS-B", 
-               lower = c(.001, .001), upper = c(1, 1), data = data)
+               lower = c(.001, .001), upper = c(1, 10), data = data)
   FIT2[id, 1] <- out$value
   FIT2[id, 2:3] <- out$par
   print(id)
@@ -46,7 +46,7 @@ for (id in subj) {  # cycle through ids 1 to n
 
 #determine model comparison criterion
 #BIC deviance + parameters*log(N) #N = number of trials
-FIT2[, 4] <- FIT2[, 1] + 2*log(1080);
+FIT2[, 4] <- FIT2[, 1] + 2*log(1440);
 
 #AIC: deviance + 2 * #parameters
 FIT2[, 5] <- FIT2[, 1] + 2 * 2;
@@ -103,5 +103,5 @@ recovery_beta <-
   theme_classic()
 
 
-modelfit_standard <- write.table(recovery_df, file = "ex_ante_modelfit_standard_RL_12blocks_30trials_unbounded_beta.txt", 
+modelfit_standard <- write.table(recovery_df, file = "modelfit_standard_RL_24blocks_60trials.txt", 
                                        row.names = FALSE, col.names = FALSE)

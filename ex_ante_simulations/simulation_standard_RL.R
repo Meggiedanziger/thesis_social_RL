@@ -19,7 +19,6 @@ PE <- Q_all  <- array(0, c(80, 24, 60))
 
 
 id    <- c(1:80)
-#temp  <- rep(1:10, each = 10)/10
 temp  <- rep(c(1, 4, 7, 10, 30, 50, 70, 100), each = 10)/10
 lrate <- rep(1:10, each = 1)/10
 
