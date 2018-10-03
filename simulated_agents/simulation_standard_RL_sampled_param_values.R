@@ -19,9 +19,10 @@ pop_alphadf <- as.data.frame(pop_alpha)
 ggplot(pop_alphadf, aes(x = pop_alpha, binwidth = binwidth, n = n)) +
   geom_histogram(binwidth = binwidth, colour = "white", fill = "steelblue3", size = 0.1) +
   stat_function(fun = function(x) dbeta(x, 1.5, 5.5) * n * binwidth, color = "firebrick1", size = 1) +
+  scale_x_continuous(breaks = seq(0, 1.0, 0.2)) +
   xlab("x") +
   ylab("Frequency") +
-  ggtitle("Beta(alpha = 1.5, beta = 5.5)") +
+  ggtitle(expression(paste("Beta distribution with ", alpha, " = 1.5, " , beta, " = 5.5 "))) +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 
@@ -35,7 +36,19 @@ min(alpha)
 max(alpha)
 mean(alpha)
 median(alpha)
-boxplot(alpha) # noch schöner plotten
+
+alphabox <- 
+  ggplot(aes(x = 1, y = alpha), data = alpha_df) +
+  geom_boxplot(width = 0.3, outlier.colour = "red", outlier.alpha = 0.6, outlier.size = 2) +
+  geom_jitter(size = 2, width = 0.05, height = 0.0, color = "red", alpha = 0.6) +
+  theme_classic() +
+  theme(axis.title.x = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank()) +
+  ylab(expression(paste("Simulated ", alpha, " values"))) +
+  theme(panel.background = element_rect(fill = "white", colour = "black"))
+alphabox
+  
 
 #plot histrogram of alpha values to inspect distribution of sampled avlues
 ggplot(alpha_df, aes(x = alpha, binwidth = binwidth, n = n)) +
@@ -56,9 +69,12 @@ pop_betadf <- as.data.frame(pop_beta)
 #plot distribution and density function
 ggplot(pop_betadf, aes(x = pop_beta, binwidth = binwidth, n = n)) +
   geom_histogram(binwidth = binwidth, colour = "white", fill = "steelblue3", size = 0.1) +
-  stat_function(fun = function(x) dinvgauss(x, 1.5, 1) * n * binwidth, color = "firebrick1", size = 0.5) +
+  stat_function(fun = function(x) dinvgauss(x, 1.5, 1) * n * binwidth, color = "firebrick1", size = 0.7) +
+  ggtitle(expression(paste("Inverse Gaussian distribution with  ", mu, " = 1.5, " , lambda, " = 1) "))) +
+  #scale_x_continuous(breaks = seq(0, 30, 5)) +
   xlab("x") +
   ylab("Frequency") +
+  theme(plot.title = element_text(hjust = 0.5)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 
 
@@ -72,7 +88,19 @@ min(beta)
 max(beta)
 mean(beta)
 median(beta)
-boxplot(beta) # noch schöner plotten
+
+betabox <- 
+  ggplot(aes(x = 1, y = beta), data = beta_df) +
+  geom_boxplot(width = 0.15, outlier.color = "limegreen", outlier.alpha = 0.7, outlier.size = 2) +
+  geom_jitter(size = 2, width = 0.05, height = 0.0, color = "limegreen", alpha = 0.7) +
+  scale_y_continuous(breaks = seq(0, 10, 2)) +
+  theme_classic() +
+  theme(axis.title.x = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank()) +
+  ylab(expression(paste("Simulated ", beta, " values"))) +
+  theme(panel.background = element_rect(fill = "white", colour = "black"))
+betabox
 
 #plot histrogram of beta values to inspect distribution of sampled avlues
 ggplot(beta_df, aes(x = beta, binwidth = binwidth, n = n)) +
