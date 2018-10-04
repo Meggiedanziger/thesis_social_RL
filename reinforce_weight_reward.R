@@ -12,10 +12,10 @@ reinforce_weight <- function(param, subj, data) {
   
   for (block in c(1:12)) {
     
-    Q <- matrix(0, 1, 2) # 1 row, 2 col
-    Prob <- matrix(0, 1, 2)
+    Q <- matrix(0.5, 1, 2) # 1 row, 2 col
+    Prob <- matrix(0.5, 1, 2)
     
-    for (trial in c(1:60)) {
+    for (trial in c(1:30)) {
       
       cchoice <-   data[data[ ,1] == id & data[ ,2] == block & data[ ,3] == trial, 4]
       

@@ -39,8 +39,7 @@ median(alpha)
 
 alphabox <- 
   ggplot(aes(x = 1, y = alpha), data = alpha_df) +
-  geom_boxplot(width = 0.3, outlier.colour = "red", outlier.alpha = 0.6, outlier.size = 2) +
-  geom_jitter(size = 2, width = 0.05, height = 0.0, color = "red", alpha = 0.6) +
+  geom_boxplot(width = 0.3, outlier.colour = "red", outlier.alpha = 0.6, outlier.size = 2.5) +
   theme_classic() +
   theme(axis.title.x = element_blank(),
         axis.text.x = element_blank(),
@@ -48,6 +47,11 @@ alphabox <-
   ylab(expression(paste("Simulated ", alpha, " values"))) +
   theme(panel.background = element_rect(fill = "white", colour = "black"))
 alphabox
+
+dat <- ggplot_build(alphabox)$data[[1]]
+alphabox + 
+  geom_segment(aes(x = xmin, xend = xmax, y = middle, yend = middle), data = dat, colour = "blue", size = 1.3) +
+  geom_jitter(size = 2.5, width = 0.05, height = 0.0, color = "red", alpha = 0.6)
 
 
 #plot histrogram of alpha values to inspect distribution of sampled avlues
@@ -91,8 +95,7 @@ median(beta)
 
 betabox <- 
   ggplot(aes(x = 1, y = beta), data = beta_df) +
-  geom_boxplot(width = 0.15, outlier.color = "limegreen", outlier.alpha = 0.7, outlier.size = 2) +
-  geom_jitter(size = 2, width = 0.05, height = 0.0, color = "limegreen", alpha = 0.7) +
+  geom_boxplot(width = 0.15, outlier.color = "limegreen", outlier.alpha = 0.7, outlier.size = 2.5) +
   scale_y_continuous(breaks = seq(0, 10, 2)) +
   theme_classic() +
   theme(axis.title.x = element_blank(),
@@ -101,6 +104,11 @@ betabox <-
   ylab(expression(paste("Simulated ", beta, " values"))) +
   theme(panel.background = element_rect(fill = "white", colour = "black"))
 betabox
+
+dat <- ggplot_build(betabox)$data[[1]]
+betabox + 
+  geom_segment(aes(x = xmin, xend = xmax, y = middle, yend = middle), data = dat, colour = "blue", size = 1.3) +
+  geom_jitter(size = 2.5, width = 0.05, height = 0.0, color = "limegreen", alpha = 0.7)
 
 #plot histrogram of beta values to inspect distribution of sampled avlues
 ggplot(beta_df, aes(x = beta, binwidth = binwidth, n = n)) +
@@ -113,38 +121,79 @@ ggplot(beta_df, aes(x = beta, binwidth = binwidth, n = n)) +
 
 
 #create beta distribution from which to sample weight values
-z <- seq(0, 1, length = 10000)
-z
-test3 <- rbeta(z, 4, 4) ################## THINK THIS OVER!! 
-                        #### DISTRIBUTION SHOULB BE MORE SKEWED TO 1 AS THIS IS STANDARD RL
-test3
-hist(test3)
-plot(test3)
+set.seed(234)
+n = 100000
+binwidth = 0.05
+pop_weight <- rbeta(n, 16, 6) ################## THINK THIS OVER!! 
+                             #### DISTRIBUTION SHOULB BE MORE SKEWED TO 1 AS THIS IS STANDARD RL
+pop_weightdf <- as.data.frame(pop_weight)
+
+#plot distribution and density function
+ggplot(pop_weightdf, aes(x = pop_weight, binwidth = binwidth, n = n)) +
+  geom_histogram(binwidth = binwidth, colour = "white", fill = "steelblue3", size = 0.1) +
+  stat_function(fun = function(x) dbeta(x, 16, 6) * n * binwidth, color = "firebrick1", size = 1) +
+  scale_x_continuous(breaks = seq(0, 1.0, 0.2)) +
+  xlab("x") +
+  ylab("Frequency") +
+  ggtitle(expression(paste("Beta distribution with ", alpha, " = 4, " , beta, " = 4 "))) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+
 
 #sample weight values
-weight <- sample(z, 50)
-
+set.seed(234)
+n = 50
+binwidth = 0.04
+weight <- sample(pop_weight, n)
+weight_df <- as.data.frame(weight)
+min(weight)
+max(weight)
+mean(weight)
+median(weight)
 
 #determine whether weight is positive or negative
+set.seed(123)
 d <- seq(0, 1, length = 10000)
 d
-test4 <- rbeta(d, 4, 2)
+test4 <- rbeta(d, 4, 4)
 test4
 hist(test4)
 plot(test4)
 
 #sample d values to determine which of the weight values is positive or negative
-determ <- sample(d, 50)
+set.seed(123)
+determ <- sample(test4, 50)
 
 sum(determ < 0.5) #check if equally many are positive or negative
 
-determ_t <- ifelse(determ < 0.5, -1, 1) #transform all values below 0.5 to -1, all above to 1
+determ_t <- ifelse(determ < 0.5, 1, -1) #transform all values below 0.5 to -1, all above to 1
 
 df_sign <- as.data.frame(cbind(weight, determ_t))
 
 weight <- df_sign$weight * df_sign$determ_t
 
 weight_df <- as.data.frame(weight)
+median(weight_df$weight)
+mean(weight_df$weight)
+
+
+weightbox <- 
+  ggplot(aes(x = 1, y = weight), data = weight_df) +
+  geom_boxplot(width = 0.15, outlier.color = "limegreen", outlier.alpha = 0.7, outlier.size = 2.5) +
+  scale_y_continuous(breaks = seq(-1, 1, 0.3)) +
+  theme_classic() +
+  theme(axis.title.x = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank()) +
+  ylab(expression(paste("Simulated ", omega, " values"))) +
+  theme(panel.background = element_rect(fill = "white", colour = "black"))
+weightbox
+
+dat <- ggplot_build(weightbox)$data[[1]]
+weightbox + 
+  geom_segment(aes(x = xmin, xend = xmax, y = middle, yend = middle), data = dat, colour = "blue", size = 1.3) +
+  geom_jitter(size = 2.5, width = 0.05, height = 0.0, color = "sienna1", alpha = 0.9)
+
 
 
 #create data frame with alpha and beta parameter values
@@ -158,14 +207,14 @@ num  = 50
 subj = c(1:50)
 
 #determine prediction of the model with best parameter estimates
-cchoice      <- array(0, c(50, 6, 30))
-R            <- array(0, c(50, 6, 30))
-Prob         <- array(0, c(50, 6, 30))
-Feed         <- array(0, c(50, 6, 30))
-Feed_c       <- array(0, c(50, 6, 30))
-Feed_i       <- array(0, c(50, 6, 30))
-Prob_correct <- array(0, c(50, 6, 30))
-PE <- Q_all  <- array(0, c(50, 6, 30))
+cchoice      <- array(0, c(50, 12, 30))
+R            <- array(0, c(50, 12, 30))
+Prob         <- array(0, c(50, 12, 30))
+Feed         <- array(0, c(50, 12, 30))
+Feed_c       <- array(0, c(50, 12, 30))
+Feed_i       <- array(0, c(50, 12, 30))
+Prob_correct <- array(0, c(50, 12, 30))
+PE <- Q_all  <- array(0, c(50, 12, 30))
 
 
 
@@ -180,7 +229,7 @@ for (id in subj) {
   beta   <- FIT[id, 3]; #take beta values from third column 
   weight <- FIT[id, 4]; #take weight values from fourth column
   
-  for (block in c(1:6)) {
+  for (block in c(1:12)) {
     
     Q    <- matrix(0.5, 1, 2) # 1 row, 2 columns 
     PROB <- matrix(0.5, 1, 2) 
@@ -237,8 +286,8 @@ sim_data <- merged_dat
 
 setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents")
 
-sim_data <- write.table(merged_dat, file = "agents_weight_6blocks_30trials.txt", 
+sim_data <- write.table(merged_dat, file = "agents_weight_12blocks_30trials.txt", 
                         row.names = FALSE, col.names = FALSE)
 
-sampled_values <- write.table(FIT, file = "agents_weight_6blocks_30trials_parameters.txt",
+sampled_values <- write.table(FIT, file = "agents_weight_12blocks_30trials_parameters.txt",
                               row.names = FALSE, col.names = FALSE)

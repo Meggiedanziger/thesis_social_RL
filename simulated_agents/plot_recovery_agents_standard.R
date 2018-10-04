@@ -1,12 +1,12 @@
 rm(list = ls()) #delete workspace
-setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL")
+setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents")
 
 ########################### PARAMETER RECOVERY SIMULATED AGENTS STANDARD RL MODEL 6 BLOCKS 30 TRIALS
 ####################################################################################################
 
 #read in ex ante fitted data
 modelfit <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/modelfit_agents_standard_RL_6blocks_30trials.txt", 
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/modelfit_agents_standard_RL_18blocks_30trials.txt", 
              " ", col_names = F, trim_ws = TRUE)
 
 names(modelfit)[1] <- "LL"
@@ -18,6 +18,8 @@ names(modelfit)[6] <- "id"
 names(modelfit)[7] <- "alpha_sim"
 names(modelfit)[8] <- "beta_sim"
 
+#if outliers need to be removed
+#modelfit_new <- modelfit[-5, ] 
 
 corr_alpha <- cor.test(modelfit$alpha_sim, modelfit$alpha_fit)
 corr_alpha
@@ -31,7 +33,7 @@ recovery_alpha <-
   scale_x_continuous(breaks = seq(0, 1.0, 0.2)) +
   xlab(expression(paste("Simulated ", alpha, " values"))) +
   ylab(expression(paste("Estimated ", alpha, " values"))) +
-  annotate("text", x = 0.95, y = 0.1, label = "italic(r) == .", parse = T, size = 4) +
+  annotate("text", x = 0.7, y = 0.02, label = "italic(r) == .94", parse = T, size = 4) +
   theme_classic()
 recovery_alpha
 
@@ -47,6 +49,6 @@ recovery_beta <-
   scale_x_continuous(breaks = seq(0, 10, 2)) +
   xlab(expression(paste("Simulated ", beta, " values"))) +
   ylab(expression(paste("Estimated ", beta, " values"))) +
-  annotate("text", x = 9.5, y = 0.4, label = "italic(r) == .", parse = T, size = 4) +
+  annotate("text", x = 8, y = 0.4, label = "italic(r) == .87", parse = T, size = 4) +
   theme_classic()
 recovery_beta

@@ -39,8 +39,7 @@ median(alpha)
 
 alphabox <- 
   ggplot(aes(x = 1, y = alpha), data = alpha_df) +
-  geom_boxplot(width = 0.3, outlier.colour = "red", outlier.alpha = 0.6, outlier.size = 2) +
-  geom_jitter(size = 2, width = 0.05, height = 0.0, color = "red", alpha = 0.6) +
+  geom_boxplot(width = 0.3, outlier.colour = "red", outlier.alpha = 0.6, outlier.size = 2.5) +
   theme_classic() +
   theme(axis.title.x = element_blank(),
         axis.text.x = element_blank(),
@@ -48,6 +47,11 @@ alphabox <-
   ylab(expression(paste("Simulated ", alpha, " values"))) +
   theme(panel.background = element_rect(fill = "white", colour = "black"))
 alphabox
+
+dat <- ggplot_build(alphabox)$data[[1]]
+alphabox + 
+  geom_segment(aes(x = xmin, xend = xmax, y = middle, yend = middle), data = dat, colour = "blue", size = 1.3) +
+  geom_jitter(size = 2.5, width = 0.05, height = 0.0, color = "red", alpha = 0.6)
   
 
 #plot histrogram of alpha values to inspect distribution of sampled avlues
@@ -91,8 +95,7 @@ median(beta)
 
 betabox <- 
   ggplot(aes(x = 1, y = beta), data = beta_df) +
-  geom_boxplot(width = 0.15, outlier.color = "limegreen", outlier.alpha = 0.7, outlier.size = 2) +
-  geom_jitter(size = 2, width = 0.05, height = 0.0, color = "limegreen", alpha = 0.7) +
+  geom_boxplot(width = 0.15, outlier.color = "limegreen", outlier.alpha = 0.7, outlier.size = 2.5) +
   scale_y_continuous(breaks = seq(0, 10, 2)) +
   theme_classic() +
   theme(axis.title.x = element_blank(),
@@ -101,6 +104,11 @@ betabox <-
   ylab(expression(paste("Simulated ", beta, " values"))) +
   theme(panel.background = element_rect(fill = "white", colour = "black"))
 betabox
+
+dat <- ggplot_build(betabox)$data[[1]]
+betabox + 
+  geom_segment(aes(x = xmin, xend = xmax, y = middle, yend = middle), data = dat, colour = "blue", size = 1.3) +
+  geom_jitter(size = 2.5, width = 0.05, height = 0.0, color = "limegreen", alpha = 0.7)
 
 #plot histrogram of beta values to inspect distribution of sampled avlues
 ggplot(beta_df, aes(x = beta, binwidth = binwidth, n = n)) +
@@ -121,14 +129,14 @@ num  = 50
 subj = c(1:50)
 
 #determine prediction of the model with best parameter estimates
-cchoice      <- array(0, c(50, 6, 30))
-R            <- array(0, c(50, 6, 30))
-Prob         <- array(0, c(50, 6, 30))
-Feed         <- array(0, c(50, 6, 30))
-Feed_c       <- array(0, c(50, 6, 30))
-Feed_i       <- array(0, c(50, 6, 30))
-Prob_correct <- array(0, c(50, 6, 30))
-PE <- Q_all  <- array(0, c(50, 6, 30))
+cchoice      <- array(0, c(50, 24, 30))
+R            <- array(0, c(50, 24, 30))
+Prob         <- array(0, c(50, 24, 30))
+Feed         <- array(0, c(50, 24, 30))
+Feed_c       <- array(0, c(50, 24, 30))
+Feed_i       <- array(0, c(50, 24, 30))
+Prob_correct <- array(0, c(50, 24, 30))
+PE <- Q_all  <- array(0, c(50, 24, 30))
 
 
 
@@ -142,7 +150,7 @@ for (id in subj) {
   alpha <- FIT[id, 2]; #take alpha values from second column 
   beta  <- FIT[id, 3]; #take beta values from third column 
   
-  for (block in c(1:6)) {
+  for (block in c(1:24)) {
     
     Q    <- matrix(0.5, 1, 2) # 1 row, 2 columns 
     PROB <- matrix(0.5, 1, 2) 
@@ -197,9 +205,9 @@ plot(acc)
 
 sim_data <- merged_dat
 
-sim_data <- write.table(merged_dat, file = "agents_standard_RL_6blocks_30trials.txt", 
+sim_data <- write.table(merged_dat, file = "agents_standard_RL_24blocks_30trials.txt", 
                         row.names = FALSE, col.names = FALSE)
 
-sampled_values <- write.table(FIT, file = "agents_standard_RL_6blocks_30trials_parameters.txt",
+sampled_values <- write.table(FIT, file = "agents_standard_RL_24blocks_30trials_parameters.txt",
                               row.names = FALSE, col.names = FALSE)
 
