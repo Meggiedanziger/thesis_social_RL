@@ -37,6 +37,14 @@ max(alpha)
 mean(alpha)
 median(alpha)
 
+alpha_df$id <- c(1:50)
+
+ggplot(aes(x = id, y = alpha), data = alpha_df) +
+  geom_point(size = 2.5, color = "red", alpha = 0.6) +
+  xlab("Simulated agent") +
+  ylab(expression(paste("Simulated ", alpha, " values"))) +
+  theme_classic()
+
 alphabox <- 
   ggplot(aes(x = 1, y = alpha), data = alpha_df) +
   geom_boxplot(width = 0.3, outlier.colour = "red", outlier.alpha = 0.6, outlier.size = 2.5) +
@@ -92,6 +100,14 @@ min(beta)
 max(beta)
 mean(beta)
 median(beta)
+
+beta_df$id <- c(1:50)
+
+ggplot(aes(x = id, y = beta), data = beta_df) +
+  geom_point(size = 2.5, color = "limegreen", alpha = 0.6) +
+  xlab("Simulated agent") +
+  ylab(expression(paste("Simulated ", beta, " values"))) +
+  theme_classic()
 
 betabox <- 
   ggplot(aes(x = 1, y = beta), data = beta_df) +
@@ -152,18 +168,14 @@ mean(weight)
 median(weight)
 
 #determine whether weight is positive or negative
-set.seed(123)
-d <- seq(0, 1, length = 10000)
-d
-test4 <- rbeta(d, 4, 4)
-test4
-hist(test4)
-plot(test4)
+set.seed(234)
+n = 100000
+pop_d <- rbeta(n, 4, 4)
+hist(pop_d)
 
 #sample d values to determine which of the weight values is positive or negative
-set.seed(123)
-determ <- sample(test4, 50)
-
+set.seed(234)
+determ <- sample(pop_d, 50)
 sum(determ < 0.5) #check if equally many are positive or negative
 
 determ_t <- ifelse(determ < 0.5, 1, -1) #transform all values below 0.5 to -1, all above to 1
@@ -176,6 +188,13 @@ weight_df <- as.data.frame(weight)
 median(weight_df$weight)
 mean(weight_df$weight)
 
+weight_df$id <- c(1:50)
+
+ggplot(aes(x = id, y = weight), data = weight_df) +
+  geom_point(size = 2.5, color = "sienna1", alpha = 0.8) +
+  xlab("Simulated agent") +
+  ylab(expression(paste("Simulated ", omega, " values"))) +
+  theme_classic()
 
 weightbox <- 
   ggplot(aes(x = 1, y = weight), data = weight_df) +
@@ -207,14 +226,14 @@ num  = 50
 subj = c(1:50)
 
 #determine prediction of the model with best parameter estimates
-cchoice      <- array(0, c(50, 12, 30))
-R            <- array(0, c(50, 12, 30))
-Prob         <- array(0, c(50, 12, 30))
-Feed         <- array(0, c(50, 12, 30))
-Feed_c       <- array(0, c(50, 12, 30))
-Feed_i       <- array(0, c(50, 12, 30))
-Prob_correct <- array(0, c(50, 12, 30))
-PE <- Q_all  <- array(0, c(50, 12, 30))
+cchoice      <- array(0, c(50, 18, 30))
+R            <- array(0, c(50, 18, 30))
+Prob         <- array(0, c(50, 18, 30))
+Feed         <- array(0, c(50, 18, 30))
+Feed_c       <- array(0, c(50, 18, 30))
+Feed_i       <- array(0, c(50, 18, 30))
+Prob_correct <- array(0, c(50, 18, 30))
+PE <- Q_all  <- array(0, c(50, 18, 30))
 
 
 
@@ -229,7 +248,7 @@ for (id in subj) {
   beta   <- FIT[id, 3]; #take beta values from third column 
   weight <- FIT[id, 4]; #take weight values from fourth column
   
-  for (block in c(1:12)) {
+  for (block in c(1:18)) {
     
     Q    <- matrix(0.5, 1, 2) # 1 row, 2 columns 
     PROB <- matrix(0.5, 1, 2) 
@@ -286,8 +305,8 @@ sim_data <- merged_dat
 
 setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents")
 
-sim_data <- write.table(merged_dat, file = "agents_weight_12blocks_30trials.txt", 
+sim_data <- write.table(merged_dat, file = "agents_weight_18blocks_30trials.txt", 
                         row.names = FALSE, col.names = FALSE)
 
-sampled_values <- write.table(FIT, file = "agents_weight_12blocks_30trials_parameters.txt",
+sampled_values <- write.table(FIT, file = "agents_weight_18blocks_30trials_parameters.txt",
                               row.names = FALSE, col.names = FALSE)

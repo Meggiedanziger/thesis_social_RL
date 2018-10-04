@@ -37,6 +37,14 @@ max(alpha)
 mean(alpha)
 median(alpha)
 
+alpha_df$id <- c(1:50)
+
+ggplot(aes(x = id, y = alpha), data = alpha_df) +
+  geom_point(size = 2.5, color = "red", alpha = 0.6) +
+  xlab("Simulated agent") +
+  ylab(expression(paste("Simulated ", alpha, " values"))) +
+  theme_classic()
+
 alphabox <- 
   ggplot(aes(x = 1, y = alpha), data = alpha_df) +
   geom_boxplot(width = 0.3, outlier.colour = "red", outlier.alpha = 0.6, outlier.size = 2.5) +
@@ -92,6 +100,14 @@ min(beta)
 max(beta)
 mean(beta)
 median(beta)
+
+beta_df$id <- c(1:50)
+
+ggplot(aes(x = id, y = beta), data = beta_df) +
+  geom_point(size = 2.5, color = "limegreen", alpha = 0.6) +
+  xlab("Simulated agent") +
+  ylab(expression(paste("Simulated ", beta, " values"))) +
+  theme_classic()
 
 betabox <- 
   ggplot(aes(x = 1, y = beta), data = beta_df) +

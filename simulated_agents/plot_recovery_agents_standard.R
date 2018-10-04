@@ -6,7 +6,7 @@ setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents")
 
 #read in ex ante fitted data
 modelfit <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/modelfit_agents_standard_RL_18blocks_30trials.txt", 
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/modelfit_agents_standard_RL_6blocks_30trials.txt", 
              " ", col_names = F, trim_ws = TRUE)
 
 names(modelfit)[1] <- "LL"
@@ -52,3 +52,9 @@ recovery_beta <-
   annotate("text", x = 8, y = 0.4, label = "italic(r) == .87", parse = T, size = 4) +
   theme_classic()
 recovery_beta
+
+
+
+
+
+
