@@ -121,14 +121,14 @@ num  = 50
 subj = c(1:50)
 
 #determine prediction of the model with best parameter estimates
-cchoice      <- array(0, c(50, 12, 30))
-R            <- array(0, c(50, 12, 30))
-Prob         <- array(0, c(50, 12, 30))
-Feed         <- array(0, c(50, 12, 30))
-Feed_c       <- array(0, c(50, 12, 30))
-Feed_i       <- array(0, c(50, 12, 30))
-Prob_correct <- array(0, c(50, 12, 30))
-PE <- Q_all  <- array(0, c(50, 12, 30))
+cchoice      <- array(0, c(50, 6, 30))
+R            <- array(0, c(50, 6, 30))
+Prob         <- array(0, c(50, 6, 30))
+Feed         <- array(0, c(50, 6, 30))
+Feed_c       <- array(0, c(50, 6, 30))
+Feed_i       <- array(0, c(50, 6, 30))
+Prob_correct <- array(0, c(50, 6, 30))
+PE <- Q_all  <- array(0, c(50, 6, 30))
 
 
 
@@ -142,10 +142,10 @@ for (id in subj) {
   alpha <- FIT[id, 2]; #take alpha values from second column 
   beta  <- FIT[id, 3]; #take beta values from third column 
   
-  for (block in c(1:12)) {
+  for (block in c(1:6)) {
     
-    Q    <- matrix(0, 1, 2) # 1 row, 2 columns 
-    PROB <- matrix(0, 1, 2) 
+    Q    <- matrix(0.5, 1, 2) # 1 row, 2 columns 
+    PROB <- matrix(0.5, 1, 2) 
     
     for (trial in c(1:30)) {
       
@@ -197,8 +197,9 @@ plot(acc)
 
 sim_data <- merged_dat
 
-sim_data <- write.table(merged_dat, file = "agents_standard_RL_12blocks_30trials.txt", 
+sim_data <- write.table(merged_dat, file = "agents_standard_RL_6blocks_30trials.txt", 
                         row.names = FALSE, col.names = FALSE)
 
-sampled_values <- write.table(FIT, file = "agents_standard_RL_12blocks_30trials_parameters.txt",
+sampled_values <- write.table(FIT, file = "agents_standard_RL_6blocks_30trials_parameters.txt",
                               row.names = FALSE, col.names = FALSE)
+

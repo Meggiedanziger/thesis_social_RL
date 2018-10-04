@@ -33,8 +33,8 @@ for (id in subj) {
   
   for (block in c(1:24)) {
     
-    Q    <- matrix(0, 1, 2) # 1 row, 4 col 
-    PROB <- matrix(0, 1, 2) 
+    Q    <- matrix(0.5, 1, 2) # 1 row, 4 col 
+    PROB <- matrix(0.5, 1, 2) 
     
     for (trial in c(1:60)) {
       

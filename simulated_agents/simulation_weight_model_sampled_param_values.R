@@ -1,5 +1,5 @@
 rm(list = ls()) #delete workspace
-setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents") #set working directory
+setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL") #set working directory
 getwd()
 
 #load required packages
@@ -19,9 +19,12 @@ pop_alphadf <- as.data.frame(pop_alpha)
 ggplot(pop_alphadf, aes(x = pop_alpha, binwidth = binwidth, n = n)) +
   geom_histogram(binwidth = binwidth, colour = "white", fill = "steelblue3", size = 0.1) +
   stat_function(fun = function(x) dbeta(x, 1.5, 5.5) * n * binwidth, color = "firebrick1", size = 1) +
+  scale_x_continuous(breaks = seq(0, 1.0, 0.2)) +
   xlab("x") +
   ylab("Frequency") +
-  theme_classic() 
+  ggtitle(expression(paste("Beta distribution with ", alpha, " = 1.5, " , beta, " = 5.5 "))) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 
 #sample alpha values
 set.seed(234)
@@ -33,7 +36,19 @@ min(alpha)
 max(alpha)
 mean(alpha)
 median(alpha)
-boxplot(alpha) # noch schöner plotten
+
+alphabox <- 
+  ggplot(aes(x = 1, y = alpha), data = alpha_df) +
+  geom_boxplot(width = 0.3, outlier.colour = "red", outlier.alpha = 0.6, outlier.size = 2) +
+  geom_jitter(size = 2, width = 0.05, height = 0.0, color = "red", alpha = 0.6) +
+  theme_classic() +
+  theme(axis.title.x = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank()) +
+  ylab(expression(paste("Simulated ", alpha, " values"))) +
+  theme(panel.background = element_rect(fill = "white", colour = "black"))
+alphabox
+
 
 #plot histrogram of alpha values to inspect distribution of sampled avlues
 ggplot(alpha_df, aes(x = alpha, binwidth = binwidth, n = n)) +
@@ -41,24 +56,26 @@ ggplot(alpha_df, aes(x = alpha, binwidth = binwidth, n = n)) +
   stat_function(fun = function(x) dbeta(x, 1.5, 5.5) * n * binwidth, color = "firebrick1", size = 1) +
   xlab("Sampled alpha values") +
   ylab("Frequency") +
-  theme_classic()
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 
 
 #create beta distribution from which to sample beta values
 set.seed(234)
 n = 100000
 binwidth = 0.5
-pop_beta   <- rinvgauss(n, 1.5, 1)
+pop_beta <- rinvgauss(n, 1.5, 1)
 pop_betadf <- as.data.frame(pop_beta)
-
 
 #plot distribution and density function
 ggplot(pop_betadf, aes(x = pop_beta, binwidth = binwidth, n = n)) +
   geom_histogram(binwidth = binwidth, colour = "white", fill = "steelblue3", size = 0.1) +
-  stat_function(fun = function(x) dinvgauss(x, 1.5, 1) * n * binwidth, color = "firebrick1", size = 0.5) +
+  stat_function(fun = function(x) dinvgauss(x, 1.5, 1) * n * binwidth, color = "firebrick1", size = 0.7) +
+  ggtitle(expression(paste("Inverse Gaussian distribution with  ", mu, " = 1.5, " , lambda, " = 1) "))) +
+  #scale_x_continuous(breaks = seq(0, 30, 5)) +
   xlab("x") +
   ylab("Frequency") +
-  theme_classic()
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 
 
 #sample beta values
@@ -71,17 +88,27 @@ min(beta)
 max(beta)
 mean(beta)
 median(beta)
-boxplot(beta) # noch schöner plotten
+
+betabox <- 
+  ggplot(aes(x = 1, y = beta), data = beta_df) +
+  geom_boxplot(width = 0.15, outlier.color = "limegreen", outlier.alpha = 0.7, outlier.size = 2) +
+  geom_jitter(size = 2, width = 0.05, height = 0.0, color = "limegreen", alpha = 0.7) +
+  scale_y_continuous(breaks = seq(0, 10, 2)) +
+  theme_classic() +
+  theme(axis.title.x = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank()) +
+  ylab(expression(paste("Simulated ", beta, " values"))) +
+  theme(panel.background = element_rect(fill = "white", colour = "black"))
+betabox
 
 #plot histrogram of beta values to inspect distribution of sampled avlues
 ggplot(beta_df, aes(x = beta, binwidth = binwidth, n = n)) +
   geom_histogram(binwidth = binwidth, colour = "white", fill = "steelblue3", size = 0.1) +
-  stat_function(fun = function(x) dinvgauss(x, 1, 1) * n * binwidth, color = "firebrick1", size = 0.7)+
+  stat_function(fun = function(x) dinvgauss(x, 1.5, 1) * n * binwidth, color = "firebrick1", size = 0.7)+
   xlab("Sampled beta values") +
   ylab("Frequency") +
-  theme_classic()
-
-
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 
 
 
@@ -125,19 +152,20 @@ sampling_df <- cbind(alpha_df, beta_df, weight_df)
 
 
 
-#run simulation to create 50 data sets with 4 blocks and 20 trials
+#--------------------------------------------------------------------------------
+#run simulation to create 50 data sets with 12 blocks and 30 trials
 num  = 50
 subj = c(1:50)
 
 #determine prediction of the model with best parameter estimates
-cchoice      <- array(0, c(50, 12, 30))
-R            <- array(0, c(50, 12, 30))
-Prob         <- array(0, c(50, 12, 30))
-Feed         <- array(0, c(50, 12, 30))
-Feed_c       <- array(0, c(50, 12, 30))
-Feed_i       <- array(0, c(50, 12, 30))
-Prob_correct <- array(0, c(50, 12, 30))
-PE <- Q_all  <- array(0, c(50, 12, 30))
+cchoice      <- array(0, c(50, 6, 30))
+R            <- array(0, c(50, 6, 30))
+Prob         <- array(0, c(50, 6, 30))
+Feed         <- array(0, c(50, 6, 30))
+Feed_c       <- array(0, c(50, 6, 30))
+Feed_i       <- array(0, c(50, 6, 30))
+Prob_correct <- array(0, c(50, 6, 30))
+PE <- Q_all  <- array(0, c(50, 6, 30))
 
 
 
@@ -152,10 +180,10 @@ for (id in subj) {
   beta   <- FIT[id, 3]; #take beta values from third column 
   weight <- FIT[id, 4]; #take weight values from fourth column
   
-  for (block in c(1:12)) {
+  for (block in c(1:6)) {
     
-    Q    <- matrix(0, 1, 2) # 1 row, 2 columns 
-    PROB <- matrix(0, 1, 2) 
+    Q    <- matrix(0.5, 1, 2) # 1 row, 2 columns 
+    PROB <- matrix(0.5, 1, 2) 
     
     for (trial in c(1:30)) {
       
@@ -207,8 +235,10 @@ plot(acc)
 
 sim_data <- merged_dat
 
-sim_data <- write.table(merged_dat, file = ".txt", 
+setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents")
+
+sim_data <- write.table(merged_dat, file = "agents_weight_6blocks_30trials.txt", 
                         row.names = FALSE, col.names = FALSE)
 
-sampled_values <- write.table(FIT, file = ".txt",
+sampled_values <- write.table(FIT, file = "agents_weight_6blocks_30trials_parameters.txt",
                               row.names = FALSE, col.names = FALSE)

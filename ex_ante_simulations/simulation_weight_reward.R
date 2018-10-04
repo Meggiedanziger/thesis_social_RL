@@ -35,8 +35,8 @@ for (id in subj) {
     
   for (block in c(1:12)) {
     
-    Q    <- matrix(0, 1, 2) # 1 row, 2 columns
-    PROB <- matrix(0, 1, 2) 
+    Q    <- matrix(0.5, 1, 2) # 1 row, 2 columns
+    PROB <- matrix(0.5, 1, 2) 
     
     for (trial in c(1:60)) {
       

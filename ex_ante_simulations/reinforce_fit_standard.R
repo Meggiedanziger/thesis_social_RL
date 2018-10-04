@@ -76,6 +76,7 @@ names(parameter_sim)[3] <- "beta_sim"
 recovery_df <- cbind(modelfit_standard, parameter_sim)
 
 corr_alpha <- cor.test(recovery_df$alpha_sim, recovery_df$alpha_fit)
+corr_alpha
 
 recovery_alpha <-
   ggplot(aes(x = alpha_sim, y = alpha_fit, color = alpha_sim), data = recovery_df) +
@@ -87,9 +88,10 @@ recovery_alpha <-
   xlab("Simulated alpha values") +
   ylab("Estimated alpha values") +
   theme_classic()
-
+recovery_alpha
 
 corr_beta <- cor.test(recovery_df$beta_sim, recovery_df$beta_fit)
+corr_beta
 
 recovery_beta <-
   ggplot(aes(x = beta_sim, y = beta_fit, color = beta_sim), data = recovery_df) +
@@ -101,7 +103,7 @@ recovery_beta <-
   xlab("Simulated beta values") +
   ylab("Estimated beta values") +
   theme_classic()
-
+recovery_beta
 
 modelfit_standard <- write.table(recovery_df, file = "modelfit_standard_RL_24blocks_60trials.txt", 
                                        row.names = FALSE, col.names = FALSE)
