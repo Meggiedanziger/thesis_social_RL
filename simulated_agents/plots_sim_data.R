@@ -48,13 +48,28 @@ plot_data2 <-
 
 ggplot(plot_data2, aes(x = trial, y = accuracy)) +
   geom_jitter(size = 1.5, width = 0.5, height = 0.1, color = "steelblue4", alpha = 0.4) +
-  geom_smooth(color = "tomato", se = T, fill = "sienna1", alpha = 0.6) +
+  geom_smooth(size = 1, color = "tomato", se = T, fill = "sienna1", alpha = 0.6) +
+  xlab("Trials") + 
+  ylab("Accuracy") +
+  scale_x_continuous(breaks = seq(10, 30, 10)) +
+  scale_y_continuous(breaks = seq(0.1, 1.0, 0.2)) +
+  theme_classic() +
+  theme(axis.title.x = element_text(size = 13)) + 
+  theme(axis.title.y = element_text(size = 13))+
+  theme(axis.text = element_text(size = 11, colour = "black"))
+
+ggplot(plot_data2, aes(x = trial, y = accuracy)) +
+  geom_point(size = 1.2, color = "steelblue4", alpha = 0.7) +
+  geom_smooth(size = 0.7, color = "tomato", se = F, fill = "sienna1", alpha = 0.6) +
   xlab("Trials") + 
   ylab("Accuracy") + 
-  scale_y_continuous(breaks = seq(0, 1.0, 0.2)) +
-  #scale_x_continuous(breaks = seq(1, , 1)) +
-  theme_classic()
-
+  scale_x_continuous(breaks = seq(5, 30, 10)) +
+  scale_y_continuous(breaks = seq(0, 1.0, 0.5)) +
+  theme_classic() +
+  theme(axis.title.x = element_text(size = 13)) + 
+  theme(axis.title.y = element_text(size = 13))+
+  theme(axis.text = element_text(size = 9, colour = "black")) +
+  facet_wrap(~ id)
 
 
 #plot frequencies of choices as barplot
@@ -123,13 +138,25 @@ plot_data2 <-
 
 ggplot(plot_data2, aes(x = trial, y = accuracy)) +
   geom_jitter(size = 1.5, width = 0.5, height = 0.05, color = "steelblue4", alpha = 0.4) +
-  geom_smooth(color = "tomato", se = T, fill = "sienna1", alpha = 0.4) +
+  geom_smooth(size = 1, color = "tomato", se = T, fill = "sienna1", alpha = 0.4) +
   xlab("Trials") + 
   ylab("Accuracy") + 
-  scale_y_continuous(breaks = seq(0, 1.0, 0.2)) +
-  #scale_x_continuous(breaks = seq(1, , 1)) +
+  scale_y_continuous(breaks = seq(0, 1.0, 0.25)) +
+  scale_x_continuous(breaks = seq(5, 30, 10)) +
   theme_classic()
 
+ggplot(plot_data2, aes(x = trial, y = accuracy)) +
+  geom_point(size = 1.2, color = "steelblue4", alpha = 0.7) +
+  geom_smooth(size = 0.7, color = "tomato", se = F, fill = "sienna1", alpha = 0.6) +
+  xlab("Trials") + 
+  ylab("Accuracy") + 
+  scale_x_continuous(breaks = seq(5, 30, 10)) +
+  scale_y_continuous(breaks = seq(0, 1.0, 0.5)) +
+  theme_classic() +
+  theme(axis.title.x = element_text(size = 13)) + 
+  theme(axis.title.y = element_text(size = 13))+
+  theme(axis.text = element_text(size = 9, colour = "black")) +
+  facet_wrap(~ id)
 
 
 #plot frequencies of choices as barplot

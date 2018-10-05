@@ -71,7 +71,7 @@ ggplot(alpha_df, aes(x = alpha, binwidth = binwidth, n = n)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 
 
-#create beta distribution from which to sample beta values
+#create Inverse Gaussian distribution from which to sample beta values
 set.seed(123)
 n = 100000
 binwidth = 0.5
