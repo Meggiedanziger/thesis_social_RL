@@ -36,5 +36,4 @@ reinforce_weight <- function(param, subj, data) {
     }
   }
   return(-2*LL)
-  
 }

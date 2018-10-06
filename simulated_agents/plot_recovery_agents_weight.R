@@ -59,7 +59,7 @@ recovery_weight <-
   ggplot(aes(x = weight_sim, y = weight_fit, color = weight_sim), data = modelfit) +
   geom_point(size = 3, alpha = 0.6) +
   geom_smooth(method = "glm", color = "gray31", se = F, fill = "red", alpha = 0.2) +
-  scale_color_gradient(low = "blue", high = "sienna1", expression(paste("Simulated ", omega, " values"))) +
+  scale_color_gradient(low = "dodgerblue3", high = "sienna1", expression(paste("Simulated ", omega, " values"))) +
   scale_y_continuous(breaks = seq(-1, 1.0, 0.2)) +
   scale_x_continuous(breaks = seq(-1, 1.0, 0.2)) +
   xlab(expression(paste("Simulated ", omega, " values"))) +

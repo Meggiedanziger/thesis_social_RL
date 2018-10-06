@@ -7,7 +7,7 @@ library(readr)
 
 
 sim_data <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_standard_RL_6blocks_30trials.txt", 
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_weight_6blocks_30trials.txt", 
                        " ", col_names = F, 
                        trim_ws = TRUE)
 
@@ -66,14 +66,14 @@ names(modelfit_weight)[6] <- "AIC"
 
 #read in parameter data from simulation
 parameter_sim <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_standard_RL_6blocks_30trials_parameters.txt", 
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_weight_6blocks_30trials_parameters.txt", 
                        " ", col_names = F, 
                        trim_ws = TRUE)
 
 names(parameter_sim)[1] <- "id"
 names(parameter_sim)[2] <- "alpha_sim"
 names(parameter_sim)[3] <- "beta_sim"
-#names(parameter_sim)[4] <- "weight_sim"
+names(parameter_sim)[4] <- "weight_sim"
 
 
 recovery_df <- cbind(modelfit_weight, parameter_sim)
@@ -128,6 +128,6 @@ recovery_weight
 #############Boxplots fit und sim vergleichen
 
 setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents")
-modelfit_standard <- write.table(recovery_df, file = "modelfit_agents_weighttostandard_6blocks_30trials.txt", 
+modelfit_standard <- write.table(recovery_df, file = "modelfit_agents_weight_6blocks_30trials.txt", 
                                  row.names = FALSE, col.names = FALSE)
 

@@ -6,7 +6,7 @@ library(tidyverse)
 #read in data
 library(readr)
 
-sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/ex_ante_simulation_weight_model_18blocks_100trials.txt", 
+sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/ex_ante_simulation_2lrates_12blocks_100trials.txt", 
                        " ", escape_double = FALSE, col_names = F, 
                        trim_ws = TRUE)
 
@@ -66,7 +66,6 @@ ggplot(plot_data1, aes(x = lrate, y = mean_acc)) +
 plot_data2 <-
   sim_data %>% 
   group_by(id, trial) %>% 
-  filter(id == 240) %>% 
   summarize(accuracy = mean(chosen_option))
 
 ggplot(plot_data2, aes(x = trial, y = accuracy)) +
@@ -102,7 +101,7 @@ plot_bar <-
 
 ggplot(plot_bar, aes(x = chosen_option)) +
   geom_bar(aes(y = (..count..)/sum(..count..))) +
-  facet_wrap( ~ id, nrow = 2, ncol = 5) +
+  #facet_wrap( ~ id, nrow = 2, ncol = 5) +
   xlab("chosen option") +
   ylab("percentage of choices") +
   scale_x_continuous(breaks = seq(1, 2, 1)) +
