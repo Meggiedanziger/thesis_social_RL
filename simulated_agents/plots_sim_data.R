@@ -66,10 +66,11 @@ ggplot(plot_data2, aes(x = trial, y = accuracy)) +
   scale_x_continuous(breaks = seq(5, 30, 10)) +
   scale_y_continuous(breaks = seq(0, 1.0, 0.5)) +
   theme_classic() +
-  theme(axis.title.x = element_text(size = 13)) + 
-  theme(axis.title.y = element_text(size = 13))+
-  theme(axis.text = element_text(size = 9, colour = "black")) +
-  facet_wrap(~ id)
+  theme(axis.title.x = element_text(size = 12)) + 
+  theme(axis.title.y = element_text(size = 12))+
+  theme(axis.text = element_text(size = 11, colour = "black")) +
+  facet_wrap(~ id, ncol = 10, nrow = 5)
+
 
 
 #plot frequencies of choices as barplot
@@ -99,7 +100,7 @@ ggplot(plot_bar, aes(x = chosen_option, fill = chosen_option)) +
 #--------------------------------------------------------------------------------------------------------------------------------------
 
 #read in simulated agents data weight RL model
-sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_weight_6blocks_30trials.txt", 
+sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_weight_24blocks_30trials.txt", 
                        " ", escape_double = FALSE, col_names = F, 
                        trim_ws = TRUE)
 
@@ -111,7 +112,7 @@ names(sim_data)[4] <- "chosen_option"
 names(sim_data)[5] <- "feedback"
 
 
-param_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_weight_6blocks_30trials_parameters.txt", 
+param_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_weight_24blocks_30trials_parameters.txt", 
                        " ", escape_double = FALSE, col_names = F, 
                        trim_ws = TRUE)
 
@@ -170,12 +171,14 @@ ggplot(plot_data2, aes(x = trial, y = accuracy, color = weight_sim)) +
   xlab("Trials") + 
   ylab("Accuracy") + 
   scale_x_continuous(breaks = seq(5, 30, 10)) +
-  scale_y_continuous(breaks = seq(0, 1.0, 0.5)) +
+  scale_y_continuous(breaks = seq(0.5, 1.0, 0.5)) +
   theme_classic() +
-  theme(axis.title.x = element_text(size = 14)) + 
-  theme(axis.title.y = element_text(size = 14))+
-  theme(axis.text = element_text(size = 12, colour = "black")) +
-  facet_wrap(~ id)
+  theme(axis.title.x = element_text(size = 12)) + 
+  theme(axis.title.y = element_text(size = 12))+
+  theme(axis.text = element_text(size = 11, colour = "black")) +
+  theme(legend.title = element_text(size = 12)) +
+  theme(legend.text = element_text(size = 11)) +
+  facet_wrap(~ id, ncol = 10, nrow = 5)
 
 
 #plot frequencies of choices as barplot

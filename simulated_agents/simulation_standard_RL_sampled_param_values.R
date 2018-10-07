@@ -37,7 +37,7 @@ max(alpha)
 mean(alpha)
 median(alpha)
 
-alpha_df$id <- c(1:50)
+#alpha_df$id <- c(1:50)
 
 ggplot(aes(x = id, y = alpha), data = alpha_df) +
   geom_point(size = 2.5, color = "red", alpha = 0.6) +
@@ -96,12 +96,13 @@ n = 50
 binwidth = 0.2
 beta <- sample(pop_beta, n)
 beta_df <- as.data.frame(beta)
+
 min(beta)
 max(beta)
 mean(beta)
 median(beta)
 
-beta_df$id <- c(1:50)
+#beta_df$id <- c(1:50)
 
 ggplot(aes(x = id, y = beta), data = beta_df) +
   geom_point(size = 2.5, color = "limegreen", alpha = 0.6) +
@@ -136,6 +137,7 @@ ggplot(beta_df, aes(x = beta, binwidth = binwidth, n = n)) +
 
 
 
+
 #create data frame with alpha and beta parameter values
 sampling_df <- cbind(alpha_df, beta_df)
 
@@ -145,14 +147,14 @@ num  = 50
 subj = c(1:50)
 
 #determine prediction of the model with best parameter estimates
-cchoice      <- array(0, c(50, 24, 30))
-R            <- array(0, c(50, 24, 30))
-Prob         <- array(0, c(50, 24, 30))
-Feed         <- array(0, c(50, 24, 30))
-Feed_c       <- array(0, c(50, 24, 30))
-Feed_i       <- array(0, c(50, 24, 30))
-Prob_correct <- array(0, c(50, 24, 30))
-PE <- Q_all  <- array(0, c(50, 24, 30))
+cchoice      <- array(0, c(50, 6, 30))
+R            <- array(0, c(50, 6, 30))
+Prob         <- array(0, c(50, 6, 30))
+Feed         <- array(0, c(50, 6, 30))
+Feed_c       <- array(0, c(50, 6, 30))
+Feed_i       <- array(0, c(50, 6, 30))
+Prob_correct <- array(0, c(50, 6, 30))
+PE <- Q_all  <- array(0, c(50, 6, 30))
 
 
 
@@ -166,7 +168,7 @@ for (id in subj) {
   alpha <- FIT[id, 2]; #take alpha values from second column 
   beta  <- FIT[id, 3]; #take beta values from third column 
   
-  for (block in c(1:24)) {
+  for (block in c(1:6)) {
     
     Q    <- matrix(0.5, 1, 2) # 1 row, 2 columns 
     PROB <- matrix(0.5, 1, 2) 
@@ -180,7 +182,7 @@ for (id in subj) {
         cchoice [id, block, trial] <- sample(choice, 1, replace = FALSE, prob = P)
       }
       
-      feedback <- c(-10, 10)
+      feedback <- c(-20, 20)
       
       if (cchoice [id, block, trial] == 2) { #good option
         rew_prob <- c(.25, .75)
@@ -221,9 +223,9 @@ plot(acc)
 
 sim_data <- merged_dat
 
-sim_data <- write.table(merged_dat, file = "agents_standard_RL_24blocks_30trials.txt", 
+sim_data <- write.table(merged_dat, file = "agents_standard_RL_test.txt", 
                         row.names = FALSE, col.names = FALSE)
 
-sampled_values <- write.table(FIT, file = "agents_standard_RL_24blocks_30trials_parameters.txt",
+sampled_values <- write.table(FIT, file = "agents_standard_RL_test_params.txt",
                               row.names = FALSE, col.names = FALSE)
 

@@ -226,14 +226,14 @@ num  = 50
 subj = c(1:50)
 
 #determine prediction of the model with best parameter estimates
-cchoice      <- array(0, c(50, 12, 30))
-R            <- array(0, c(50, 12, 30))
-Prob         <- array(0, c(50, 12, 30))
-Feed         <- array(0, c(50, 12, 30))
-Feed_c       <- array(0, c(50, 12, 30))
-Feed_i       <- array(0, c(50, 12, 30))
-Prob_correct <- array(0, c(50, 12, 30))
-PE <- Q_all  <- array(0, c(50, 12, 30))
+cchoice      <- array(0, c(50, 6, 30))
+R            <- array(0, c(50, 6, 30))
+Prob         <- array(0, c(50, 6, 30))
+Feed         <- array(0, c(50, 6, 30))
+Feed_c       <- array(0, c(50, 6, 30))
+Feed_i       <- array(0, c(50, 6, 30))
+Prob_correct <- array(0, c(50, 6, 30))
+PE <- Q_all  <- array(0, c(50, 6, 30))
 
 
 
@@ -248,7 +248,7 @@ for (id in subj) {
   beta   <- FIT[id, 3]; #take beta values from third column 
   weight <- FIT[id, 4]; #take weight values from fourth column
   
-  for (block in c(1:12)) {
+  for (block in c(1:6)) {
     
     Q    <- matrix(0.5, 1, 2) # 1 row, 2 columns 
     PROB <- matrix(0.5, 1, 2) 
@@ -262,7 +262,7 @@ for (id in subj) {
         cchoice [id, block, trial] <- sample(choice, 1, replace = FALSE, prob = P)
       }
       
-      feedback <- c(-1, 1)
+      feedback <- c(-10, 10)
       
       if (cchoice [id, block, trial] == 2) { #good option
         rew_prob <- c(.25, .75)
@@ -305,8 +305,8 @@ sim_data <- merged_dat
 
 setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents")
 
-sim_data <- write.table(merged_dat, file = "agents_weight_12blocks_30trials_new.txt", 
+sim_data <- write.table(merged_dat, file = "agents_weight_6blocks_30trials.txt", 
                         row.names = FALSE, col.names = FALSE)
 
-sampled_values <- write.table(FIT, file = "agents_weight_12blocks_30trials_parameters_new.txt",
+sampled_values <- write.table(FIT, file = "agents_weight_6blocks_30trials_parameters.txt",
                               row.names = FALSE, col.names = FALSE)

@@ -8,7 +8,7 @@ library(readr)
 
 #read in data
 sim_data <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_weight_6blocks_30trials.txt", 
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_standard_RL_test.txt", 
              " ", col_names = F, trim_ws = TRUE)
 
 names(sim_data)[1] <- "id"
@@ -63,7 +63,7 @@ names(modelfit_standard)[5] <- "AIC"
 
 #read in parameter data from simulation
 parameter_sim <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_weight_6blocks_30trials_parameters.txt", 
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_standard_RL_test_params.txt", 
              " ", col_names = F, 
              trim_ws = TRUE)
 
