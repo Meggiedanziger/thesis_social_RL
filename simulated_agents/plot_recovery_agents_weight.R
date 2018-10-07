@@ -6,7 +6,7 @@ setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents")
 
 #read in ex ante fitted data
 modelfit <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/modelfit_agents_weight_6blocks_30trials.txt", 
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/modelfit_agents_weight_24blocks_30trials.txt", 
              " ", col_names = F, trim_ws = TRUE)
 
 names(modelfit)[1] <- "LL"
@@ -32,7 +32,7 @@ recovery_alpha <-
   scale_x_continuous(breaks = seq(0, 1.0, 0.2)) +
   xlab(expression(paste("Simulated ", alpha, " values"))) +
   ylab(expression(paste("Estimated ", alpha, " values"))) +
-  annotate("text", x = 0.7, y = 0.02, label = "italic(r) == .76", parse = T, size = 4) +
+  annotate("text", x = 0.62, y = 0.05, label = "italic(r) == .92", parse = T, size = 4) +
   theme_classic()
 recovery_alpha
 
@@ -44,11 +44,11 @@ recovery_beta <-
   geom_point(size = 3, alpha = 0.8) +
   geom_smooth(method = "glm", color = "gray31", se = F, fill = "red", alpha = 0.2) +
   scale_color_gradient(low = "dodgerblue3", high = "limegreen", expression(paste("Simulated ", beta, " values"))) +
-  scale_y_continuous(breaks = seq(0, 10, 2)) +
-  scale_x_continuous(breaks = seq(0, 10, 2)) +
+  scale_y_continuous(breaks = seq(0, 5, 1)) +
+  scale_x_continuous(breaks = seq(0, 5, 1)) +
   xlab(expression(paste("Simulated ", beta, " values"))) +
   ylab(expression(paste("Estimated ", beta, " values"))) +
-  annotate("text", x = 5, y = 1, label = "italic(r) == .40", parse = T, size = 4) +
+  annotate("text", x = 4.0, y = 0.2, label = "italic(r) == .74", parse = T, size = 4) +
   theme_classic()
 recovery_beta
 
@@ -64,6 +64,6 @@ recovery_weight <-
   scale_x_continuous(breaks = seq(-1, 1.0, 0.2)) +
   xlab(expression(paste("Simulated ", omega, " values"))) +
   ylab(expression(paste("Estimated ", omega, " values"))) +
-  annotate("text", x = 0.75, y = -0.9, label = "italic(r) == .83", parse = T, size = 4) +
+  annotate("text", x = 0.82, y = -0.97, label = "italic(r) == .88", parse = T, size = 4) +
   theme_classic()
 recovery_weight
