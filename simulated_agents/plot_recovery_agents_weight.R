@@ -32,8 +32,13 @@ recovery_alpha <-
   scale_x_continuous(breaks = seq(0, 1.0, 0.2)) +
   xlab(expression(paste("Simulated ", alpha, " values"))) +
   ylab(expression(paste("Estimated ", alpha, " values"))) +
-  annotate("text", x = 0.62, y = 0.05, label = "italic(r) == .92", parse = T, size = 4) +
-  theme_classic()
+  annotate("text", x = 0.61, y = 0.05, label = "italic(r) == .92", parse = T, size = 5) +
+  theme_classic() +
+  theme(axis.title.x = element_text(size = 15)) + 
+  theme(axis.title.y = element_text(size = 15))+
+  theme(axis.text = element_text(size = 13, colour = "black")) +
+  theme(legend.title = element_text(size = 15)) +
+  theme(legend.text = element_text(size = 13))
 recovery_alpha
 
 corr_beta <- cor.test(modelfit$beta_sim, modelfit$beta_fit)
@@ -44,12 +49,17 @@ recovery_beta <-
   geom_point(size = 3, alpha = 0.8) +
   geom_smooth(method = "glm", color = "gray31", se = F, fill = "red", alpha = 0.2) +
   scale_color_gradient(low = "dodgerblue3", high = "limegreen", expression(paste("Simulated ", beta, " values"))) +
-  scale_y_continuous(breaks = seq(0, 5, 1)) +
+  scale_y_continuous(breaks = seq(0, 10, 2)) +
   scale_x_continuous(breaks = seq(0, 5, 1)) +
   xlab(expression(paste("Simulated ", beta, " values"))) +
   ylab(expression(paste("Estimated ", beta, " values"))) +
-  annotate("text", x = 4.0, y = 0.2, label = "italic(r) == .74", parse = T, size = 4) +
-  theme_classic()
+  annotate("text", x = 3.9, y = 0.2, label = "italic(r) == .74", parse = T, size = 5) +
+  theme_classic() +
+  theme(axis.title.x = element_text(size = 15)) + 
+  theme(axis.title.y = element_text(size = 15))+
+  theme(axis.text = element_text(size = 13, colour = "black")) +
+  theme(legend.title = element_text(size = 15)) +
+  theme(legend.text = element_text(size = 13))
 recovery_beta
 
 corr_weight <- cor.test(modelfit$weight_sim, modelfit$weight_fit)
@@ -60,10 +70,15 @@ recovery_weight <-
   geom_point(size = 3, alpha = 0.6) +
   geom_smooth(method = "glm", color = "gray31", se = F, fill = "red", alpha = 0.2) +
   scale_color_gradient(low = "dodgerblue3", high = "sienna1", expression(paste("Simulated ", omega, " values"))) +
-  scale_y_continuous(breaks = seq(-1, 1.0, 0.2)) +
-  scale_x_continuous(breaks = seq(-1, 1.0, 0.2)) +
+  scale_y_continuous(breaks = seq(-1, 1.0, 0.5)) +
+  scale_x_continuous(breaks = seq(-1, 1.0, 0.5)) +
   xlab(expression(paste("Simulated ", omega, " values"))) +
   ylab(expression(paste("Estimated ", omega, " values"))) +
-  annotate("text", x = 0.82, y = -0.97, label = "italic(r) == .88", parse = T, size = 4) +
-  theme_classic()
+  annotate("text", x = 0.79, y = -0.97, label = "italic(r) == .88", parse = T, size = 5) +
+  theme_classic() +
+  theme(axis.title.x = element_text(size = 15)) + 
+  theme(axis.title.y = element_text(size = 15))+
+  theme(axis.text = element_text(size = 13, colour = "black")) +
+  theme(legend.title = element_text(size = 15)) +
+  theme(legend.text = element_text(size = 13))
 recovery_weight

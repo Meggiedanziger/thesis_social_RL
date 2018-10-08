@@ -1,25 +1,22 @@
-####### REINFORCEMENT FUNCTION #########
+# reinforcement model
 
-#is intergrated into optim function of the main loop for parameter estimation
-
-reinforce <- function(param, subj, data) {
+reinforce_weight <- function(param, subj, data) {
   
-  alpha = param[1]
-  theta = param[2]
+  alpha  = param[1]
+  theta  = param[2]
+  weight = param[3]
   
   LL <- 0 #log likelihood goodness-of-fit measure  
   
-  #main loop
+  # main loop
   
-
-  for (block in c(1:3)) {
-
+  for (block in c(1:6)) {
     
     Q <- matrix(0.5, 1, 2) # 1 row, 2 col
     Prob <- matrix(0.5, 1, 2)
     
     for (trial in c(1:30)) {
-       
+      
       cchoice <-   data[data[ ,1] == id & data[ ,2] == block & data[ ,3] == trial, 4]
       
       if (cchoice != 0) {
@@ -32,15 +29,11 @@ reinforce <- function(param, subj, data) {
         
         R  <-    data[data[ ,1] == id & data[ ,2] == block & data[ ,3] == trial, 5]
         
-        Q[1,cchoice] <- Q[1,cchoice] + alpha * (R - Q[1, cchoice]);
+        Q[1,cchoice] <- Q[1,cchoice] + alpha * ((weight*R) - Q[1, cchoice]);
       }
-      else if (cchoice == 0){
+      else if (cchoice == 0) {
       }
     }
   }
   return(-2*LL)
-  
 }
-
-
-
