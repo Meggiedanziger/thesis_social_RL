@@ -57,7 +57,7 @@ ggplot(aes(x = id, y = delta_BIC), data = df_fit) +
 ###############################################################################################
 #read in data
 fit_RLW_6_social <-
-read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/modelfit_agents_weight_24blocks_30trials.txt",
+read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/modelfit_agents_weight_6blocks_30trials.txt",
            " ", col_names = F, trim_ws = TRUE)
 
 names(fit_RLW_6_social)[1] <- "LL_RLW"
@@ -73,7 +73,7 @@ names(fit_RLW_6_social)[10] <- "weight_sim_RLW"
 
 
 fit_RL_6_social <-
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/modelfit_agents_standardtoweight_24blocks_30trials.txt",
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/modelfit_agents_standardtoweight_6blocks_30trials.txt",
              " ", col_names = F, trim_ws = TRUE)
 
 names(fit_RL_6_social)[1] <- "LL"

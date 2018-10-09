@@ -8,7 +8,7 @@ library("colorspace")
 library(readr)
 
 
-sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/simulation_standard_RL_24blocks_60trials.txt", 
+sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/simulation_standard_RL_24blocks_30trials.txt", 
                        " ", col_names = F, 
                        trim_ws = TRUE)
 
@@ -46,7 +46,7 @@ for (id in subj) {  # cycle through ids 1 to n
 
 #determine model comparison criterion
 #BIC deviance + parameters*log(N) #N = number of trials
-FIT2[, 4] <- FIT2[, 1] + 2*log(1440);
+FIT2[, 4] <- FIT2[, 1] + 2*log(720);
 
 #AIC: deviance + 2 * #parameters
 FIT2[, 5] <- FIT2[, 1] + 2 * 2;
@@ -65,7 +65,7 @@ names(modelfit_standard)[5] <- "AIC"
 
 #read in parameter data from  ex ante simulation
 parameter_sim <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/parameters_standard_RL_24blocks_60trials.txt", 
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/parameters_standard_RL_24blocks_30trials.txt", 
              " ", col_names = F, trim_ws = TRUE)
 
 names(parameter_sim)[1] <- "id"
@@ -105,5 +105,5 @@ recovery_beta <-
   theme_classic()
 recovery_beta
 
-modelfit_standard <- write.table(recovery_df, file = "modelfit_standard_RL_24blocks_60trials.txt", 
+modelfit_standard <- write.table(recovery_df, file = "modelfit_standard_RL_24blocks_30trials.txt", 
                                        row.names = FALSE, col.names = FALSE)
