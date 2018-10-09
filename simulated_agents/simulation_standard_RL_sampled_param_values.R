@@ -37,7 +37,7 @@ max(alpha)
 mean(alpha)
 median(alpha)
 
-#alpha_df$id <- c(1:50)
+alpha_df$id <- c(1:50)
 
 ggplot(aes(x = id, y = alpha), data = alpha_df) +
   geom_point(size = 2.5, color = "red", alpha = 0.6) +
@@ -102,7 +102,7 @@ max(beta)
 mean(beta)
 median(beta)
 
-#beta_df$id <- c(1:50)
+beta_df$id <- c(1:50)
 
 ggplot(aes(x = id, y = beta), data = beta_df) +
   geom_point(size = 2.5, color = "limegreen", alpha = 0.6) +

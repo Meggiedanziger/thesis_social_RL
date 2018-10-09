@@ -9,7 +9,7 @@ library(reshape)
 
 
 #create beta distribution from which to sample alpha values
-set.seed(234)
+set.seed(123)
 n = 100000
 binwidth = 0.05
 pop_alpha <- rbeta(n, 1.5, 5.5)
@@ -27,7 +27,7 @@ ggplot(pop_alphadf, aes(x = pop_alpha, binwidth = binwidth, n = n)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 
 #sample alpha values
-set.seed(234)
+set.seed(123)
 n = 50
 binwidth = 0.04
 alpha <- sample(pop_alpha, n)
@@ -71,8 +71,8 @@ ggplot(alpha_df, aes(x = alpha, binwidth = binwidth, n = n)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 
 
-#create beta distribution from which to sample beta values
-set.seed(234)
+#create Inverse Gaussian distribution from which to sample beta values
+set.seed(123)
 n = 100000
 binwidth = 0.5
 pop_beta <- rinvgauss(n, 1.5, 1)
@@ -91,11 +91,12 @@ ggplot(pop_betadf, aes(x = pop_beta, binwidth = binwidth, n = n)) +
 
 
 #sample beta values
-set.seed(234)
+set.seed(123)
 n = 50
 binwidth = 0.2
 beta <- sample(pop_beta, n)
 beta_df <- as.data.frame(beta)
+
 min(beta)
 max(beta)
 mean(beta)
@@ -305,8 +306,8 @@ sim_data <- merged_dat
 
 setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents")
 
-sim_data <- write.table(merged_dat, file = "agents_weight_6blocks_30trials.txt", 
+sim_data <- write.table(merged_dat, file = "agents_weight_6_30.txt", 
                         row.names = FALSE, col.names = FALSE)
 
-sampled_values <- write.table(FIT, file = "agents_weight_6blocks_30trials_parameters.txt",
+sampled_values <- write.table(FIT, file = "agents_weight_6_30_parameters.txt",
                               row.names = FALSE, col.names = FALSE)
