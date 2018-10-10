@@ -7,7 +7,7 @@ library(readr)
 
 
 sim_data <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_weight_24_30.txt", 
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_weight_24_30_new.txt", 
                        " ", col_names = F, 
                        trim_ws = TRUE)
 
@@ -66,7 +66,7 @@ names(modelfit_weight)[6] <- "AIC"
 
 #read in parameter data from simulation
 parameter_sim <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_weight_parameters.txt", 
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_weight_parameters_new.txt", 
                        " ", col_names = F, 
                        trim_ws = TRUE)
 
@@ -123,11 +123,12 @@ recovery_weight <-
   theme_classic()
 recovery_weight
 
+
+setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents")
+modelfit_standard <- write.table(recovery_df, file = "modelfit_agents_weight_24_30_new.txt", 
+                                 row.names = FALSE, col.names = FALSE)
+
 #############Parameter gegeneinander plotten
 #############Boxplots der gefitteten Parameter
 #############Boxplots fit und sim vergleichen
-
-setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents")
-modelfit_standard <- write.table(recovery_df, file = "modelfit_agents_weight_24_30.txt", 
-                                 row.names = FALSE, col.names = FALSE)
 

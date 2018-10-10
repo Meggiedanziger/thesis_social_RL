@@ -54,9 +54,9 @@ ggplot(plot_data2, aes(x = trial, y = accuracy)) +
   scale_x_continuous(breaks = seq(5, 30, 10)) +
   scale_y_continuous(breaks = seq(0, 1.0, 0.3)) +
   theme_classic() +
-  theme(axis.title.x = element_text(size = 13)) + 
-  theme(axis.title.y = element_text(size = 13))+
-  theme(axis.text = element_text(size = 11, colour = "black"))
+  theme(axis.title.x = element_text(size = 14)) + 
+  theme(axis.title.y = element_text(size = 14))+
+  theme(axis.text = element_text(size = 13, colour = "black"))
 
 ggplot(plot_data2, aes(x = trial, y = accuracy)) +
   geom_point(size = 1.2, color = "steelblue4", alpha = 0.7) +
@@ -66,9 +66,9 @@ ggplot(plot_data2, aes(x = trial, y = accuracy)) +
   scale_x_continuous(breaks = seq(5, 30, 10)) +
   scale_y_continuous(breaks = seq(0, 1.0, 0.5)) +
   theme_classic() +
-  theme(axis.title.x = element_text(size = 12)) + 
-  theme(axis.title.y = element_text(size = 12))+
-  theme(axis.text = element_text(size = 11, colour = "black")) +
+  theme(axis.title.x = element_text(size = 14)) + 
+  theme(axis.title.y = element_text(size = 14))+
+  theme(axis.text = element_text(size = 13, colour = "black")) +
   facet_wrap(~ id, ncol = 10, nrow = 5)
 
 
@@ -100,7 +100,7 @@ ggplot(plot_bar, aes(x = chosen_option, fill = chosen_option)) +
 #--------------------------------------------------------------------------------------------------------------------------------------
 
 #read in simulated agents data weight RL model
-sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_weight_24_30.txt", 
+sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_weight_24_30_new.txt", 
                        " ", escape_double = FALSE, col_names = F, 
                        trim_ws = TRUE)
 
@@ -112,7 +112,7 @@ names(sim_data)[4] <- "chosen_option"
 names(sim_data)[5] <- "feedback"
 
 
-param_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_weight_parameters.txt", 
+param_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_weight_parameters_new.txt", 
                        " ", escape_double = FALSE, col_names = F, 
                        trim_ws = TRUE)
 
@@ -152,8 +152,8 @@ plot_data2 <-
 
 
 ggplot(plot_data2, aes(x = trial, y = accuracy, color = weight_sim)) +
-  geom_jitter(size = 1.5, width = 0.5, height = 0.02, alpha = 0.4) +
-  geom_smooth(size = 1, color = "tomato", se = T, fill = "sienna", alpha = 0.4) +
+  geom_jitter(size = 1.5, width = 0.5, height = 0.1, alpha = 0.4) +
+  geom_smooth(size = 0.8, color = "tomato", se = T, fill = "sienna", alpha = 0.4) +
   scale_color_gradient(low = "dodgerblue3", high = "sienna1", expression(paste("Simulated ", omega, " values"))) +
   xlab("Trials") + 
   ylab("Accuracy") + 
@@ -165,7 +165,7 @@ ggplot(plot_data2, aes(x = trial, y = accuracy, color = weight_sim)) +
   theme(axis.text = element_text(size = 11, colour = "black"))
 
 ggplot(plot_data2, aes(x = trial, y = accuracy, color = weight_sim)) +
-  geom_point(size = 1.2, alpha = 0.7) +
+  geom_point(size = 0.7, alpha = 0.7) +
   geom_smooth(size = 0.7, color = "tomato", se = F, fill = "sienna1", alpha = 0.4) +
   scale_color_gradient(low = "dodgerblue3", high = "sienna1", expression(paste("Simulated ", omega, " values"))) +
   xlab("Trials") + 

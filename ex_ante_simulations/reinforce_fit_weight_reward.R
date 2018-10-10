@@ -6,7 +6,7 @@ source("reinforce_weight_reward.R")
 library(readr)
 
 
-sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/simulation_weight_model_12blocks_60trials.txt", 
+sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/simulation_weight_model_24blocks_30trials.txt", 
                        " ", col_names = F, 
                        trim_ws = TRUE)
 

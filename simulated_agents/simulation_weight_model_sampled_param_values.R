@@ -37,15 +37,20 @@ max(alpha)
 mean(alpha)
 median(alpha)
 
-#alpha_df$id <- c(1:50)
+alpha_df$id <- c(1:50)
 
 ggplot(aes(x = id, y = alpha), data = alpha_df) +
-  geom_point(size = 2.5, color = "red", alpha = 0.6) +
+  geom_point(size = 2.5, color = "red") +
   xlab("Simulated agent") +
   ylab(expression(paste("Simulated ", alpha, " values"))) +
-  theme_classic()
+  scale_x_continuous(breaks = seq(10, 50, 10)) +
+  theme_classic() +
+  theme(axis.title.x = element_text(size = 14)) + 
+  theme(axis.title.y = element_text(size = 14))+
+  theme(axis.text = element_text(size = 13, colour = "black"))
+  
 
-alphabox <- 
+alphabox <-
   ggplot(aes(x = 1, y = alpha), data = alpha_df) +
   geom_boxplot(width = 0.3, outlier.colour = "red", outlier.alpha = 0.6, outlier.size = 2.5) +
   theme_classic() +
@@ -57,7 +62,7 @@ alphabox <-
 alphabox
 
 dat <- ggplot_build(alphabox)$data[[1]]
-alphabox + 
+alphabox +
   geom_segment(aes(x = xmin, xend = xmax, y = middle, yend = middle), data = dat, colour = "blue", size = 1.3) +
   geom_jitter(size = 2.5, width = 0.05, height = 0.0, color = "red", alpha = 0.6)
 
@@ -102,15 +107,20 @@ max(beta)
 mean(beta)
 median(beta)
 
-#beta_df$id <- c(1:50)
+beta_df$id <- c(1:50)
 
 ggplot(aes(x = id, y = beta), data = beta_df) +
-  geom_point(size = 2.5, color = "limegreen", alpha = 0.6) +
+  geom_point(size = 2.5, color = "limegreen") +
   xlab("Simulated agent") +
   ylab(expression(paste("Simulated ", beta, " values"))) +
-  theme_classic()
+  scale_x_continuous(breaks = seq(10, 50, 10)) +
+  scale_y_continuous(breaks = seq(0, 10, 3)) +
+  theme_classic() +
+  theme(axis.title.x = element_text(size = 14)) + 
+  theme(axis.title.y = element_text(size = 14))+
+  theme(axis.text = element_text(size = 13, colour = "black"))
 
-betabox <- 
+betabox <-
   ggplot(aes(x = 1, y = beta), data = beta_df) +
   geom_boxplot(width = 0.15, outlier.color = "limegreen", outlier.alpha = 0.7, outlier.size = 2.5) +
   scale_y_continuous(breaks = seq(0, 10, 2)) +
@@ -123,7 +133,7 @@ betabox <-
 betabox
 
 dat <- ggplot_build(betabox)$data[[1]]
-betabox + 
+betabox +
   geom_segment(aes(x = xmin, xend = xmax, y = middle, yend = middle), data = dat, colour = "blue", size = 1.3) +
   geom_jitter(size = 2.5, width = 0.05, height = 0.0, color = "limegreen", alpha = 0.7)
 
@@ -141,14 +151,14 @@ ggplot(beta_df, aes(x = beta, binwidth = binwidth, n = n)) +
 set.seed(234)
 n = 100000
 binwidth = 0.05
-pop_weight <- rbeta(n, 16, 6) ################## THINK THIS OVER!! 
-                             #### DISTRIBUTION SHOULB BE MORE SKEWED TO 1 AS THIS IS STANDARD RL
+pop_weight <- rbeta(n, 1.5, 2.5) ################## THINK THIS OVER!! 
+#### DISTRIBUTION SHOULB BE MORE SKEWED TO 1 AS THIS IS STANDARD RL
 pop_weightdf <- as.data.frame(pop_weight)
 
 #plot distribution and density function
 ggplot(pop_weightdf, aes(x = pop_weight, binwidth = binwidth, n = n)) +
   geom_histogram(binwidth = binwidth, colour = "white", fill = "steelblue3", size = 0.1) +
-  stat_function(fun = function(x) dbeta(x, 16, 6) * n * binwidth, color = "firebrick1", size = 1) +
+  stat_function(fun = function(x) dbeta(x, 3, 3) * n * binwidth, color = "firebrick1", size = 1) +
   scale_x_continuous(breaks = seq(0, 1.0, 0.2)) +
   xlab("x") +
   ylab("Frequency") +
@@ -189,13 +199,17 @@ weight_df <- as.data.frame(weight)
 median(weight_df$weight)
 mean(weight_df$weight)
 
-#weight_df$id <- c(1:50)
+weight_df$id <- c(1:50)
 
 ggplot(aes(x = id, y = weight), data = weight_df) +
-  geom_point(size = 2.5, color = "sienna1", alpha = 0.8) +
+  geom_point(size = 2.5, color = "sienna1") +
   xlab("Simulated agent") +
   ylab(expression(paste("Simulated ", omega, " values"))) +
-  theme_classic()
+  scale_x_continuous(breaks = seq(10, 50, 10)) +
+  theme_classic() +
+  theme(axis.title.x = element_text(size = 14)) + 
+  theme(axis.title.y = element_text(size = 14))+
+  theme(axis.text = element_text(size = 13, colour = "black"))
 
 weightbox <- 
   ggplot(aes(x = 1, y = weight), data = weight_df) +
@@ -227,14 +241,14 @@ num  = 50
 subj = c(1:50)
 
 #determine prediction of the model with best parameter estimates
-cchoice      <- array(0, c(50, 6, 30))
-R            <- array(0, c(50, 6, 30))
-Prob         <- array(0, c(50, 6, 30))
-Feed         <- array(0, c(50, 6, 30))
-Feed_c       <- array(0, c(50, 6, 30))
-Feed_i       <- array(0, c(50, 6, 30))
-Prob_correct <- array(0, c(50, 6, 30))
-PE <- Q_all  <- array(0, c(50, 6, 30))
+cchoice      <- array(0, c(50, 24, 30))
+R            <- array(0, c(50, 24, 30))
+Prob         <- array(0, c(50, 24, 30))
+Feed         <- array(0, c(50, 24, 30))
+Feed_c       <- array(0, c(50, 24, 30))
+Feed_i       <- array(0, c(50, 24, 30))
+Prob_correct <- array(0, c(50, 24, 30))
+PE <- Q_all  <- array(0, c(50, 24, 30))
 
 
 
@@ -249,7 +263,7 @@ for (id in subj) {
   beta   <- FIT[id, 3]; #take beta values from third column 
   weight <- FIT[id, 4]; #take weight values from fourth column
   
-  for (block in c(1:6)) {
+  for (block in c(1:24)) {
     
     Q    <- matrix(0.5, 1, 2) # 1 row, 2 columns 
     PROB <- matrix(0.5, 1, 2) 
@@ -306,8 +320,8 @@ sim_data <- merged_dat
 
 setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents")
 
-sim_data <- write.table(merged_dat, file = "agents_weight_6_30.txt", 
+sim_data <- write.table(merged_dat, file = "agents_weight_24_30_new.txt", 
                         row.names = FALSE, col.names = FALSE)
 
-sampled_values <- write.table(FIT, file = "agents_weight_6_30_parameters.txt",
+sampled_values <- write.table(FIT, file = "agents_weight_parameters_new.txt",
                               row.names = FALSE, col.names = FALSE)

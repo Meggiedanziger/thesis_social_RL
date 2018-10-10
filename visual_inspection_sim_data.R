@@ -1,12 +1,12 @@
 rm(list=ls()) # delete workspace
-setwd("~/Dropbox/___MA/social_RL_git")
+setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL")
 
 library(tidyverse)
 
 #read in data
 library(readr)
 
-sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/ex_ante_simulation_2lrates_12blocks_100trials.txt", 
+sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/simulation_weight_model_12blocks_30trials.txt", 
                        " ", escape_double = FALSE, col_names = F, 
                        trim_ws = TRUE)
 
@@ -23,12 +23,20 @@ sim_data <-
 
 #add columns for alpha and beta
 #obs <- c(1:4000)
-# temp  <- rep(5)/10
-# lrate <- rep(1:10, each = 400)/10
+# temp  <- rep(c(1, 4, 7, 10, 30, 50, 70, 100), each = 7200)/10
+# lrate <- rep(1:10, each = 720)/10
+# 
+# df <- cbind(lrate, temp)
+# #sim_data$obs <- obs
+# sim_data <- cbind(sim_data, df)
 
-#df <- cbind(obs, lrate, temp)
-#sim_data$obs <- obs
-#sim_data <- merge(sim_data, df)
+
+temp   <- rep(c(1, 5, 10, 50, 100), each = 1800)/10
+lrate  <- rep(seq(1, 9, 2), each = 360)/10
+weight <- rep(seq(from = -9, to = 9, 2), each = 9000)/10
+
+df <- cbind(lrate, temp, weight)
+sim_data <- cbind(sim_data, df)
 
 #sim_data$chosen_option <- sim_data$chosen_option -1
 
@@ -51,7 +59,7 @@ mean(sim_data_sum$accuracy)
 #plot accuracy by lrate + temp
 plot_data1 <-
   sim_data %>%
-  group_by(id, lrate, temp) %>%
+  group_by(id, lrate, temp, weight) %>%
   summarize(mean_acc = mean(chosen_option))
 
 #each parameter combination is one ppt with 48 trials
@@ -62,28 +70,44 @@ ggplot(plot_data1, aes(x = lrate, y = mean_acc)) +
   ylab("accuracy") +
   scale_x_continuous(breaks = seq(0, 1.0, 0.1))
 
+ggplot(plot_data1, aes(x = temp, y = mean_acc)) +
+  geom_jitter(alpha = 0.4) +
+  geom_smooth() +
+  xlab("temperature") +
+  ylab("accuracy") +
+  scale_x_continuous(breaks = seq(0, 10, 2))
+
+ggplot(plot_data1, aes(x = weight, y = mean_acc)) +
+  geom_jitter(alpha = 0.4) +
+  geom_smooth() +
+  xlab("weight") +
+  ylab("accuracy") +
+  scale_x_continuous(breaks = seq(-.9, .9, .2))
+
 #plot accuracy collapsed over all ids over time (= trials)
 plot_data2 <-
   sim_data %>% 
-  group_by(id, trial) %>% 
+  group_by(id, trial, lrate, temp, weight) %>% 
   summarize(accuracy = mean(chosen_option))
 
 ggplot(plot_data2, aes(x = trial, y = accuracy)) +
-  geom_jitter(size = 1.5, width = 0.6, height = 0.11, color = "blue", alpha = 0.6) +
-  geom_smooth(color = "red", se = T, fill = "red", alpha = 0.3) +
+  geom_jitter(size = 2, width = 0.5, height = 0.03, color = "steelblue4", alpha = 0.4) +
+  geom_smooth(size = 1.2, color = "tomato", se = T, fill = "sienna", alpha = 0.5) +
   ylab("accuracy") + 
   scale_y_continuous(breaks = seq(0, 1.0, 0.2)) +
   #scale_x_continuous(breaks = seq(1, , 1)) +
   theme_classic()
 
 
-# ggplot(plot_data2, aes(x = trial, y = accuracy)) +
-#   geom_point(color = "blue") +
-#   geom_smooth(color = "red", se = T, fill = "red", alpha = 0.2) +
-#   facet_wrap(~ id, nrow = 10, ncol = 10) +
-#   scale_y_continuous(breaks = seq(0, 1.0, 0.2)) +
-#   scale_x_continuous(breaks = seq(1, 12, 1)) +
-#   theme_classic()
+ggplot(plot_data2, aes(x = trial, y = accuracy)) +
+  geom_point(color = "steelblue4", alpha = 0.5) +
+  geom_smooth(size = 0.9, color = "tomato", se = F, fill = "red", alpha = 0.2) +
+  facet_wrap(~ weight, nrow = 2, ncol = 5) +
+  scale_y_continuous(breaks = seq(0.5, 1.0, 0.5)) +
+  scale_x_continuous(breaks = seq(5, 30, 10)) +
+  ylab("Accuracy") +
+  xlab("Trials") +
+  theme_classic()
 
 
 #plot frequencies of choices as barplot

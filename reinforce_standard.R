@@ -12,7 +12,7 @@ reinforce <- function(param, subj, data) {
   #main loop
   
 
-  for (block in c(1:24)) {
+  for (block in c(1:18)) {
 
     
     Q <- matrix(0.5, 1, 2) # 1 row, 2 col
