@@ -4,6 +4,8 @@ setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents")
 #load required packages
 library(tidyverse) 
 library(readr)
+library(nlme)
+library(lme4)
 
 ################################ MODEL FIT STANDARD RL MODEL TO NON-SOCIAL DATA VS. RLW TO NON-SOCIAL DATA
 ##########################################################################################################
@@ -51,14 +53,23 @@ ggplot(aes(x = id, y = delta_BIC), data = df_fit) +
   theme(axis.title.x = element_text(size = 15)) + 
   theme(axis.title.y = element_text(size = 15))+
   theme(axis.text = element_text(size = 13, colour = "black"))
-        
+
+
+ggplot(aes(y = BIC, x = id), data = df_fit) +
+  geom_point()
+
+ggplot(aes(y = BIC_RLW, x = id), data = df_fit) +
+  geom_point()
+
+ttest <- t.test(df_fit$BIC, df_fit$BIC_RLW, paired = T)
+summary(ttest)
 
 ################################ MODEL FIT WEIGHT RL MODEL TO SOCIAL DATA VS. RL TO SOCIAL DATA
 ###############################################################################################
 #read in data
 fit_RLW_6_social <-
-read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/modelfit_agents_weight_12_30_new.txt",
-           " ", col_names = F, trim_ws = TRUE)
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/modelfit_agents_weight_12_30_new.txt",
+             " ", col_names = F, trim_ws = TRUE)
 
 names(fit_RLW_6_social)[1] <- "LL_RLW"
 names(fit_RLW_6_social)[2] <- "alpha_fit_RLW"
@@ -99,6 +110,7 @@ ggplot(aes(x = id, y = delta_BIC, fill = weight_sim_RLW), data = df_fit_social) 
   ylab(expression(paste(Delta, "BIC (RL - RLW)"))) +
   xlab("Simulated agent") +
   scale_x_continuous(breaks = seq(5, 50, 5)) +
+  geom_hline(yintercept = 0, color = "red") +
   theme_classic() +
   theme(axis.title.x = element_text(size = 15)) + 
   theme(axis.title.y = element_text(size = 15))+
@@ -106,3 +118,11 @@ ggplot(aes(x = id, y = delta_BIC, fill = weight_sim_RLW), data = df_fit_social) 
   theme(legend.title = element_text(size = 15)) +
   theme(legend.text = element_text(size = 13))
 
+ggplot(aes(y = BIC_RLW, x = id), data = df_fit_social) +
+  geom_point()
+
+ggplot(aes(y = BIC, x = id), data = df_fit_social) +
+  geom_point()
+
+ttest <- t.test(df_fit_social$BIC, df_fit_social$BIC_RLW, paired = T, var.equal = T)
+summary(ttest)

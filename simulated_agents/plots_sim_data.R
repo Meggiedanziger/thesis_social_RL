@@ -152,22 +152,30 @@ plot_data2 <-
 
 
 ggplot(plot_data2, aes(x = trial, y = accuracy, color = weight_sim)) +
-  geom_jitter(size = 1.5, width = 0.5, height = 0.1, alpha = 0.4) +
+  geom_jitter(size = 1.5, width = 0.5, height = 0.1, alpha = 0.6) +
   geom_smooth(size = 0.8, color = "tomato", se = T, fill = "sienna", alpha = 0.4) +
-  scale_color_gradient(low = "dodgerblue3", high = "sienna1", expression(paste("Simulated ", omega, " values"))) +
+  scale_color_gradient(low = "dodgerblue3", high = "sienna1", expression(paste("Simulated ", omega, " values")),
+                       limits = c(-1, 1), breaks = c(-.75, -.25, .25, .75)) +
+  guides(color = guide_colorbar(barwidth = 0.7, barheight = 10)) +
   xlab("Trials") + 
   ylab("Accuracy") + 
   scale_y_continuous(breaks = seq(0, 1.0, 0.3)) +
   scale_x_continuous(breaks = seq(5, 30, 10)) +
   theme_classic() +
   theme(axis.title.x = element_text(size = 13)) + 
-  theme(axis.title.y = element_text(size = 13))+
-  theme(axis.text = element_text(size = 11, colour = "black"))
+  theme(axis.title.y = element_text(size = 13)) +
+  theme(axis.text = element_text(size = 11, colour = "black")) +
+  theme(legend.title = element_text(size = 13)) +
+  theme(legend.text = element_text(size = 11.5)) 
+  
+  
 
 ggplot(plot_data2, aes(x = trial, y = accuracy, color = weight_sim)) +
   geom_point(size = 0.7, alpha = 0.7) +
   geom_smooth(size = 0.7, color = "tomato", se = F, fill = "sienna1", alpha = 0.4) +
-  scale_color_gradient(low = "dodgerblue3", high = "sienna1", expression(paste("Simulated ", omega, " values"))) +
+  scale_color_gradient(low = "dodgerblue3", high = "sienna1", expression(paste("Simulated ", omega, " values")),
+                       limits = c(-1, 1), breaks = c(-.75, -.25, .25, .75)) +
+  guides(color = guide_colorbar(barwidth = 0.7, barheight = 10)) +
   xlab("Trials") + 
   ylab("Accuracy") + 
   scale_x_continuous(breaks = seq(5, 30, 10)) +
@@ -178,7 +186,10 @@ ggplot(plot_data2, aes(x = trial, y = accuracy, color = weight_sim)) +
   theme(axis.text = element_text(size = 11, colour = "black")) +
   theme(legend.title = element_text(size = 12)) +
   theme(legend.text = element_text(size = 11)) +
+  theme(legend.title = element_text(size = 13)) +
+  theme(legend.text = element_text(size = 11.5)) +
   facet_wrap(~ id, ncol = 10, nrow = 5)
+ 
 
 
 #plot frequencies of choices as barplot

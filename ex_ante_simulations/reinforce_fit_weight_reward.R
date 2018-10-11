@@ -66,7 +66,7 @@ names(modelfit_weight)[6] <- "AIC"
 
 #read in parameter data from  ex ante simulation
 parameter_sim <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/parameters_weight_model_12blocks_60trials.txt", 
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/parameters_weight_model_24blocks_30trials.txt", 
              " ", col_names = F, 
              trim_ws = TRUE)
 
@@ -119,7 +119,7 @@ recovery_weight <-
   ylab("Estimated weight values") +
   theme_classic()
 
-modelfit_weight <- write.table(recovery_df, file = "modelfit_weight_model_12blocks_60trials.txt", 
+modelfit_weight <- write.table(recovery_df, file = "modelfit_weight_model_24blocks_30trials.txt", 
                                  row.names = FALSE, col.names = FALSE)
 
 
