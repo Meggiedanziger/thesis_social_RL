@@ -28,7 +28,7 @@ ggplot(pop_alphadf, aes(x = pop_alpha, binwidth = binwidth, n = n)) +
 
 #sample alpha values
 set.seed(123)
-n = 50
+n = 30
 binwidth = 0.04
 alpha <- sample(pop_alpha, n)
 alpha_df <- as.data.frame(alpha)
@@ -37,7 +37,7 @@ max(alpha)
 mean(alpha)
 median(alpha)
 
-alpha_df$id <- c(1:50)
+#alpha_df$id <- c(1:40)
 
 ggplot(aes(x = id, y = alpha), data = alpha_df) +
   geom_point(size = 2.5, color = "red") +
@@ -97,7 +97,7 @@ ggplot(pop_betadf, aes(x = pop_beta, binwidth = binwidth, n = n)) +
 
 #sample beta values
 set.seed(123)
-n = 50
+n = 30
 binwidth = 0.2
 beta <- sample(pop_beta, n)
 beta_df <- as.data.frame(beta)
@@ -107,7 +107,7 @@ max(beta)
 mean(beta)
 median(beta)
 
-beta_df$id <- c(1:50)
+#beta_df$id <- c(1:40)
 
 ggplot(aes(x = id, y = beta), data = beta_df) +
   geom_point(size = 2.5, color = "limegreen") +
@@ -158,18 +158,18 @@ pop_weightdf <- as.data.frame(pop_weight)
 #plot distribution and density function
 ggplot(pop_weightdf, aes(x = pop_weight, binwidth = binwidth, n = n)) +
   geom_histogram(binwidth = binwidth, colour = "white", fill = "steelblue3", size = 0.1) +
-  stat_function(fun = function(x) dbeta(x, 3, 3) * n * binwidth, color = "firebrick1", size = 1) +
+  stat_function(fun = function(x) dbeta(x, 1.5, 2.5) * n * binwidth, color = "firebrick1", size = 1) +
   scale_x_continuous(breaks = seq(0, 1.0, 0.2)) +
   xlab("x") +
   ylab("Frequency") +
   ggtitle(expression(paste("Beta distribution with ", alpha, " = 4, " , beta, " = 4 "))) +
-  theme(plot.title = element_text(hjust = 0.5)) +
+  #theme(plot.title = element_text(hjust = 0.5)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 
 
 #sample weight values
 set.seed(234)
-n = 50
+n = 30
 binwidth = 0.04
 weight <- sample(pop_weight, n)
 weight_df <- as.data.frame(weight)
@@ -186,7 +186,7 @@ hist(pop_d)
 
 #sample d values to determine which of the weight values is positive or negative
 set.seed(234)
-determ <- sample(pop_d, 50)
+determ <- sample(pop_d, 30)
 sum(determ < 0.5) #check if equally many are positive or negative
 
 determ_t <- ifelse(determ < 0.5, 1, -1) #transform all values below 0.5 to -1, all above to 1
@@ -196,10 +196,12 @@ df_sign <- as.data.frame(cbind(weight, determ_t))
 weight <- df_sign$weight * df_sign$determ_t
 
 weight_df <- as.data.frame(weight)
+min(weight_df$weight)
+max(weight_df$weight)
 median(weight_df$weight)
 mean(weight_df$weight)
 
-weight_df$id <- c(1:50)
+#weight_df$id <- c(1:50)
 
 ggplot(aes(x = id, y = weight), data = weight_df) +
   geom_point(size = 2.5, color = "sienna1") +
@@ -237,22 +239,22 @@ sampling_df <- cbind(alpha_df, beta_df, weight_df)
 
 #--------------------------------------------------------------------------------
 #run simulation to create 50 data sets with 12 blocks and 30 trials
-num  = 50
-subj = c(1:50)
+num  = 30
+subj = c(1:30)
 
 #determine prediction of the model with best parameter estimates
-cchoice      <- array(0, c(50, 24, 30))
-R            <- array(0, c(50, 24, 30))
-Prob         <- array(0, c(50, 24, 30))
-Feed         <- array(0, c(50, 24, 30))
-Feed_c       <- array(0, c(50, 24, 30))
-Feed_i       <- array(0, c(50, 24, 30))
-Prob_correct <- array(0, c(50, 24, 30))
-PE <- Q_all  <- array(0, c(50, 24, 30))
+cchoice      <- array(0, c(30, 6, 30))
+R            <- array(0, c(30, 6, 30))
+Prob         <- array(0, c(30, 6, 30))
+Feed         <- array(0, c(30, 6, 30))
+Feed_c       <- array(0, c(30, 6, 30))
+Feed_i       <- array(0, c(30, 6, 30))
+Prob_correct <- array(0, c(30, 6, 30))
+PE <- Q_all  <- array(0, c(30, 6, 30))
 
 
 
-id <- c(1:50)
+id <- c(1:30)
 
 
 FIT <- cbind(id, sampling_df)
@@ -263,7 +265,7 @@ for (id in subj) {
   beta   <- FIT[id, 3]; #take beta values from third column 
   weight <- FIT[id, 4]; #take weight values from fourth column
   
-  for (block in c(1:24)) {
+  for (block in c(1:6)) {
     
     Q    <- matrix(0.5, 1, 2) # 1 row, 2 columns 
     PROB <- matrix(0.5, 1, 2) 
@@ -320,8 +322,8 @@ sim_data <- merged_dat
 
 setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents")
 
-sim_data <- write.table(merged_dat, file = "agents_weight_24_30_new.txt", 
+sim_data <- write.table(merged_dat, file = "agents_weight_6_30_30ppts.txt", 
                         row.names = FALSE, col.names = FALSE)
 
-sampled_values <- write.table(FIT, file = "agents_weight_parameters_new.txt",
+sampled_values <- write.table(FIT, file = "agents_weight_parameters_30ppts.txt",
                               row.names = FALSE, col.names = FALSE)

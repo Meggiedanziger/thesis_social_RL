@@ -7,7 +7,7 @@ library(readr)
 
 #read in ex ante simulated data
 sim_data <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/simulation_standard_RL_24blocks_60trials.txt", 
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/simulation_standard_RL_12blocks_60trials.txt", 
              " ", col_names = F, trim_ws = TRUE)
 
 names(sim_data)[1] <- "id"
@@ -25,7 +25,7 @@ sim_data <-
 
 #read in ex ante fitted data
 modelfit <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/modelfit_standard_RL_24blocks_30trials.txt", 
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/modelfit_standard_RL_12blocks_60trials.txt", 
              " ", col_names = F, trim_ws = TRUE)
 
 names(modelfit)[1] <- "LL"
@@ -83,3 +83,4 @@ recovery_beta <-
   theme(legend.title = element_text(size = 13)) +
   theme(legend.text = element_text(size = 11.5)) 
 recovery_beta
+

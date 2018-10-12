@@ -100,7 +100,7 @@ ggplot(plot_bar, aes(x = chosen_option, fill = chosen_option)) +
 #--------------------------------------------------------------------------------------------------------------------------------------
 
 #read in simulated agents data weight RL model
-sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_weight_24_30_new.txt", 
+sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_weight_6_30_30ppts.txt", 
                        " ", escape_double = FALSE, col_names = F, 
                        trim_ws = TRUE)
 
@@ -112,7 +112,7 @@ names(sim_data)[4] <- "chosen_option"
 names(sim_data)[5] <- "feedback"
 
 
-param_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_weight_parameters_new.txt", 
+param_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_weight_parameters_30ppts.txt", 
                        " ", escape_double = FALSE, col_names = F, 
                        trim_ws = TRUE)
 
@@ -169,7 +169,6 @@ ggplot(plot_data2, aes(x = trial, y = accuracy, color = weight_sim)) +
   theme(legend.text = element_text(size = 11.5)) 
   
   
-
 ggplot(plot_data2, aes(x = trial, y = accuracy, color = weight_sim)) +
   geom_point(size = 0.7, alpha = 0.7) +
   geom_smooth(size = 0.7, color = "tomato", se = F, fill = "sienna1", alpha = 0.4) +
@@ -188,7 +187,7 @@ ggplot(plot_data2, aes(x = trial, y = accuracy, color = weight_sim)) +
   theme(legend.text = element_text(size = 11)) +
   theme(legend.title = element_text(size = 13)) +
   theme(legend.text = element_text(size = 11.5)) +
-  facet_wrap(~ id, ncol = 10, nrow = 5)
+  facet_wrap(~ id, ncol = 6, nrow = 5)
  
 
 

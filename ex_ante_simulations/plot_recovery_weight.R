@@ -1,7 +1,7 @@
 rm(list = ls()) #delete workspace
 setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations")
 
-########################### PARAMETER RECOVERY WEIGHT RL MODEL 4 BLOCKS 30 TRIALS
+########################### PARAMETER RECOVERY WEIGHT RL MODEL 12 BLOCKS 60 TRIALS
 #################################################################################
 library(tidyverse) 
 library(readr)
@@ -52,14 +52,6 @@ plot_data <-
   group_by(id) %>% 
   mutate(weight = ifelse(id <= 125, -1, 1))
 
-ggplot(aes(x = trial, y = chosen_option), data = plot_data) +
-  geom_jitter(size = 1, width = 0.8, height = 0.11, alpha = 0.2) +
-  geom_smooth(color = "red", se = T, fill = "red", alpha = 0.2) +
-  ylab("Selected option") + 
-  xlab("Trials") +
-  scale_y_continuous(breaks = seq(0, 1)) +
-  theme_classic() + 
-  facet_grid(block ~ weight)
 
 
 ########################### PARAMETER RECOVERY WEIGHT RL MODEL 12 BLOCKS 60 TRIALS
