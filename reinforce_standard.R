@@ -12,13 +12,13 @@ reinforce <- function(param, subj, data) {
   #main loop
   
 
-  for (block in c(1:18)) {
+  for (block in c(1:6)) {
 
     
     Q <- matrix(0.5, 1, 2) # 1 row, 2 col
     Prob <- matrix(0.5, 1, 2)
     
-    for (trial in c(1:30)) {
+    for (trial in c(1:20)) {
        
       cchoice <-   data[data[ ,1] == id & data[ ,2] == block & data[ ,3] == trial, 4]
       

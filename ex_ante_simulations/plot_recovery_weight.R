@@ -58,7 +58,7 @@ plot_data <-
 #################################################################################
 #read in ex ante fitted data
 modelfit <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/modelfit_weight_model_12blocks_60trials.txt", 
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/modelfit_weight_model_6blocks_60trials.txt", 
              " ", col_names = F, trim_ws = TRUE)
 
 names(modelfit)[1]  <- "LL"

@@ -8,7 +8,7 @@ library(readr)
 
 #read in data
 sim_data <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_weight_18_30_new.txt", 
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_weight_6_20.txt", 
              " ", col_names = F, trim_ws = TRUE)
 
 names(sim_data)[1] <- "id"
@@ -44,7 +44,7 @@ for (id in subj) {  #cycle through ids 1 to n
 
 #determine model comparison criterion
 #BIC deviance + #parameters*log(N) #N = number of trials from all blocks
-FIT2[, 4] <- FIT2[, 1] + 2*log(540);
+FIT2[, 4] <- FIT2[, 1] + 2*log(120);
 
 #AIC: deviance + 2 * #parameters
 FIT2[, 5] <- FIT2[, 1] + 2 * 2;
@@ -63,7 +63,7 @@ names(modelfit_standard)[5] <- "AIC"
 
 #read in parameter data from simulation
 parameter_sim <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_standard_RL_parameters.txt", 
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_weight_parameters_6_20.txt", 
              " ", col_names = F, 
              trim_ws = TRUE)
 
@@ -73,7 +73,6 @@ names(parameter_sim)[3] <- "beta_sim"
 
 
 recovery_df <- cbind(modelfit_standard, parameter_sim)
-
 
 corr_alpha <- cor.test(recovery_df$alpha_sim, recovery_df$alpha_fit)
 corr_alpha
@@ -105,11 +104,12 @@ recovery_beta <-
   theme_classic()
 recovery_beta
 
+setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents")
+modelfit_standard <- write.table(recovery_df, file = "modelfit_agents_standardtoweight_6_20.txt", 
+                                 row.names = FALSE, col.names = FALSE)
+
+
 #############Parameter gegeneinander plotten
 #############Boxplots der gefitteten Parameter
 #############Boxplots fit und sim vergleichen
-
-setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents")
-modelfit_standard <- write.table(recovery_df, file = "modelfit_agents_standardtoweight_18_30_new.txt", 
-                                 row.names = FALSE, col.names = FALSE)
 

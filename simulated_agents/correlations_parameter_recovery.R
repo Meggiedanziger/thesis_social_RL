@@ -8,8 +8,28 @@ library(readr)
 ################################ PARAMETER RECOVERY COEFFICIENTS STANDARD RL MODEL
 ##################################################################################
 #read in data
+
+# fit_RL_4 <-
+#   read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/modelfit_agents_standard_RL_4_30.txt",
+#              " ", col_names = F, trim_ws = TRUE)
+# 
+# names(fit_RL_4)[1] <- "LL"
+# names(fit_RL_4)[2] <- "alpha_fit"
+# names(fit_RL_4)[3] <- "beta_fit"
+# names(fit_RL_4)[4] <- "BIC"
+# names(fit_RL_4)[5] <- "AIC"
+# names(fit_RL_4)[6] <- "id"
+# names(fit_RL_4)[7] <- "alpha_sim"
+# names(fit_RL_4)[8] <- "beta_sim"
+# 
+# corr_alpha4 <- cor.test(fit_RL_4$alpha_sim, fit_RL_4$alpha_fit)
+# corr_alpha4
+# 
+# corr_beta4 <- cor.test(fit_RL_4$beta_sim, fit_RL_4$beta_fit)
+# corr_beta4
+
 fit_RL_6 <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/modelfit_agents_standard_RL_6blocks_30trials.txt",
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/modelfit_agents_standard_RL_6_30.txt",
              " ", col_names = F, trim_ws = TRUE)
 
 names(fit_RL_6)[1] <- "LL"
@@ -28,7 +48,7 @@ corr_beta6 <- cor.test(fit_RL_6$beta_sim, fit_RL_6$beta_fit)
 corr_beta6
 
 fit_RL_12 <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/modelfit_agents_standard_RL_12blocks_30trials.txt",
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/modelfit_agents_standard_RL_12_30.txt",
              " ", col_names = F, trim_ws = TRUE)
 
 names(fit_RL_12)[1] <- "LL"
@@ -48,7 +68,7 @@ corr_beta12
 
 
 fit_RL_18 <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/modelfit_agents_standard_RL_18blocks_30trials.txt",
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/modelfit_agents_standard_RL_18_30.txt",
              " ", col_names = F, trim_ws = TRUE)
 
 names(fit_RL_18)[1] <- "LL"
@@ -67,7 +87,7 @@ corr_beta18 <- cor.test(fit_RL_18$beta_sim, fit_RL_18$beta_fit)
 corr_beta18
 
 fit_RL_24 <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/modelfit_agents_standard_RL_24blocks_30trials.txt",
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/modelfit_agents_standard_RL_24_30.txt",
              " ", col_names = F, trim_ws = TRUE)
 
 names(fit_RL_24)[1] <- "LL"
@@ -102,8 +122,34 @@ corr_RL[4, 2] <- corr_beta24$estimate
 ################################################################################
 
 #read in data
+
+fit_RLW_4 <-
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/modelfit_agents_weight_4_30.txt",
+             " ", col_names = F, trim_ws = TRUE)
+
+names(fit_RLW_4)[1] <- "LL"
+names(fit_RLW_4)[2] <- "alpha_fit"
+names(fit_RLW_4)[3] <- "beta_fit"
+names(fit_RLW_4)[4] <- "weight_fit"
+names(fit_RLW_4)[5] <- "BIC"
+names(fit_RLW_4)[6] <- "AIC"
+names(fit_RLW_4)[7] <- "id"
+names(fit_RLW_4)[8] <- "alpha_sim"
+names(fit_RLW_4)[9] <- "beta_sim"
+names(fit_RLW_4)[10] <- "weight_sim"
+
+
+corr_alpha4 <- cor.test(fit_RLW_4$alpha_sim, fit_RLW_4$alpha_fit)
+corr_alpha4
+
+corr_beta4 <- cor.test(fit_RLW_4$beta_sim, fit_RLW_4$beta_fit)
+corr_beta4
+
+corr_weight4 <- cor.test(fit_RLW_4$weight_sim, fit_RLW_4$weight_fit)
+corr_weight4
+
 fit_RLW_6 <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/modelfit_agents_weight_6blocks_30trials.txt",
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/modelfit_agents_weight_6_30_new.txt",
              " ", col_names = F, trim_ws = TRUE)
 
 names(fit_RLW_6)[1] <- "LL"
@@ -127,7 +173,7 @@ corr_weight6 <- cor.test(fit_RLW_6$weight_sim, fit_RLW_6$weight_fit)
 corr_weight6
 
 fit_RLW_12 <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/modelfit_agents_weight_12blocks_30trials.txt",
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/modelfit_agents_weight_12_30_new.txt",
              " ", col_names = F, trim_ws = TRUE)
 
 names(fit_RLW_12)[1] <- "LL"
@@ -151,7 +197,7 @@ corr_weight12 <- cor.test(fit_RLW_12$weight_sim, fit_RLW_12$weight_fit)
 corr_weight12
 
 fit_RLW_18 <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/modelfit_agents_weight_18blocks_30trials.txt",
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/modelfit_agents_weight_18_30_new.txt",
              " ", col_names = F, trim_ws = TRUE)
 
 names(fit_RLW_18)[1] <- "LL"
@@ -175,7 +221,7 @@ corr_weight18 <- cor.test(fit_RLW_18$weight_sim, fit_RLW_18$weight_fit)
 corr_weight18
 
 fit_RLW_24 <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/modelfit_agents_weight_24blocks_30trials.txt",
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/modelfit_agents_weight_24_30_new.txt",
              " ", col_names = F, trim_ws = TRUE)
 
 names(fit_RLW_24)[1] <- "LL"
@@ -214,7 +260,9 @@ corr_RLW[3, 3] <- corr_weight18$estimate
 corr_RLW[4, 1] <- corr_alpha24$estimate
 corr_RLW[4, 2] <- corr_beta24$estimate
 corr_RLW[4, 3] <- corr_weight24$estimate
-
+corr_RLW[5, 1] <- corr_alpha4$estimate
+corr_RLW[5, 2] <- corr_beta4$estimate
+corr_RLW[5, 3] <- corr_weight4$estimate
 
 ############## PLOT HOW RECOVERY COEFFICIENTS CHANGE AS DATA SIZE INCREASES
 
@@ -228,10 +276,12 @@ corr_RL <-
 
 corr_RL$blocks <- rep(c(6, 12, 18, 24))
 
-corr_RLW$blocks <- rep(c(6, 12, 18, 24))
+corr_RLW$blocks <- rep(c(6, 12, 18, 24, 4))
 
 ggplot(aes(x = blocks, y = corr, color = parameter), data = corr_RLW) +
-  geom_point()
+  geom_point() +
+  scale_x_continuous(breaks = seq(4, 24, 4))
 
 ggplot(aes(x = blocks, y = corr, color = parameter), data = corr_RL) +
-  geom_point()
+  geom_point() +
+  scale_x_continuous(breaks = seq(6, 24, 6))

@@ -5,7 +5,7 @@ library(readr)
 library(tidyverse)
 library(Rcpp)
 library(ez)
-
+library(MASS)
 
 #########TEST IF FITTED LEARNING RATES AND TEMPERATURES OF THE BEST FITTING MODEL TO THE SOCIAL DATA (RLW)
 #########DIFFERS IN THE GROUPS AS CATEGORIZED BY MEANS OF COMPUTATIONAL PHENOTYPING
@@ -85,36 +85,39 @@ df_fit_compare <-
 ggplot(aes(y = alpha_fit_RLW, color = group, x = group), data = df_fit_compare) +
   geom_boxplot() +
   scale_color_manual(values = c("sienna1", "dodgerblue3")) +
-  scale_x_discrete(labels = c("RL", "RLW"))
+  scale_x_discrete(labels = c("RL", "RLW")) +
+  scale_y_continuous(breaks = seq(0, 1, .2)) +
+  theme_classic()
 
 ggplot(aes(y = beta_fit_RLW, x = group, color = group), data = df_fit_compare) +
   geom_boxplot() +
   scale_color_manual(values = c("sienna1", "dodgerblue3")) +
-  scale_x_discrete(labels = c("RL", "RLW"))
+  scale_x_discrete(labels = c("RL", "RLW")) +
+  scale_y_continuous(breaks = seq(0, 10, 2)) +
+  theme_classic()
 
 
 df_fit_compare$id <- factor(df_fit_compare$id)
 df_fit_compare$group <- factor(df_fit_compare$group)
 df_fit_compare$alpha_fit <- as.numeric(df_fit_compare$alpha_fit)
 df_fit_compare$alpha_fit_RLW <- as.numeric(df_fit_compare$alpha_fit_RLW)
+df_fit_compare$beta_fit_RLW <- as.numeric(df_fit_compare$beta_fit_RLW)
 
+df <-
+  df_fit_compare %>% 
+  select(id, group, beta_fit_RLW, alpha_fit_RLW)
 
-aov_alpha_fit <- ezANOVA(data = df_fit_compare, dv = .(alpha_fit_RLW), wid = .(id), between = .(group), detailed = T, type = 2, return_aov = T)
-aov_alpha_fit
-summary(aov_alpha_fit)
-ezStats(data = df_fit_compare, dv = .(alpha_fit_RLW), wid = .(id), 
-        between = .(group), type = 2)
-ezPlot(data = df_fit_compare, dv = .(alpha_fit_RLW), wid = .(id), 
-       between = .(group), type = 2, x= .(group), do_lines=F, split= .(group))
+hist(df$beta_fit_RLW)
+hist(df$alpha_fit_RLW)
 
+# df2 <-
+#   df %>% 
+#   spread(key = group, value = alpha_fit_RLW, sep = "_")
 
-aov_beta_fit <- ezANOVA(data = df_fit_compare, dv = .(beta_fit_RLW), wid = .(id), between = .(group), detailed = T, type = 2, return_aov = T)
-aov_beta_fit
-summary(aov_alpha_fit)
-ezStats(data = df_fit_compare, dv = .(beta_fit_RLW), wid = .(id), 
-        between = .(group), type = 2)
-ezPlot(data = df_fit_compare, dv = .(beta_fit_RLW), wid = .(id), 
-       between = .(group), type = 2, x= .(group), do_lines=F, split= .(group))
+#like a paired t test for not normally distributed data
+wilcox.test(alpha_fit_RLW ~ group, data = df)
+
+wilcox.test(beta_fit_RLW ~ group, data = df)
 
 #plot BIC_RL as a function of BIC_RLW
 #shows that RLW better fits the social condiion data if omega is < 0
@@ -129,6 +132,7 @@ ggplot(aes(x = BIC_RLW, y = BIC, shape = group, color = weight_fit_RLW), data = 
   xlab("BIC RLW") +
   scale_x_continuous(breaks = seq(100, 500, 100)) +
   scale_y_continuous(breaks = seq(100, 500, 100)) +
+  geom_abline(color = "gray31") +
   theme_classic() +
   theme(axis.title.x = element_text(size = 14)) + 
   theme(axis.title.y = element_text(size = 14))+
@@ -136,4 +140,19 @@ ggplot(aes(x = BIC_RLW, y = BIC, shape = group, color = weight_fit_RLW), data = 
   theme(legend.title = element_text(size = 13)) +
   theme(legend.text = element_text(size = 11.5)) 
   
-
+# aov_alpha_fit <- ezANOVA(data = df_fit_compare, dv = .(alpha_fit_RLW), wid = .(id), between = .(group), detailed = T, type = 2, return_aov = T)
+# aov_alpha_fit
+# summary(aov_alpha_fit)
+# ezStats(data = df_fit_compare, dv = .(alpha_fit_RLW), wid = .(id), 
+#         between = .(group), type = 2)
+# ezPlot(data = df_fit_compare, dv = .(alpha_fit_RLW), wid = .(id), 
+#        between = .(group), type = 2, x= .(group), do_lines=F, split= .(group))
+# 
+# 
+# aov_beta_fit <- ezANOVA(data = df_fit_compare, dv = .(beta_fit_RLW), wid = .(id), between = .(group), detailed = T, type = 2, return_aov = T)
+# aov_beta_fit
+# summary(aov_alpha_fit)
+# ezStats(data = df_fit_compare, dv = .(beta_fit_RLW), wid = .(id), 
+#         between = .(group), type = 2)
+# ezPlot(data = df_fit_compare, dv = .(beta_fit_RLW), wid = .(id), 
+#        between = .(group), type = 2, x= .(group), do_lines=F, split= .(group))
