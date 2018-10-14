@@ -8,7 +8,7 @@ library(readr)
 
 #read in ex ante simulated data
 sim_data <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/simulation_weight_model_12blocks_60trials.txt", 
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/simulation_weight_model_6blocks_60trials.txt", 
              " ", col_names = F, trim_ws = TRUE)
 
 names(sim_data)[1] <- "id"
@@ -58,7 +58,7 @@ plot_data <-
 #################################################################################
 #read in ex ante fitted data
 modelfit <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/modelfit_weight_model_6blocks_60trials.txt", 
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/modelfit_weight_model_12blocks_60trials.txt", 
              " ", col_names = F, trim_ws = TRUE)
 
 names(modelfit)[1]  <- "LL"
@@ -80,13 +80,20 @@ recovery_alpha <-
   ggplot(aes(x = alpha_sim, y = alpha_fit, color = alpha_sim), data = modelfit) +
   geom_point(size = 3, alpha = 0.6) +
   geom_smooth(method = "glm", color = "gray31", se = F, fill = "red", alpha = 0.2) +
-  scale_color_gradient(low = "blue", high = "red", expression(paste("Simulated ", alpha, " values"))) +
+  scale_color_gradient(low = "blue", high = "red", expression(paste("Simulated ", alpha, " values")),
+                       limits = c(0, 1), breaks = c(.25, .5, .75)) +
+  guides(color = guide_colorbar(barwidth = 0.7, barheight = 8)) +
   scale_y_continuous(breaks = seq(0, 1.0, 0.2)) +
   scale_x_continuous(breaks = seq(0, 1.0, 0.2)) +
   xlab(expression(paste("Simulated ", alpha, " values"))) +
   ylab(expression(paste("Estimated ", alpha, " values"))) +
-  annotate("text", x = 0.85, y = 0.05, label = "italic(r) == .94", parse = T, size = 4) +
-  theme_classic()
+  annotate("text", x = 0.86, y = 0.02, label = "italic(r) == .94", parse = T, size = 7) +
+  theme_classic() +
+  theme(axis.title.x = element_text(size = 16)) + 
+  theme(axis.title.y = element_text(size = 16))+
+  theme(axis.text = element_text(size = 15, colour = "black")) +
+  theme(legend.title = element_text(size = 15)) +
+  theme(legend.text = element_text(size = 13)) 
 recovery_alpha
 
 corr_beta <- cor.test(modelfit$beta_sim, modelfit$beta_fit)
@@ -96,15 +103,21 @@ recovery_beta <-
   ggplot(aes(x = beta_sim, y = beta_fit, color = beta_sim), data = modelfit) +
   geom_point(size = 3, alpha = 0.8) +
   geom_smooth(method = "glm", color = "gray31", se = F, fill = "red", alpha = 0.2) +
-  scale_color_gradient(low = "dodgerblue3", high = "limegreen", expression(paste("Simulated ", beta, " values"))) +
+  scale_color_gradient(low = "dodgerblue3", high = "limegreen", expression(paste("Simulated ", beta, " values")),
+                       limits = c(0, 10), breaks = c(2.5, 5, 7.5)) +
+  guides(color = guide_colorbar(barwidth = 0.7, barheight = 8)) +
   scale_y_continuous(breaks = seq(0, 10, 2)) +
   scale_x_continuous(breaks = seq(0, 10, 2)) +
   xlab(expression(paste("Simulated ", beta, " values"))) +
   ylab(expression(paste("Estimated ", beta, " values"))) +
-  annotate("text", x = 9.5, y = 0.4, label = "italic(r) == .74", parse = T, size = 4) +
-  theme_classic()
+  annotate("text", x = 9.4, y = 0.3, label = "italic(r) == .74", parse = T, size = 7) +
+  theme_classic() +
+  theme(axis.title.x = element_text(size = 16)) + 
+  theme(axis.title.y = element_text(size = 16))+
+  theme(axis.text = element_text(size = 15, colour = "black")) +
+  theme(legend.title = element_text(size = 15)) +
+  theme(legend.text = element_text(size = 13)) 
 recovery_beta
-
 
 
 corr_weight <- cor.test(modelfit$weight_sim, modelfit$weight_fit)
@@ -114,11 +127,18 @@ recovery_weight <-
   ggplot(aes(x = weight_sim, y = weight_fit, color = weight_sim), data = modelfit) +
   geom_point(size = 3, alpha = 0.8) +
   geom_smooth(method = "glm", color = "gray31", se = F, fill = "red", alpha = 0.2) +
-  scale_color_gradient(low = "dodgerblue3", high = "sienna1", expression(paste("Simulated ", omega, " values"))) +
-  scale_y_continuous(breaks = seq(-0.9, 0.9, 0.2)) +
-  scale_x_continuous(breaks = seq(-0.9, 0.9, 0.2)) +
+  scale_color_gradient(low = "dodgerblue3", high = "sienna1", expression(paste("Simulated ", omega, " values")),
+                       limits = c(-1, 1), breaks = c(-.75, -.25, .25, .75)) +
+  guides(color = guide_colorbar(barwidth = 0.7, barheight = 8)) +
+  scale_y_continuous(breaks = seq(-.9, .9, .2)) +
+  scale_x_continuous(breaks = seq(-.9, .9, .2)) +
   xlab(expression(paste("Simulated ", omega, " values"))) +
   ylab(expression(paste("Estimated ", omega, " values"))) +
-  annotate("text", x = 0.8, y = -0.85, label = "italic(r) == .84", parse = T, size = 4) +
-  theme_classic()
+  annotate("text", x = 0.81, y = -0.87, label = "italic(r) == .84", parse = T, size = 7) +
+  theme_classic() +
+  theme(axis.title.x = element_text(size = 16)) + 
+  theme(axis.title.y = element_text(size = 16))+
+  theme(axis.text = element_text(size = 15, colour = "black")) +
+  theme(legend.title = element_text(size = 15)) +
+  theme(legend.text = element_text(size = 13)) 
 recovery_weight

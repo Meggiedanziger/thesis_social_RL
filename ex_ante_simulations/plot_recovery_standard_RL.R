@@ -25,7 +25,7 @@ sim_data <-
 
 #read in ex ante fitted data
 modelfit <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/modelfit_standard_RL_12blocks_60trials.txt", 
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_ante_simulations/modelfit_standard_RL_18blocks_60trials.txt", 
              " ", col_names = F, trim_ws = TRUE)
 
 names(modelfit)[1] <- "LL"
@@ -52,7 +52,7 @@ recovery_alpha <-
   scale_x_continuous(breaks = seq(0, 1.0, 0.2)) +
   xlab(expression(paste("Simulated ", alpha, " values"))) +
   ylab(expression(paste("Estimated ", alpha, " values"))) +
-  annotate("text", x = 0.95, y = 0.12, label = "italic(r) == .98", parse = T, size = 5) +
+  annotate("text", x = 0.92, y = 0.04, label = "italic(r) == .93", parse = T, size = 5) +
   theme_classic() +
   theme(axis.title.x = element_text(size = 14)) + 
   theme(axis.title.y = element_text(size = 14))+
@@ -75,7 +75,7 @@ recovery_beta <-
   scale_x_continuous(breaks = seq(0, 10, 2)) +
   xlab(expression(paste("Simulated ", beta, " values"))) +
   ylab(expression(paste("Estimated ", beta, " values"))) +
-  annotate("text", x = 9.5, y = 0.4, label = "italic(r) == .70", parse = T, size = 5) +
+  annotate("text", x = 9.2, y = 0.5, label = "italic(r) == .73", parse = T, size = 5) +
   theme_classic() +
   theme(axis.title.x = element_text(size = 14)) + 
   theme(axis.title.y = element_text(size = 14))+

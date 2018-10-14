@@ -117,36 +117,60 @@ corr_RL[3, 2] <- corr_beta18$estimate
 corr_RL[4, 1] <- corr_alpha24$estimate
 corr_RL[4, 2] <- corr_beta24$estimate
 
+corr_RL <-
+  corr_RL %>% 
+  gather(key = parameter, value = corr)
+
+corr_RL$blocks <- rep(c(6, 12, 18, 24))
+
+ggplot(aes(x = blocks, y = corr, color = parameter), data = corr_RL) +
+  geom_point(size = 2) +
+  geom_line(size = 1, alpha = 0.7) +
+  scale_color_manual(labels = c(expression(paste("", alpha, "")), expression(paste("", beta, ""))),
+                     values = c("red", "limegreen")) +
+  scale_y_continuous(breaks = seq(0.1, .9, 0.2)) +
+  scale_x_continuous(breaks = c(6, 12, 18, 24)) +
+  xlab("Blocks") +
+  ylab("Correlation coefficient value") +
+  theme_classic() +
+  theme(axis.title.x = element_text(size = 13)) + 
+  theme(axis.title.y = element_text(size = 13))+
+  theme(axis.text = element_text(size = 12, colour = "black")) +
+  theme(legend.text = element_text(size = 13)) +
+  theme(legend.title = element_blank())
+  
+
+
 #-----------------------------------------------------------------------------------------------------------------------------------
 ################################ PARAMETER RECOVERY COEFFICIENTS WEIGHT RL MODEL
 ################################################################################
 
 #read in data
 
-fit_RLW_4 <-
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/modelfit_agents_weight_4_30.txt",
-             " ", col_names = F, trim_ws = TRUE)
-
-names(fit_RLW_4)[1] <- "LL"
-names(fit_RLW_4)[2] <- "alpha_fit"
-names(fit_RLW_4)[3] <- "beta_fit"
-names(fit_RLW_4)[4] <- "weight_fit"
-names(fit_RLW_4)[5] <- "BIC"
-names(fit_RLW_4)[6] <- "AIC"
-names(fit_RLW_4)[7] <- "id"
-names(fit_RLW_4)[8] <- "alpha_sim"
-names(fit_RLW_4)[9] <- "beta_sim"
-names(fit_RLW_4)[10] <- "weight_sim"
-
-
-corr_alpha4 <- cor.test(fit_RLW_4$alpha_sim, fit_RLW_4$alpha_fit)
-corr_alpha4
-
-corr_beta4 <- cor.test(fit_RLW_4$beta_sim, fit_RLW_4$beta_fit)
-corr_beta4
-
-corr_weight4 <- cor.test(fit_RLW_4$weight_sim, fit_RLW_4$weight_fit)
-corr_weight4
+# fit_RLW_4 <-
+#   read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/modelfit_agents_weight_4_30.txt",
+#              " ", col_names = F, trim_ws = TRUE)
+# 
+# names(fit_RLW_4)[1] <- "LL"
+# names(fit_RLW_4)[2] <- "alpha_fit"
+# names(fit_RLW_4)[3] <- "beta_fit"
+# names(fit_RLW_4)[4] <- "weight_fit"
+# names(fit_RLW_4)[5] <- "BIC"
+# names(fit_RLW_4)[6] <- "AIC"
+# names(fit_RLW_4)[7] <- "id"
+# names(fit_RLW_4)[8] <- "alpha_sim"
+# names(fit_RLW_4)[9] <- "beta_sim"
+# names(fit_RLW_4)[10] <- "weight_sim"
+# 
+# 
+# corr_alpha4 <- cor.test(fit_RLW_4$alpha_sim, fit_RLW_4$alpha_fit)
+# corr_alpha4
+# 
+# corr_beta4 <- cor.test(fit_RLW_4$beta_sim, fit_RLW_4$beta_fit)
+# corr_beta4
+# 
+# corr_weight4 <- cor.test(fit_RLW_4$weight_sim, fit_RLW_4$weight_fit)
+# corr_weight4
 
 fit_RLW_6 <- 
   read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/modelfit_agents_weight_6_30_new.txt",
@@ -244,9 +268,9 @@ corr_beta24
 corr_weight24 <- cor.test(fit_RLW_24$weight_sim, fit_RLW_24$weight_fit)
 corr_weight24
 
-corr_RLW <- data.frame(alpha_est = double(),
-                      beta_est = double(),
-                      weight_est = double())
+corr_RLW <- data.frame(alpha_est_RLW = double(),
+                      beta_est_RLW = double(),
+                      weight_est_RLW = double())
 
 corr_RLW[1, 1] <- corr_alpha6$estimate
 corr_RLW[1, 2] <- corr_beta6$estimate
@@ -260,9 +284,9 @@ corr_RLW[3, 3] <- corr_weight18$estimate
 corr_RLW[4, 1] <- corr_alpha24$estimate
 corr_RLW[4, 2] <- corr_beta24$estimate
 corr_RLW[4, 3] <- corr_weight24$estimate
-corr_RLW[5, 1] <- corr_alpha4$estimate
-corr_RLW[5, 2] <- corr_beta4$estimate
-corr_RLW[5, 3] <- corr_weight4$estimate
+# corr_RLW[5, 1] <- corr_alpha4$estimate
+# corr_RLW[5, 2] <- corr_beta4$estimate
+# corr_RLW[5, 3] <- corr_weight4$estimate
 
 ############## PLOT HOW RECOVERY COEFFICIENTS CHANGE AS DATA SIZE INCREASES
 
@@ -270,18 +294,23 @@ corr_RLW <-
   corr_RLW %>% 
   gather(key = parameter, value = corr)
 
-corr_RL <-
-  corr_RL %>% 
-  gather(key = parameter, value = corr)
 
-corr_RL$blocks <- rep(c(6, 12, 18, 24))
-
-corr_RLW$blocks <- rep(c(6, 12, 18, 24, 4))
+corr_RLW$blocks <- rep(c(6, 12, 18, 24))
 
 ggplot(aes(x = blocks, y = corr, color = parameter), data = corr_RLW) +
-  geom_point() +
-  scale_x_continuous(breaks = seq(4, 24, 4))
+  geom_point(size = 2) +
+  geom_line(size = 1, alpha = 0.7) +
+  scale_color_manual(labels = c(expression(paste("", alpha, "")), expression(paste("", beta, "")), 
+                                expression(paste("", omega, ""))),
+                     values = c("red", "limegreen", "sienna1")) +
+  scale_x_continuous(breaks = c(6, 12, 18, 24)) +
+  xlab("Blocks") +
+  ylab("Correlation coefficient value") +
+  theme_classic() +
+  theme(axis.title.x = element_text(size = 13)) + 
+  theme(axis.title.y = element_text(size = 13))+
+  theme(axis.text = element_text(size = 12, colour = "black")) +
+  theme(legend.text = element_text(size = 13)) +
+  theme(legend.title = element_blank())
+  
 
-ggplot(aes(x = blocks, y = corr, color = parameter), data = corr_RL) +
-  geom_point() +
-  scale_x_continuous(breaks = seq(6, 24, 6))

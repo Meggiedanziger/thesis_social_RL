@@ -6,7 +6,7 @@ setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents")
 
 #read in ex ante fitted data
 modelfit <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/modelfit_agents_weight_24blocks_30trials.txt", 
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/modelfit_agents_weight_18_30_new.txt", 
              " ", col_names = F, trim_ws = TRUE)
 
 names(modelfit)[1] <- "LL"
@@ -32,7 +32,7 @@ recovery_alpha <-
   scale_x_continuous(breaks = seq(0, 1.0, 0.2)) +
   xlab(expression(paste("Simulated ", alpha, " values"))) +
   ylab(expression(paste("Estimated ", alpha, " values"))) +
-  annotate("text", x = 0.61, y = 0.05, label = "italic(r) == .92", parse = T, size = 5) +
+ # annotate("text", x = 0.61, y = 0.05, label = "italic(r) == .92", parse = T, size = 5) +
   theme_classic() +
   theme(axis.title.x = element_text(size = 15)) + 
   theme(axis.title.y = element_text(size = 15))+

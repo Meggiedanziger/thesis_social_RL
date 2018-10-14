@@ -37,7 +37,7 @@ max(alpha)
 mean(alpha)
 median(alpha)
 
-alpha_df$id <- c(1:50)
+#alpha_df$id <- c(1:50)
 
 ggplot(aes(x = id, y = alpha), data = alpha_df) +
   geom_point(size = 2.5, color = "red", alpha = 0.6) +
@@ -102,7 +102,7 @@ max(beta)
 mean(beta)
 median(beta)
 
-beta_df$id <- c(1:50)
+#beta_df$id <- c(1:50)
 
 ggplot(aes(x = id, y = beta), data = beta_df) +
   geom_point(size = 2.5, color = "limegreen", alpha = 0.6) +
@@ -147,14 +147,14 @@ num  = 50
 subj = c(1:50)
 
 #determine prediction of the model with best parameter estimates
-cchoice      <- array(0, c(50, 6, 30))
-R            <- array(0, c(50, 6, 30))
-Prob         <- array(0, c(50, 6, 30))
-Feed         <- array(0, c(50, 6, 30))
-Feed_c       <- array(0, c(50, 6, 30))
-Feed_i       <- array(0, c(50, 6, 30))
-Prob_correct <- array(0, c(50, 6, 30))
-PE <- Q_all  <- array(0, c(50, 6, 30))
+cchoice      <- array(0, c(50, 4, 30))
+R            <- array(0, c(50, 4, 30))
+Prob         <- array(0, c(50, 4, 30))
+Feed         <- array(0, c(50, 4, 30))
+Feed_c       <- array(0, c(50, 4, 30))
+Feed_i       <- array(0, c(50, 4, 30))
+Prob_correct <- array(0, c(50, 4, 30))
+PE <- Q_all  <- array(0, c(50, 4, 30))
 
 
 
@@ -168,7 +168,7 @@ for (id in subj) {
   alpha <- FIT[id, 2]; #take alpha values from second column 
   beta  <- FIT[id, 3]; #take beta values from third column 
   
-  for (block in c(1:6)) {
+  for (block in c(1:4)) {
     
     Q    <- matrix(0.5, 1, 2) # 1 row, 2 columns 
     PROB <- matrix(0.5, 1, 2) 
@@ -223,9 +223,9 @@ plot(acc)
 
 sim_data <- merged_dat
 
-sim_data <- write.table(merged_dat, file = "agents_standard_RL_test.txt", 
+sim_data <- write.table(merged_dat, file = "agents_standard_RL_4_30.txt", 
                         row.names = FALSE, col.names = FALSE)
 
-sampled_values <- write.table(FIT, file = "agents_standard_RL_test_params.txt",
+sampled_values <- write.table(FIT, file = "agents_standard_RL_parameters_4_30.txt",
                               row.names = FALSE, col.names = FALSE)
 
