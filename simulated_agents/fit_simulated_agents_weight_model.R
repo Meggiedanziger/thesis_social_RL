@@ -7,7 +7,7 @@ library(readr)
 
 
 sim_data <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_weight_6_20.txt", 
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_weight_18_30_40ppts.txt", 
                        " ", col_names = F, 
                        trim_ws = TRUE)
 
@@ -30,8 +30,8 @@ data <- sim_data
 
 data <- as.data.frame(data)
 
-subj = c(1:50)
-FIT2 <- matrix(0, 50, 6)
+subj = c(1:40)
+FIT2 <- matrix(0, 40, 6)
 #start a simplex search for finding the best parameter values
 for (id in subj) {  # cycle through ids 1 to n
   startParm <- c(0.1, 0.1, -1)
@@ -46,7 +46,7 @@ for (id in subj) {  # cycle through ids 1 to n
 
 #determine model comparison criterion
 #BIC deviance + parameters*log(N) #N = number of trials from all blocks
-FIT2[, 5] <- FIT2[, 1] + 3 * log(120);
+FIT2[, 5] <- FIT2[, 1] + 3 * log(540);
 
 #AIC: deviance + 2 * #parameters
 FIT2[, 6] <- FIT2[, 1] + 2 * 3;
@@ -66,7 +66,7 @@ names(modelfit_weight)[6] <- "AIC"
 
 #read in parameter data from simulation
 parameter_sim <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_weight_parameters_6_20.txt", 
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_weight_parameters_18_30_40ppts.txt", 
                        " ", col_names = F, 
                        trim_ws = TRUE)
 
@@ -126,7 +126,7 @@ recovery_weight
 
 
 setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents")
-modelfit_standard <- write.table(recovery_df, file = "modelfit_agents_weight_6_20.txt", 
+modelfit_standard <- write.table(recovery_df, file = "modelfit_agents_weight_18_30_40ppts.txt", 
                                  row.names = FALSE, col.names = FALSE)
 
 #############Parameter gegeneinander plotten

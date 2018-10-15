@@ -28,7 +28,7 @@ ggplot(pop_alphadf, aes(x = pop_alpha, binwidth = binwidth, n = n)) +
 
 #sample alpha values
 set.seed(123)
-n = 50
+n = 40
 binwidth = 0.04
 alpha <- sample(pop_alpha, n)
 alpha_df <- as.data.frame(alpha)
@@ -97,7 +97,7 @@ ggplot(pop_betadf, aes(x = pop_beta, binwidth = binwidth, n = n)) +
 
 #sample beta values
 set.seed(123)
-n = 50
+n = 40
 binwidth = 0.2
 beta <- sample(pop_beta, n)
 beta_df <- as.data.frame(beta)
@@ -169,7 +169,7 @@ ggplot(pop_weightdf, aes(x = pop_weight, binwidth = binwidth, n = n)) +
 
 #sample weight values
 set.seed(234)
-n = 50
+n = 40
 binwidth = 0.04
 weight <- sample(pop_weight, n)
 weight_df <- as.data.frame(weight)
@@ -186,7 +186,7 @@ hist(pop_d)
 
 #sample d values to determine which of the weight values is positive or negative
 set.seed(234)
-determ <- sample(pop_d, 50)
+determ <- sample(pop_d, 40)
 sum(determ < 0.5) #check if equally many are positive or negative
 
 determ_t <- ifelse(determ < 0.5, 1, -1) #transform all values below 0.5 to -1, all above to 1
@@ -239,22 +239,22 @@ sampling_df <- cbind(alpha_df, beta_df, weight_df)
 
 #--------------------------------------------------------------------------------
 #run simulation to create 50 data sets with 12 blocks and 30 trials
-num  = 50
-subj = c(1:50)
+num  = 40
+subj = c(1:40)
 
 #determine prediction of the model with best parameter estimates
-cchoice      <- array(0, c(50, 6, 20))
-R            <- array(0, c(50, 6, 20))
-Prob         <- array(0, c(50, 6, 20))
-Feed         <- array(0, c(50, 6, 20))
-Feed_c       <- array(0, c(50, 6, 20))
-Feed_i       <- array(0, c(50, 6, 20))
-Prob_correct <- array(0, c(50, 6, 20))
-PE <- Q_all  <- array(0, c(50, 6, 20))
+cchoice      <- array(0, c(40, 18, 30))
+R            <- array(0, c(40, 18, 30))
+Prob         <- array(0, c(40, 18, 30))
+Feed         <- array(0, c(40, 18, 30))
+Feed_c       <- array(0, c(40, 18, 30))
+Feed_i       <- array(0, c(40, 18, 30))
+Prob_correct <- array(0, c(40, 18, 30))
+PE <- Q_all  <- array(0, c(40, 18, 30))
 
 
 
-id <- c(1:50)
+id <- c(1:40)
 
 
 FIT <- cbind(id, sampling_df)
@@ -265,12 +265,12 @@ for (id in subj) {
   beta   <- FIT[id, 3]; #take beta values from third column 
   weight <- FIT[id, 4]; #take weight values from fourth column
   
-  for (block in c(1:6)) {
+  for (block in c(1:18)) {
     
     Q    <- matrix(0.5, 1, 2) # 1 row, 2 columns 
     PROB <- matrix(0.5, 1, 2) 
     
-    for (trial in c(1:20)) {
+    for (trial in c(1:30)) {
       
       for (j in c(1:2)) { #2 options 
         PROB[1, j] <- exp(beta*Q[1, j]) / (exp(beta*Q[1, 1]) + exp(beta*Q[1, 2])) #softmax function / decision rule
@@ -322,9 +322,9 @@ sim_data <- merged_dat
 
 setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents")
 
-sim_data <- write.table(merged_dat, file = "agents_weight_6_20.txt", 
+sim_data <- write.table(merged_dat, file = "agents_weight_18_30_40ppts.txt", 
                         row.names = FALSE, col.names = FALSE)
 
-sampled_values <- write.table(FIT, file = "agents_weight_parameters_6_20.txt",
+sampled_values <- write.table(FIT, file = "agents_weight_parameters_18_30_40ppts.txt",
                               row.names = FALSE, col.names = FALSE)
 

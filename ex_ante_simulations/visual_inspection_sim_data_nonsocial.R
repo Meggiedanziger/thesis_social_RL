@@ -91,7 +91,7 @@ ggplot(plot_data2, aes(x = trial, y = accuracy)) +
   geom_smooth(size = 0.9, color = "tomato", se = F, fill = "red", alpha = 0.2) +
   facet_wrap(~ lrate, ncol = 2, nrow = 5) +
   scale_y_continuous(breaks = seq(0.5, 1.0, 0.5)) +
-  scale_x_continuous(breaks = seq(10, 60, 10)) +
+  scale_x_continuous(breaks = seq(10, 50, 20)) +
   ylab("Accuracy") +
   xlab("Trials") +
   theme_classic() +
@@ -112,7 +112,7 @@ ggplot(plot_data2, aes(x = trial, y = accuracy)) +
   geom_smooth(size = 0.9, color = "tomato", se = F, fill = "red", alpha = 0.2) +
   facet_wrap(~ temp, ncol = 2, nrow = 4) +
   scale_y_continuous(breaks = seq(0.5, 1.0, 0.5)) +
-  scale_x_continuous(breaks = seq(10, 60, 10)) +
+  scale_x_continuous(breaks = seq(10, 50, 20)) +
   ylab("Accuracy") +
   xlab("Trials") +
   theme_classic() +
@@ -123,36 +123,18 @@ ggplot(plot_data2, aes(x = trial, y = accuracy)) +
 
 #plot accuracy as function of alpha and beta in facets
 ggplot(plot_data2, aes(x = trial, y = accuracy)) +
-  geom_jitter(size = 1, width = 0.5, height = 0.1, color = "steelblue4", alpha = 0.4) +
+  geom_jitter(size = 1, width = 0.5, height = 0.1, color = "steelblue4", alpha = 0.7) +
   #geom_point(color = "steelblue4", alpha = 0.5) +
   geom_smooth(size = 0.9, color = "tomato", se = F, fill = "red", alpha = 0.2) +
   facet_grid(temp ~ lrate) +
   scale_y_continuous(breaks = seq(0.5, 1.0, 0.5)) +
-  scale_x_continuous(breaks = seq(15, 60, 15)) +
+  scale_x_continuous(breaks = seq(10, 50, 20)) +
   ylab("Accuracy") +
   xlab("Trials") +
   theme_classic() +
   theme(strip.text.x = element_text(size = 12, colour = "black")) +
-  theme(axis.title.x = element_text(size = 12)) + 
-  theme(axis.title.y = element_text(size = 12))+
+  theme(strip.text.x = element_text(size = 12, colour = "black")) +
+  theme(axis.title.x = element_text(size = 14)) + 
+  theme(axis.title.y = element_text(size = 14))+
   theme(axis.text = element_text(size = 11, colour = "black"))
-
-
-#plot frequencies of choices as barplot
-require(scales)
-
-sim_data$chosen_option <- sim_data$chosen_option +1
-
-plot_bar <-
-  sim_data %>% 
-  group_by(id, chosen_option)
-
-ggplot(plot_bar, aes(x = chosen_option)) +
-  geom_bar(aes(y = (..count..)/sum(..count..))) +
-  #facet_wrap( ~ id, nrow = 2, ncol = 5) +
-  xlab("chosen option") +
-  ylab("percentage of choices") +
-  scale_x_continuous(breaks = seq(1, 2, 1)) +
-  #scale_y_continuous(breaks = seq(0, 100, 20)) +
-  theme_classic()
 
