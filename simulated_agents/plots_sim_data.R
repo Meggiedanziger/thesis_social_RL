@@ -7,7 +7,7 @@ library(tidyverse)
 library(readr)
 
 #read in simulated agents data standard RL model
-sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_standard_RL_24_30.txt", 
+sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_standard_RL_4_12.txt", 
                        " ", escape_double = FALSE, col_names = F, 
                        trim_ws = TRUE)
 
@@ -85,7 +85,7 @@ plot_bar <-
 plot_bar$chosen_option <- as.factor(plot_bar$chosen_option)
 
 ggplot(plot_bar, aes(x = chosen_option, fill = chosen_option)) +
-  geom_bar(aes(y = (..count..)/sum(..count..) * 100), color = "darkgrey", alpha = 0.8) +
+  geom_bar(aes(y = (..count..)/sum(..count..) * 100), alpha = 0.8) +
   #facet_wrap( ~ id, nrow = 5, ncol = 10) +
   scale_fill_manual(values = c("tomato", "steelblue")) +
   xlab("Chosen option") +
@@ -100,7 +100,7 @@ ggplot(plot_bar, aes(x = chosen_option, fill = chosen_option)) +
 #--------------------------------------------------------------------------------------------------------------------------------------
 
 #read in simulated agents data weight RL model
-sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_weight_6_20.txt", 
+sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_weight_4_12.txt", 
                        " ", escape_double = FALSE, col_names = F, 
                        trim_ws = TRUE)
 
@@ -209,6 +209,7 @@ ggplot(plot_bar, aes(x = chosen_option, fill = chosen_option)) +
   xlab("Chosen option") +
   ylab("Percentage of choices") +
   scale_x_discrete(labels = c("bad", "good")) +
+  scale_y_continuous(breaks = seq(0, 80, 20)) +
   theme_classic() +
   theme(axis.title.x = element_text(size = 15)) + 
   theme(axis.title.y = element_text(size = 15))+

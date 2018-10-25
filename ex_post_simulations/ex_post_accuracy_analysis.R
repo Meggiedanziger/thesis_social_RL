@@ -43,7 +43,7 @@ ggplot(aes(x = id, group = id, y = accuracy), data = sim_data_sum) +
 
 mean(sim_data_sum$accuracy)
 
-sim_data_social <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_post_simulations/simulation_weightstandard_18_30.txt", 
+sim_data_social <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/ex_post_simulations/simulation_standard_18_30.txt", 
                               " ", escape_double = FALSE, col_names = F, 
                               trim_ws = TRUE)
 
@@ -85,15 +85,15 @@ hist(dat$accuracy)
 hist(dat$accuracy_social)
 
 #run Wilcoxon signed rank test (like paired t-test for non-normally dsitributed data)
-nonpartest <- wilcox.test(dat$accuracy, dat$accuracy_social, paired = TRUE, exact = F)
+nonpartest <- wilcox.test(dat$accuracy, dat$accuracy_social, paired = TRUE, exact = T)
 nonpartest
 
 #calculate Z statistic
-Z <- qnorm(nonpartest$p.value/2)
+Z <- qnorm(0.00000000000000011/2)
 Z
 
 #calculate effect size
-effect <- abs(Z)/sqrt(50) 
+effect <- abs(Z)/sqrt(100) 
 effect
 
 median(dat$accuracy)

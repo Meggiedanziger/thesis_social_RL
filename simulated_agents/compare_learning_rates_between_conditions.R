@@ -46,7 +46,7 @@ names(fit_RLW_6_social)[10] <- "weight_sim_RLW"
 dat_compare <- cbind(fit_RLW_6_social, fit_RL_6)
 
 #run Wilcoxon signed rank test (like paired t-test for non-normally dsitributed data) for alpha
-nonpartest <- wilcox.test(dat_compare$alpha_fit, dat_compare$alpha_fit_RLW, paired = TRUE, exact = FALSE)
+nonpartest <- wilcox.test(dat_compare$alpha_fit, dat_compare$alpha_fit_RLW, paired = TRUE, exact = TRUE)
 nonpartest
 
 #calculate Z statistic
@@ -54,7 +54,7 @@ Z <- qnorm(nonpartest$p.value/2)
 Z
 
 #calculate effect size
-effect <- abs(Z)/sqrt(50)
+effect <- abs(Z)/sqrt(100)
 effect
 
 median(dat_compare$alpha_fit)
@@ -62,7 +62,7 @@ median(dat_compare$alpha_fit_RLW)
 
 
 #run Wilcoxon signed rank test (like paired t-test for non-normally dsitributed data) for beta
-nonpartest <- wilcox.test(dat_compare$beta_fit, dat_compare$beta_fit_RLW, paired = TRUE, exact = FALSE)
+nonpartest <- wilcox.test(dat_compare$beta_fit, dat_compare$beta_fit_RLW, paired = TRUE, exact = TRUE)
 nonpartest
 
 #calculate Z statistic
@@ -70,7 +70,7 @@ Z <- qnorm(nonpartest$p.value/2)
 Z
 
 #calculate effect size
-effect <- abs(Z)/sqrt(50)
+effect <- abs(Z)/sqrt(100)
 effect
 
 median(dat_compare$beta_fit)
@@ -80,8 +80,8 @@ median(dat_compare$beta_fit_RLW)
 #plot alpha and beta for both conditions in boxplot
 
 ggplot(dat_compare) +
-  geom_boxplot(aes(x = 1, y = alpha_fit), fill = "tomato", alpha = 0.4) +
-  geom_boxplot(aes(x = 2, y = alpha_fit_RLW), fill = "steelblue4", alpha = 0.4) +
+  geom_boxplot(aes(x = 1, y = alpha_fit), fill = "steelblue4", alpha = 0.4) +
+  geom_boxplot(aes(x = 2, y = alpha_fit_RLW), fill = "sienna1", alpha = 0.4) +
   scale_x_continuous(breaks = c(1, 2), labels = c("non-social", "social")) +
   scale_y_continuous(breaks = seq(0, 1.0, .25)) +
   xlab("Condition") + 
@@ -92,8 +92,8 @@ ggplot(dat_compare) +
   theme(axis.text = element_text(size = 13, colour = "black"))
 
 ggplot(dat_compare) +
-  geom_boxplot(aes(x = 1, y = beta_fit), fill = "tomato", alpha = 0.4) +
-  geom_boxplot(aes(x = 2, y = beta_fit_RLW), fill = "steelblue4", alpha = 0.4) +
+  geom_boxplot(aes(x = 1, y = beta_fit), fill = "steelblue4", alpha = 0.4) +
+  geom_boxplot(aes(x = 2, y = beta_fit_RLW), fill = "sienna1", alpha = 0.4) +
   scale_x_continuous(breaks = c(1, 2), labels = c("non-social", "social")) +
   scale_y_continuous(breaks = seq(0, 10, 2.5)) +
   xlab("Condition") + 

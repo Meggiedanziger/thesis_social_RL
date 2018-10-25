@@ -147,14 +147,14 @@ num  = 50
 subj = c(1:50)
 
 #determine prediction of the model with best parameter estimates
-cchoice      <- array(0, c(50, 4, 30))
-R            <- array(0, c(50, 4, 30))
-Prob         <- array(0, c(50, 4, 30))
-Feed         <- array(0, c(50, 4, 30))
-Feed_c       <- array(0, c(50, 4, 30))
-Feed_i       <- array(0, c(50, 4, 30))
-Prob_correct <- array(0, c(50, 4, 30))
-PE <- Q_all  <- array(0, c(50, 4, 30))
+cchoice      <- array(0, c(50, 4, 12))
+R            <- array(0, c(50, 4, 12))
+Prob         <- array(0, c(50, 4, 12))
+Feed         <- array(0, c(50, 4, 12))
+Feed_c       <- array(0, c(50, 4, 12))
+Feed_i       <- array(0, c(50, 4, 12))
+Prob_correct <- array(0, c(50, 4, 12))
+PE <- Q_all  <- array(0, c(50, 4, 12))
 
 
 
@@ -173,7 +173,7 @@ for (id in subj) {
     Q    <- matrix(0.5, 1, 2) # 1 row, 2 columns 
     PROB <- matrix(0.5, 1, 2) 
     
-    for (trial in c(1:30)) {
+    for (trial in c(1:12)) {
       
       for (j in c(1:2)) { #2 options 
         PROB[1, j] <- exp(beta*Q[1, j]) / (exp(beta*Q[1, 1]) + exp(beta*Q[1, 2])) #softmax function / decision rule
@@ -223,9 +223,9 @@ plot(acc)
 
 sim_data <- merged_dat
 
-sim_data <- write.table(merged_dat, file = "agents_standard_RL_4_30.txt", 
+sim_data <- write.table(merged_dat, file = "agents_standard_RL_4_12.txt", 
                         row.names = FALSE, col.names = FALSE)
 
-sampled_values <- write.table(FIT, file = "agents_standard_RL_parameters_4_30.txt",
+sampled_values <- write.table(FIT, file = "agents_standard_RL_parameters_4_12.txt",
                               row.names = FALSE, col.names = FALSE)
 

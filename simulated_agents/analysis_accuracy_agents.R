@@ -9,7 +9,7 @@ library(reshape)
 library(readr)
 
 #read in simulated agents data standard RL model
-sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_standard_RL_24_30.txt", 
+sim_data <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_standard_RL_18_30.txt", 
                        " ", escape_double = FALSE, col_names = F, 
                        trim_ws = TRUE)
 
@@ -43,7 +43,7 @@ ggplot(aes(x = id, group = id, y = accuracy), data = sim_data_sum) +
 
 mean(sim_data_sum$accuracy)
 
-sim_data_social <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_weight_24_30_new.txt", 
+sim_data_social <- read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/agents_weight_18_30_new.txt", 
                               " ", escape_double = FALSE, col_names = F, 
                               trim_ws = TRUE)
 
@@ -85,7 +85,7 @@ hist(dat$accuracy)
 hist(dat$accuracy_social)
 
 #run Wilcoxon signed rank test (like paired t-test for non-normally dsitributed data)
-nonpartest <- wilcox.test(dat$accuracy, dat$accuracy_social, paired = TRUE, exact = F)
+nonpartest <- wilcox.test(dat$accuracy, dat$accuracy_social, paired = TRUE, exact = T)
 nonpartest
 
 #calculate Z statistic
@@ -93,8 +93,21 @@ Z <- qnorm(nonpartest$p.value/2)
 Z
 
 #calculate effect size
-effect <- abs(Z)/sqrt(50) 
+effect <- abs(Z)/sqrt(100) 
 effect
 
 median(dat$accuracy)
 median(dat$accuracy_social)
+
+
+ggplot(data = dat) +
+  geom_boxplot(aes(x = 1, y = accuracy), fill = "steelblue4", alpha = 0.4) +
+  geom_boxplot(aes(x = 2, y = accuracy_social), fill = "sienna1", alpha = 0.4) +
+  scale_x_continuous(breaks = c(1, 2), labels = c("non-social", "social")) +
+  scale_y_continuous(breaks = seq(0, 1, .25)) +
+  xlab("Condition") + 
+  ylab("Accuracy") + 
+  theme_classic() +
+  theme(axis.title.x = element_text(size = 14)) + 
+  theme(axis.title.y = element_text(size = 14)) +
+  theme(axis.text = element_text(size = 13, colour = "black"))

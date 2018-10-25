@@ -6,7 +6,7 @@ setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents")
 
 #read in ex ante fitted data
 modelfit <- 
-  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/modelfit_agents_standard_RL_6blocks_30trials.txt", 
+  read_delim("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents/modelfit_agents_standard_RL_18_30.txt", 
              " ", col_names = F, trim_ws = TRUE)
 
 names(modelfit)[1] <- "LL"
@@ -41,16 +41,22 @@ corr_beta <- cor.test(modelfit$beta_sim, modelfit$beta_fit)
 corr_beta
 
 recovery_beta <-
-  ggplot(aes(x = beta_sim, y = beta_fit, color = beta_sim), data = modelfit) +
-  geom_point(size = 3, alpha = 0.8) +
+  ggplot(aes(x = beta_fit, y = alpha_fit), data = modelfit) +
+  geom_point(size = 3, alpha = 0.8, color = "steelblue4") +
   geom_smooth(method = "glm", color = "gray31", se = F, fill = "red", alpha = 0.2) +
-  scale_color_gradient(low = "dodgerblue3", high = "limegreen", expression(paste("Simulated ", beta, " values"))) +
-  scale_y_continuous(breaks = seq(0, 10, 2)) +
-  scale_x_continuous(breaks = seq(0, 10, 2)) +
-  xlab(expression(paste("Simulated ", beta, " values"))) +
-  ylab(expression(paste("Estimated ", beta, " values"))) +
-  annotate("text", x = 8, y = 0.4, label = "italic(r) == .87", parse = T, size = 4) +
-  theme_classic()
+ # scale_color_gradient(low = "dodgerblue3", high = "limegreen", expression(paste("Simulated ", beta, " values"))) +
+  #scale_y_continuous(breaks = seq(0, 10, 2)) +
+  #cale_x_continuous(breaks = seq(0, 10, 2)) +
+  xlab(expression(paste("Estimated ", beta, " values"))) +
+  ylab(expression(paste("Estimated ", alpha, " values"))) +
+  #annotate("text", x = 8, y = 0.4, label = "italic(r) == .87", parse = T, size = 4) +
+  theme_classic() +
+  theme(axis.title.x = element_text(size = 15)) + 
+  theme(axis.title.y = element_text(size = 15))+
+  theme(axis.text = element_text(size = 13, colour = "black")) +
+  theme(legend.title = element_text(size = 15)) +
+  theme(legend.text = element_text(size = 13)) +
+  theme(legend.position = "none")
 recovery_beta
 
 

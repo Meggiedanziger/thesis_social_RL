@@ -133,7 +133,7 @@ ggplot(plot_data2, aes(x = trial, y = accuracy)) +
   xlab("Trials") +
   theme_classic() +
   theme(strip.text.x = element_text(size = 12, colour = "black")) +
-  theme(strip.text.x = element_text(size = 12, colour = "black")) +
+  theme(strip.text.y = element_text(size = 12, colour = "black")) +
   theme(axis.title.x = element_text(size = 14)) + 
   theme(axis.title.y = element_text(size = 14))+
   theme(axis.text = element_text(size = 11, colour = "black"))

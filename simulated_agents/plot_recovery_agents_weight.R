@@ -3,6 +3,8 @@ setwd("~/Dropbox/___MA/social_RL_git/thesis_social_RL/simulated_agents")
 
 ########################### PARAMETER RECOVERY SIMULATED AGENTS WEIGHT RL MODEL 6 BLOCKS 30 TRIALS
 ####################################################################################################
+library(readr)
+library(tidyverse)
 
 #read in ex ante fitted data
 modelfit <- 
@@ -62,23 +64,24 @@ recovery_beta <-
   theme(legend.text = element_text(size = 13))
 recovery_beta
 
-corr_weight <- cor.test(modelfit$weight_sim, modelfit$weight_fit)
+corr_weight <- cor.test(modelfit$alpha_fit, modelfit$beta_fit)
 corr_weight
 
 recovery_weight <-
-  ggplot(aes(x = weight_sim, y = weight_fit, color = weight_sim), data = modelfit) +
-  geom_point(size = 3, alpha = 0.6) +
+  ggplot(aes(x = alpha_fit, y = beta_fit), data = modelfit) +
+  geom_point(size = 3, alpha = 0.8, color = "steelblue4") +
   geom_smooth(method = "glm", color = "gray31", se = F, fill = "red", alpha = 0.2) +
-  scale_color_gradient(low = "dodgerblue3", high = "sienna1", expression(paste("Simulated ", omega, " values"))) +
-  scale_y_continuous(breaks = seq(-1, 1.0, 0.5)) +
-  scale_x_continuous(breaks = seq(-1, 1.0, 0.5)) +
-  xlab(expression(paste("Simulated ", omega, " values"))) +
-  ylab(expression(paste("Estimated ", omega, " values"))) +
-  annotate("text", x = 0.79, y = -0.97, label = "italic(r) == .88", parse = T, size = 5) +
+  #scale_color_gradient(low = "dodgerblue3", high = "sienna1", expression(paste("Simulated ", omega, " values"))) +
+  #scale_y_continuous(breaks = seq(-1, 1.0, 0.5)) +
+  #scale_x_continuous(breaks = seq(-1, 1.0, 0.5)) +
+  xlab(expression(paste("Estimated ", alpha, " values"))) +
+  ylab(expression(paste("Estimated ", beta, " values"))) +
+  #annotate("text", x = 0.79, y = -0.97, label = "italic(r) == .88", parse = T, size = 5) +
   theme_classic() +
   theme(axis.title.x = element_text(size = 15)) + 
   theme(axis.title.y = element_text(size = 15))+
   theme(axis.text = element_text(size = 13, colour = "black")) +
   theme(legend.title = element_text(size = 15)) +
-  theme(legend.text = element_text(size = 13))
+  theme(legend.text = element_text(size = 13)) +
+  theme(legend.position = "none")
 recovery_weight
